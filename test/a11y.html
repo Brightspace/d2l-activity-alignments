@@ -20,8 +20,10 @@
 		</template>
 	</test-fixture>
 
-	<script>
+	<script type="module">
 		/* global suite, setup, test, fixture, sinon, axs, assert */
+		import { EntityStore } from '../../d2l-polymer-siren-behaviors/store/redux-entity-store.js';
+
 		suite('d2l-select-outcomes', function() {
 			suite('a11y', function() {
 				setup(function(done) {
@@ -200,13 +202,20 @@
 							}]
 						}
 					);
-					function waitForFetch() {
-						window.D2L.Siren.EntityStore.removeListener('https://15215d45-f7e9-4967-bf9b-13a685538829.outcomes.api.dev.brightspace.com/outcomes/73292f97-ebe5-43d5-b1df-299d98f1e0c4/84f0b418-2f25-4184-87e5-9ab7f86fbc34', '', waitForFetch);
-						Polymer.dom.flush();
-						// Wait for animations to complete
-						setTimeout(done, 500);
-					}
-					window.D2L.Siren.EntityStore.addListener('https://15215d45-f7e9-4967-bf9b-13a685538829.outcomes.api.dev.brightspace.com/outcomes/73292f97-ebe5-43d5-b1df-299d98f1e0c4/84f0b418-2f25-4184-87e5-9ab7f86fbc34', '', waitForFetch);
+					var unsubscribe = EntityStore.subscribe(() => {
+						const state = EntityStore.getState();
+						const entitiesByToken = state.entitiesByHref['https://15215d45-f7e9-4967-bf9b-13a685538829.outcomes.api.dev.brightspace.com/outcomes/73292f97-ebe5-43d5-b1df-299d98f1e0c4/84f0b418-2f25-4184-87e5-9ab7f86fbc34'];
+						const entity = entitiesByToken && entitiesByToken[''];
+						if (entity && !entity.isFetching) {
+							if (entity.error) {
+								done(entity.error)
+							} else {
+								Polymer.dom.flush();
+								setTimeout(done, 500);
+							}
+							unsubscribe();
+						}
+					});
 					fixtureElement.href = 'https://15215d45-f7e9-4967-bf9b-13a685538829.activities.api.dev.brightspace.com/activities/6606_3000_1/usages/6609';
 					fixtureElement.token = '';
 				});

@@ -8,7 +8,6 @@
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
-	<script src="utilities/fetch-siren-entity-whitelist.js"></script>
 
     <link rel="import" href="../d2l-outcome.html">
   </head>
@@ -19,8 +18,10 @@
       </template>
     </test-fixture>
 
-    <script>
-		/* global suite, test, assert, fixture, setup, stubWhitelist */
+    <script type="module">
+		/* global suite, test, assert, fixture, setup */
+		import { EntityStore } from '../../d2l-polymer-siren-behaviors/store/redux-entity-store.js';
+
 		suite('d2l-outcome', function() {
 			test('instantiating the element works', function() {
 				var element = fixture('basic');
@@ -32,26 +33,21 @@
 				setup(function(done) {
 					element = fixture('basic');
 					var href = 'static-data/outcomes/c297b02c-19b1-485a-92db-e598316271c8/5f4d6901-7c10-4edc-b2e1-821efc5c3708.json';
-					function waitForLoad(entity, error) {
-						window.D2L.Siren.EntityStore.removeListener(
-							href,
-							'',
-							waitForLoad
-						);
-						if (error) {
-							done(error);
-							return;
+					var unsubscribe = EntityStore.subscribe(() => {
+						const state = EntityStore.getState();
+						const entitiesByToken = state.entitiesByHref[href];
+						const entity = entitiesByToken && entitiesByToken[''];
+						if (entity && !entity.isFetching) {
+							if (entity.error) {
+								done(entity.error)
+							} else {
+								setTimeout(function() {
+									done();
+								});
+							}
+							unsubscribe();
 						}
-						setTimeout(function() {
-							done();
-						});
-					}
-					stubWhitelist();
-					window.D2L.Siren.EntityStore.addListener(
-						href,
-						'',
-						waitForLoad
-					);
+					});
 					element.href = href;
 					element.token = '';
 				});

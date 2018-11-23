@@ -83,15 +83,9 @@
 						continue;
 					}
 
-					if (child.textContent === child.innerHTML) {
-						flattenedList.appendChild(doc.createTextNode(child.textContent));
-					} else {
-						this._processHtml(doc, child);
-						var itemSpan = doc.createElement('span');
-						itemSpan.innerHTML = child.innerHTML;
-						flattenedList.appendChild(itemSpan);
+					while (child.firstChild) {
+						flattenedList.appendChild(child.firstChild);
 					}
-
 					flattenedList.appendChild(doc.createTextNode(', '));
 				}
 
@@ -100,37 +94,19 @@
 				return flattenedList;
 			},
 
-			_processHtml: function(doc, element) {
-				// Copy the children to an array first so that the list isn't mutated while being iterated upon
-				var children = [];
-				for (var i = 0; i < element.childNodes.length; i++) {
-					children.push(element.childNodes[i]);
-				}
-
-				children.forEach(function(child) {
-					if (!child.tagName) {
-						// text node
-						return;
-					}
-
-					if (/^[uod]l$/i.test(child.tagName)) {
-						// Flatten lists to plain text
-						var flattenedList = this._flattenList(doc, child);
-						element.replaceChild(flattenedList, child);
-					} else {
-						this._processHtml(doc, child);
-					}
-				}.bind(this));
-			},
-
 			_getDescriptionHtml: function(entity) {
 				if (!this._fromTrustedSource(entity) || !entity.properties.description) {
 					return '';
 				}
 
 				var parsedHtml = new DOMParser().parseFromString(entity.properties.description, 'text/html');
+				var listElements = parsedHtml.body.querySelectorAll('ul, ol, dl');
 
-				this._processHtml(parsedHtml, parsedHtml.body);
+				for (var i = 0; i < listElements.length; i++) {
+					var list = listElements[i];
+					list.parentElement.replaceChild(this._flattenList(parsedHtml, list), list);
+				}
+
 				return parsedHtml.body.innerHTML;
 			},
 

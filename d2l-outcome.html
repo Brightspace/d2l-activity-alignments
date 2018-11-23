@@ -2,6 +2,7 @@
 <link rel="import" href="../d2l-loading-spinner/d2l-loading-spinner.html">
 <link rel="import" href="../d2l-polymer-siren-behaviors/siren-entity-loading.html">
 <link rel="import" href="../d2l-typography/d2l-typography-shared-styles.html">
+<link rel="import" href="../s-html/s-html.html">
 
 <!--
 `d2l-select-outcomes`
@@ -46,7 +47,10 @@
 				<template is="dom-if" if="[[_hasOutcomeIdentifier(entity)]]">
 					<div class="d2l-outcome-identifier">[[_getOutcomeIdentifier(entity)]]</div>
 				</template>
-				<div class="d2l-outcome-text">[[entity.properties.description]]</div>
+				<div class="d2l-outcome-text">
+					<s-html hidden="[[!_fromTrustedSource(entity)]]" html="[[_getDescriptionHtml(entity)]]"></s-html>
+					<span hidden="[[_fromTrustedSource(entity)]]">[[entity.properties.description]]</span>
+				</div>
 			</div>
 
 			<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
@@ -64,6 +68,44 @@
 
 			_hasOutcomeIdentifier: function(entity) {
 				return !!this._getOutcomeIdentifier(entity);
+			},
+
+			_fromTrustedSource: function(entity) {
+				return entity && entity.properties.source === 'asn';
+			},
+
+			_flattenList: function(innerHtml) {
+				var listItems = innerHtml.split(/<\s*li(?:\s+[^>]*)?>/i);
+				listItems.shift();
+				return listItems.map(function(listEntry) {
+					// remove closing tag if present
+					return listEntry.replace(/<\/\s*li(?:\s+[^>]*)?>/i, '');
+				}).join(', ');
+			},
+
+			_getDescriptionHtml: function(entity) {
+				if (!this._fromTrustedSource(entity)) {
+					return '';
+				}
+
+				// Handle ASN outcomes containing lists
+				var description = entity.properties.description || '';
+				var descriptionParts = description.split(/<\s*[uod]l(?:\s+[^>]*)?>/i);
+
+				var html = descriptionParts.shift();
+				html += descriptionParts.map(function(part) {
+					var listEndMatch = part.match(/<\/\s*[uod]l(?:\s+[^>]*)?>/i);
+					if (!listEndMatch) {
+						return this._flattenList(part);
+					}
+
+					var flattenedList = this._flattenList(part.substring(0, listEndMatch.index));
+					var suffix = part.substring(listEndMatch.index + listEndMatch[0].length);
+
+					return flattenedList + suffix;
+				}.bind(this)).join('');
+
+				return html;
 			},
 
 			_getOutcomeIdentifier: function(entity) {

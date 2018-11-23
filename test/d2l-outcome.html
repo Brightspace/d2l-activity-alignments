@@ -21,6 +21,39 @@
 
     <script>
 		/* global suite, test, assert, fixture, setup, stubWhitelist */
+		var runTest = function(testName, href, testFunction) {
+			var element;
+			setup(function(done) {
+				element = fixture('basic');
+				function waitForLoad(entity, error) {
+					window.D2L.Siren.EntityStore.removeListener(
+						href,
+						'',
+						waitForLoad
+					);
+					if (error) {
+						done(error);
+						return;
+					}
+					setTimeout(function() {
+						done();
+					});
+				}
+				stubWhitelist();
+				window.D2L.Siren.EntityStore.addListener(
+					href,
+					'',
+					waitForLoad
+				);
+				element.href = href;
+				element.token = '';
+			});
+
+			test(testName, function(){
+				testFunction(element);
+			});
+		};
+
 		suite('d2l-outcome', function() {
 			test('instantiating the element works', function() {
 				var element = fixture('basic');
@@ -28,38 +61,47 @@
 			});
 
 			suite('smoke test', function() {
-				var element;
-				setup(function(done) {
-					element = fixture('basic');
-					var href = 'static-data/outcomes/c297b02c-19b1-485a-92db-e598316271c8/5f4d6901-7c10-4edc-b2e1-821efc5c3708.json';
-					function waitForLoad(entity, error) {
-						window.D2L.Siren.EntityStore.removeListener(
-							href,
-							'',
-							waitForLoad
-						);
-						if (error) {
-							done(error);
-							return;
-						}
-						setTimeout(function() {
-							done();
-						});
+				runTest(
+					'renders outcome',
+					'static-data/outcomes/c297b02c-19b1-485a-92db-e598316271c8/5f4d6901-7c10-4edc-b2e1-821efc5c3708.json',
+					function(element) {
+						var content = Polymer.dom(element.$$('siren-entity-loading')).textContent.trim();
+						assert.equal(content, 'Interpret words and phrases as they are used in a text, including determining technical, connotative, and figurative meanings, and analyze how specific word choices shape meaning or tone.');
 					}
-					stubWhitelist();
-					window.D2L.Siren.EntityStore.addListener(
-						href,
-						'',
-						waitForLoad
-					);
-					element.href = href;
-					element.token = '';
-				});
+				);
+			});
 
-				test('renders outcome', function() {
-					var content = Polymer.dom(element.$$('siren-entity-loading')).textContent.trim();
-					assert.equal(content, 'Interpret words and phrases as they are used in a text, including determining technical, connotative, and figurative meanings, and analyze how specific word choices shape meaning or tone.');
-				});
+			suite('asn basic list', function() {
+				runTest(
+					'flattens a single list in ASN outcomes',
+					'static-data/outcomes/asn-outcome-with-list.json',
+					function(element) {
+						var content = element.$$('.d2l-outcome-text s-html').html;
+						assert.equal('Prefix One, Two, Three Suffix', content);
+					}
+				);
+			});
+			
+			suite('asn multiple lists', function() {
+				runTest(
+					'flattens multiple lists in ASN outcomes',
+					'static-data/outcomes/asn-outcome-with-two-lists.json',
+					function(element) {
+						var content = element.$$('.d2l-outcome-text s-html').html;
+						assert.equal('A 1, 2, 3 B i, ii, iii C', content);
+					}
+				);
+			});
+			
+			suite('asn malformed list', function() {
+				runTest(
+					'flattens lists in ASN outcomes that are missing closing tags',
+					'static-data/outcomes/asn-outcome-with-malformed-list.json',
+					function(element) {
+						var content = element.$$('.d2l-outcome-text s-html').html;
+						assert.equal('Prefix One, Two, Three', content);
+					}
+				);
 			});
 		});
     </script>

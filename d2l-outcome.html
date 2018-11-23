@@ -129,7 +129,6 @@
 				}
 
 				var parsedHtml = new DOMParser().parseFromString(entity.properties.description, 'text/html');
-				//TODO: handle parse error
 
 				this._processHtml(parsedHtml, parsedHtml.body);
 				return parsedHtml.body.innerHTML;

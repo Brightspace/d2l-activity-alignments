@@ -77,7 +77,7 @@
 					'static-data/outcomes/asn-outcome-with-list.json',
 					function(element) {
 						var content = element.$$('.d2l-outcome-text s-html').html;
-						assert.equal('Prefix One, Two, Three Suffix', content);
+						assert.equal('Prefix <span> One, Two, Three </span> Suffix', content);
 					}
 				);
 			});
@@ -88,7 +88,7 @@
 					'static-data/outcomes/asn-outcome-with-two-lists.json',
 					function(element) {
 						var content = element.$$('.d2l-outcome-text s-html').html;
-						assert.equal('A 1, 2, 3 B i, ii, iii C', content);
+						assert.equal('A <span> 1, 2, 3 </span> B <span> i, ii, iii </span> C', content);
 					}
 				);
 			});
@@ -99,7 +99,7 @@
 					'static-data/outcomes/asn-outcome-with-malformed-list.json',
 					function(element) {
 						var content = element.$$('.d2l-outcome-text s-html').html;
-						assert.equal('Prefix One, Two, Three', content);
+						assert.equal('Prefix <span> One, Two, Three </span>', content);
 					}
 				);
 			});

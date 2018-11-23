@@ -74,38 +74,65 @@
 				return entity && entity.properties.source === 'asn';
 			},
 
-			_flattenList: function(innerHtml) {
-				var listItems = innerHtml.split(/<\s*li(?:\s+[^>]*)?>/i);
-				listItems.shift();
-				return listItems.map(function(listEntry) {
-					// remove closing tag if present
-					return listEntry.replace(/<\/\s*li(?:\s+[^>]*)?>/i, '');
-				}).join(', ');
+			_flattenList: function(doc, listElement) {
+				var flattenedList = doc.createElement('span');
+				flattenedList.appendChild(doc.createTextNode(' '));
+				for (var i = 0; i < listElement.childNodes.length; i++) {
+					var child = listElement.childNodes[i];
+					if (!child.tagName || child.tagName.toLowerCase() !== 'li') {
+						continue;
+					}
+
+					if (child.textContent === child.innerHTML) {
+						flattenedList.appendChild(doc.createTextNode(child.textContent));
+					} else {
+						this._processHtml(doc, child);
+						var itemSpan = doc.createElement('span');
+						itemSpan.innerHTML = child.innerHTML;
+						flattenedList.appendChild(itemSpan);
+					}
+
+					flattenedList.appendChild(doc.createTextNode(', '));
+				}
+
+				flattenedList.replaceChild(doc.createTextNode(' '), flattenedList.lastChild);
+				flattenedList.normalize();
+				return flattenedList;
+			},
+
+			_processHtml: function(doc, element) {
+				// Copy the children to an array first so that the list isn't mutated while being iterated upon
+				var children = [];
+				for (var i = 0; i < element.childNodes.length; i++) {
+					children.push(element.childNodes[i]);
+				}
+
+				children.forEach(function(child) {
+					if (!child.tagName) {
+						// text node
+						return;
+					}
+
+					if (/^[uod]l$/i.test(child.tagName)) {
+						// Flatten lists to plain text
+						var flattenedList = this._flattenList(doc, child);
+						element.replaceChild(flattenedList, child);
+					} else {
+						this._processHtml(doc, child);
+					}
+				}.bind(this));
 			},
 
 			_getDescriptionHtml: function(entity) {
-				if (!this._fromTrustedSource(entity)) {
+				if (!this._fromTrustedSource(entity) || !entity.properties.description) {
 					return '';
 				}
 
-				// Handle ASN outcomes containing lists
-				var description = entity.properties.description || '';
-				var descriptionParts = description.split(/<\s*[uod]l(?:\s+[^>]*)?>/i);
+				var parsedHtml = new DOMParser().parseFromString(entity.properties.description, 'text/html');
+				//TODO: handle parse error
 
-				var html = descriptionParts.shift();
-				html += descriptionParts.map(function(part) {
-					var listEndMatch = part.match(/<\/\s*[uod]l(?:\s+[^>]*)?>/i);
-					if (!listEndMatch) {
-						return this._flattenList(part);
-					}
-
-					var flattenedList = this._flattenList(part.substring(0, listEndMatch.index));
-					var suffix = part.substring(listEndMatch.index + listEndMatch[0].length);
-
-					return flattenedList + suffix;
-				}.bind(this)).join('');
-
-				return html;
+				this._processHtml(parsedHtml, parsedHtml.body);
+				return parsedHtml.body.innerHTML;
 			},
 
 			_getOutcomeIdentifier: function(entity) {

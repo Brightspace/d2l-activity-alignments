@@ -2,7 +2,7 @@
 	"class": ["outcome"],
 	"properties": {
 		"notation": "",
-		"description": "Prefix <ul><li>One</li><li style=\"color: red;\">Two</li>< li >Three</ li ></ul> Suffix",
+		"description": "Prefix <ul><li>One</li><li style=\"color: red;\">Two</li><li >Three</li ></ul> Suffix",
 		"source": "asn"
 	},
 	"links": [

@@ -1,0 +1,18 @@
+{
+	"class": ["outcome"],
+	"properties": {
+		"notation": "notation",
+		"description": "Outcome description",
+		"source": "lores"
+	},
+	"links": [
+		{
+			"rel": ["about"],
+			"type": "text/html",
+			"href": "http://www.example.com"
+		}, {
+			"rel": ["self"],
+			"href": "static-data/outcomes/outcome-with-notation-only.json"
+		}
+	]
+}

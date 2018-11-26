@@ -103,6 +103,51 @@
 					}
 				);
 			});
+			
+			suite('outcome with notation and label', function() {
+				runTest(
+					'shows the outcome notation, primary subject, label, and listId',
+					'static-data/outcomes/outcome-with-notation-and-subject.json',
+					function(element) {
+						var content = element.$$('.d2l-outcome-identifier').textContent;
+						assert.equal('notation - subject label listId', content);
+					}
+				);
+			});
+			
+			suite('outcome with altNotation but no notation', function() {
+				runTest(
+					'use altNotation if notation is null, empty, or only whitespace',
+					'static-data/outcomes/outcome-with-alt-notation-but-no-notation.json',
+					function(element) {
+						var content = element.$$('.d2l-outcome-identifier').textContent;
+						assert.equal('altNotation - subject', content);
+					}
+				);
+			});
+			
+			suite('outcome with notation only', function() {
+				runTest(
+					'correctly render outcome identifier for outcomes with a notation, but no subject, label, or listId',
+					'static-data/outcomes/outcome-with-notation-only.json',
+					function(element) {
+						var content = element.$$('.d2l-outcome-identifier').textContent;
+						assert.equal('notation', content);
+					}
+				);
+			});
+			
+			suite('outcome without notation', function() {
+				runTest(
+					'correctly render outcome identifier for outcomes with a subject, label, or listId, but no notation',
+					'static-data/outcomes/outcome-with-no-notation.json',
+					function(element) {
+						var content = element.$$('.d2l-outcome-identifier').textContent;
+						assert.equal('subject label', content);
+					}
+				);
+			});
+			
 		});
     </script>
   </body>

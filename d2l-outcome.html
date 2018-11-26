@@ -135,8 +135,8 @@
 
 				var outcomeInfo = [
 					primarySubject,
-					properties.label,
-					properties.listId
+					properties.label && properties.label.trim(),
+					properties.listId && properties.listId.trim()
 				].filter(function(id) { return id; }).join(' ');
 
 				if (outcomeInfo) {

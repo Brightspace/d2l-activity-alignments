@@ -121,25 +121,29 @@
 
 				var properties = entity.properties;
 
-				var subject;
-				if (properties.subjects) {
-					if (properties.subjects.length > 0) {
-						subject = properties.subjects[0];
+				var notation = (properties.notation && properties.notation.trim()) || (properties.altNotation && properties.altNotation.trim());
+				var primarySubject = null;
+
+				if (properties.subjects && properties.subjects.length) {
+					for (var i = 0; i < properties.subjects.length; i++) {
+						if (properties.subjects[i] && properties.subjects[i].trim()) {
+							primarySubject = properties.subjects[i];
+							break;
+						}
 					}
 				}
 
-				return [
-					subject,
+				var outcomeInfo = [
+					primarySubject,
 					properties.label,
 					properties.listId
-				]
-					.map(function(piece) {
-						return piece && piece.trim();
-					})
-					.filter(function(piece) {
-						return piece;
-					})
-					.join(' ');
+				].filter(function(id) { return id; }).join(' ');
+
+				if (outcomeInfo) {
+					return notation ? (notation + ' - ' + outcomeInfo) : outcomeInfo;
+				}
+
+				return notation || '';
 			}
 		});
 	</script>

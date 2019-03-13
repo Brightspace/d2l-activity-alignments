@@ -20,12 +20,13 @@ import 'd2l-outcomes-level-of-achievements/d2l-outcomes-level-of-achievements.js
 import './d2l-alignment-intent.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-alignment">
 	<template strip-whitespace="">
 		<style>
-			div.outer-container {
+			div#outer {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
@@ -54,39 +55,35 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-alignment">
 				flex: 1;
 			}
 
-			@media screen and (min-width: 616px) {
-				div.alignment-container {
-					padding-right: 15px;
-				}
-
-				:host-context([dir="rtl"]) div.alignment-container {
-					padding-right: 0px;
-					padding-left: 15px;
-				}
-
-				d2l-outcomes-level-of-achievements {
-					padding-left: 15px;
-				}
-
-				:host-context([dir="rtl"]) d2l-outcomes-level-of-achievements {
-					padding-left: 0px;
-					padding-right: 15px;
-				}
+			div#outer.side-by-side div.alignment-container {
+				padding-right: 15px;
 			}
 
-			@media screen and (max-width: 615px) {
-				div.outer-container {
-					flex-direction: column;
-					align-items: stretch;
-				}
+			:host-context([dir="rtl"]) div#outer.side-by-side div.alignment-container {
+				padding-right: 0px;
+				padding-left: 15px;
+			}
 
-				d2l-outcomes-level-of-achievements {
-					margin-top: 0.6rem;
-				}
+			div#outer.side-by-side d2l-outcomes-level-of-achievements {
+				padding-left: 15px;
+			}
+
+			:host-context([dir="rtl"]) div#outer.side-by-side d2l-outcomes-level-of-achievements {
+				padding-left: 0px;
+				padding-right: 15px;
+			}
+
+			div#outer.stack {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			div#outer.stack d2l-outcomes-level-of-achievements {
+				margin-top: 0.6rem;
 			}
 		</style>
 
-		<div class="outer-container">
+		<div id="outer">
 			<div class="alignment-container">
 				<d2l-alignment-intent href="[[_getIntent(entity)]]" token="[[token]]"></d2l-alignment-intent>
 				<template is="dom-if" if="[[_isRemovable(entity, readOnly)]]">
@@ -116,6 +113,18 @@ Polymer({
 		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
 		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
 	],
+
+	ready: function() {
+		afterNextRender(this, /* @this */ function() {
+			this._stack = this._stack.bind(this);
+			window.addEventListener('resize', this._stack);
+			this._stack();
+		});
+	},
+
+	detached: function() {
+		window.removeEventListener('resize', this._stack);
+	},
 
 	_getIntent: function(entity) {
 		return entity && entity.hasLinkByRel(Rels.Outcomes.intent) && entity.getLinkByRel(Rels.Outcomes.intent).href;
@@ -167,6 +176,18 @@ Polymer({
 					}
 				}.bind(this));
 		}
+	},
+
+	_stack: function() {
+		fastdom.measure(function() {
+			if (this.offsetWidth > 615) {
+				this.$.outer.classList.add('side-by-side');
+				this.$.outer.classList.remove('stack');
+			} else {
+				this.$.outer.classList.add('stack');
+				this.$.outer.classList.remove('side-by-side');
+			}
+		}.bind(this));
 	}
 
 });

@@ -10,11 +10,7 @@
 
 	<script type="module" src="../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
 	<script type="module" src="../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
-	<script type="module" src="../../d2l-fetch-siren-entity-behavior/d2l-fetch-siren-entity-behavior.js"></script>
-	<script type="module" src="./request-mock.js"></script>
-	<script type="module" src="../../d2l-typography/d2l-typography.js"></script>
-	<script type="module" src="../d2l-select-outcomes.js"></script>
-	<script type="module" src="../d2l-activity-alignment-tags.js"></script>
+	<script type="module" src="../d2l-activity-alignments.js"></script>
   </head>
   <body class="d2l-typography">
 	<!-- FIXME(polymer-modulizer):
@@ -42,21 +38,7 @@ $_documentContainer.innerHTML = `<div class="vertical-section-container centered
 	  <h3>Basic d2l-select-outcomes demo</h3>
 	  <demo-snippet>
 		<template>
-		  <d2l-select-outcomes href="https://15215d45-f7e9-4967-bf9b-13a685538829.activities.api.proddev.d2l/activities/6606_3000_1/usages/6609" token="1234a"></d2l-select-outcomes>
-		</template>
-	  </demo-snippet>
-
-	  <h3>Basic d2l-outcome demo</h3>
-	  <demo-snippet>
-		<template>
-		  <d2l-outcome href="https://15215d45-f7e9-4967-bf9b-13a685538829.outcomes.api.proddev.d2l/outcomes/d31d0671-bdad-4f08-9da9-65351e3b250a" token="1234a"></d2l-outcome>
-		</template>
-	  </demo-snippet>
-	  
-	  <h3>Tag View (Read Only)</h3>
-	  <demo-snippet>
-		<template>
-		  <d2l-activity-alignment-tags href="https://15215d45-f7e9-4967-bf9b-13a685538829.activities.api.proddev.d2l/activities/6606_3000_1/usages/6609" token="1234a" read-only></d2l-activity-alignment-tags>
+			<d2l-activity-alignments href="https://f363b5a3-8be6-48b6-9ce1-ba4c79d8214c.activities.api.proddev.d2l/activities/6606_3000_10004/usages/6609/users/10447" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjhlNGE0NThiLWJmYmEtNDYyYS1hNzNjLWI1M2Q4NmJkY2FlMSJ9.eyJzdWIiOiIxNjkiLCJ0ZW5hbnRpZCI6ImYzNjNiNWEzLThiZTYtNDhiNi05Y2UxLWJhNGM3OWQ4MjE0YyIsInNjb3BlIjoiKjoqOioiLCJqdGkiOiI2YThlYTFhZi02YTUyLTRhYTAtYTcxYS1hNDBmMTk1NmRlYzEiLCJpc3MiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aCIsImF1ZCI6Imh0dHBzOi8vYXBpLmJyaWdodHNwYWNlLmNvbS9hdXRoL3Rva2VuIiwiZXhwIjoxNTUyNTAzNzE4LCJuYmYiOjE1NTI1MDAxMTh9.gb0ZP0qqObzavIXn0TXikpE6HvJoX7aGtfoS_8YAIdHHIzEjEps4B4vQWEbkl2pPwhd9ChqHGyA6yeNOCncvSJuK11RswTsbd2BGwaZzzBOT-QFsSf09HBUNQIP82EIzmQM6ZWD3ifdSeRewIGr0du9FU7aF48ODx5E4S1YccCv37m-w0UYsrLscqN-NgFLuWSii7FWJ91Sae_7vp4YMCHief6MH4QjF5viGeSAVNo4YzfGcdF6U5D8goEs_w-kFPhRHMDpfTWQjUex_eBa1kGmVh-K7cKfZb4968tQdORm-hVtAloZjEUbaLe0cyejH39OPkpaA9wDGVa8-qZI9JQ"></d2l-activity-alignments>
 		</template>
 	  </demo-snippet>
 	</div>`;

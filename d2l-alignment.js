@@ -105,7 +105,8 @@ Polymer({
 	is: 'd2l-alignment',
 
 	properties: {
-		readOnly: Boolean
+		readOnly: Boolean,
+		_stackWidth: 630
 	},
 
 	behaviors: [
@@ -180,7 +181,7 @@ Polymer({
 
 	_stack: function() {
 		fastdom.measure(function() {
-			if (this.offsetWidth > 615) {
+			if (this.offsetWidth > this._stackWidth) {
 				this.$.outer.classList.add('side-by-side');
 				this.$.outer.classList.remove('stack');
 			} else {

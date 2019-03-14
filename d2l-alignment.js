@@ -180,7 +180,7 @@ Polymer({
 	},
 
 	_stack: function() {
-		fastdom.measure(function() {
+		fastdom.mutate(function() {
 			if (this.offsetWidth > this._stackWidth) {
 				this.$.outer.classList.add('side-by-side');
 				this.$.outer.classList.remove('stack');

@@ -179,14 +179,17 @@ Polymer({
 	},
 
 	_stack: function() {
-		fastdom.mutate(function() {
-			if (this.offsetWidth > 630) {
-				this.$.outer.classList.add('side-by-side');
-				this.$.outer.classList.remove('stack');
-			} else {
-				this.$.outer.classList.add('stack');
-				this.$.outer.classList.remove('side-by-side');
-			}
+		fastdom.measure(function() {
+			var width = this.offsetWidth;
+			fastdom.mutate(function() {
+				if (width > 630) {
+					this.$.outer.classList.add('side-by-side');
+					this.$.outer.classList.remove('stack');
+				} else {
+					this.$.outer.classList.add('stack');
+					this.$.outer.classList.remove('side-by-side');
+				}
+			}.bind(this));
 		}.bind(this));
 	}
 

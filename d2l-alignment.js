@@ -17,10 +17,10 @@ import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import { Actions, Rels } from 'd2l-hypermedia-constants';
 import 'd2l-outcomes-level-of-achievements/d2l-outcomes-level-of-achievements.js';
+import 'd2l-resize-aware/d2l-resize-aware.js';
 import './d2l-alignment-intent.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-alignment">
@@ -82,18 +82,19 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-alignment">
 				margin-top: 0.6rem;
 			}
 		</style>
-
-		<div id="outer">
-			<div class="alignment-container">
-				<d2l-alignment-intent href="[[_getIntent(entity)]]" token="[[token]]"></d2l-alignment-intent>
-				<template is="dom-if" if="[[_isRemovable(entity, readOnly)]]">
-					<d2l-button-icon icon="d2l-tier1:close-default" text="[[localize('removeAlignment')]]" on-click="_remove"></d2l-button-icon>
+		<d2l-resize-aware id="resize">
+			<div id="outer">
+				<div class="alignment-container">
+					<d2l-alignment-intent href="[[_getIntent(entity)]]" token="[[token]]"></d2l-alignment-intent>
+					<template is="dom-if" if="[[_isRemovable(entity, readOnly)]]">
+						<d2l-button-icon icon="d2l-tier1:close-default" text="[[localize('removeAlignment')]]" on-click="_remove"></d2l-button-icon>
+					</template>
+				</div>
+				<template is="dom-if" if="[[_hasDemonstrations(entity)]]">
+					<d2l-outcomes-level-of-achievements token="[[token]]" href="[[_getDemonstrations(entity)]]" read-only$="[[readOnly]]"></d2l-outcomes-level-of-achievements>
 				</template>
 			</div>
-			<template is="dom-if" if="[[_hasDemonstrations(entity)]]">
-				<d2l-outcomes-level-of-achievements token="[[token]]" href="[[_getDemonstrations(entity)]]" read-only$="[[readOnly]]"></d2l-outcomes-level-of-achievements>
-			</template>
-		</div>
+		</d2l-resize-aware>
 	</template>
 
 
@@ -115,15 +116,15 @@ Polymer({
 	],
 
 	ready: function() {
-		afterNextRender(this, /* @this */ function() {
-			this._stack = this._stack.bind(this);
-			window.addEventListener('resize', this._stack);
-			this._stack();
-		});
+		this._stack = this._stack.bind(this);
+	},
+
+	attached: function() {
+		this.$.resize.addEventListener('d2l-resize-aware-resized', this._stack());
 	},
 
 	detached: function() {
-		window.removeEventListener('resize', this._stack);
+		this.$.resize.removeEventListener('d2l-resize-aware-resized', this._stack());
 	},
 
 	_getIntent: function(entity) {
@@ -178,19 +179,15 @@ Polymer({
 		}
 	},
 
-	_stack: function() {
-		fastdom.measure(function() {
-			var width = this.offsetWidth;
-			fastdom.mutate(function() {
-				if (width > 630) {
-					this.$.outer.classList.add('side-by-side');
-					this.$.outer.classList.remove('stack');
-				} else {
-					this.$.outer.classList.add('stack');
-					this.$.outer.classList.remove('side-by-side');
-				}
-			}.bind(this));
-		}.bind(this));
+	_stack: function(e) {
+		var width = (((e || {}).detail || {}).current || {}).width;
+		if (width > 630) {
+			this.$.outer.classList.add('side-by-side');
+			this.$.outer.classList.remove('stack');
+		} else {
+			this.$.outer.classList.add('stack');
+			this.$.outer.classList.remove('side-by-side');
+		}
 	}
 
 });

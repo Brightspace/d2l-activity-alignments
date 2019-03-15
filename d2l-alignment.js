@@ -119,14 +119,6 @@ Polymer({
 		this._stack = this._stack.bind(this);
 	},
 
-	attached: function() {
-		this.$.resize.addEventListener('d2l-resize-aware-resized', this._stack());
-	},
-
-	detached: function() {
-		this.$.resize.removeEventListener('d2l-resize-aware-resized', this._stack());
-	},
-
 	_getIntent: function(entity) {
 		return entity && entity.hasLinkByRel(Rels.Outcomes.intent) && entity.getLinkByRel(Rels.Outcomes.intent).href;
 	},

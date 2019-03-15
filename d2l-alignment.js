@@ -82,7 +82,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-alignment">
 				margin-top: 0.6rem;
 			}
 		</style>
-		<d2l-resize-aware id="resize">
+		<d2l-resize-aware on-d2l-resize-aware-resized="_stack">
 			<div id="outer">
 				<div class="alignment-container">
 					<d2l-alignment-intent href="[[_getIntent(entity)]]" token="[[token]]"></d2l-alignment-intent>
@@ -180,7 +180,7 @@ Polymer({
 	},
 
 	_stack: function(e) {
-		var width = (((e || {}).detail || {}).current || {}).width;
+		var width = e.detail.current.width;
 		if (width > 630) {
 			this.$.outer.classList.add('side-by-side');
 			this.$.outer.classList.remove('stack');

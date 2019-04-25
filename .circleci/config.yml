@@ -12,7 +12,7 @@ jobs:
           key: v1-package-{{ checksum "package.json" }}
 
       - run: npm install
-      - run: npm testcafe:chrome
+      - run: npm test
 
       - save_cache:
           paths:

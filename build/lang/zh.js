@@ -10,14 +10,14 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhBehavior = {
 	zh: {
-		'add': 'Add',
-		'addLabel': 'Add selection',
-		'cancel': 'Cancel',
-		'cancelLabel': 'Cancel selection',
-		'error': 'An error has occured',
-		'removeAlignment': 'Remove alignment',
-		'alignmentRemoved': 'Alignment removed',
-		'directAlignments': '{header-title} Aligned Directly to This Activity',
-		'indirectAlignments': '{header-title} Aligned to Rubric Criteria'
-	}
+          'add': '添加',
+          'addLabel': 'Add selection',
+          'alignmentRemoved': 'Alignment removed',
+          'cancel': '取消',
+          'cancelLabel': 'Cancel selection',
+          'directAlignments': '{header-title} Aligned Directly to This Activity',
+          'error': '已经出现错误。',
+          'indirectAlignments': '{header-title} Aligned to Rubric Criteria',
+          'removeAlignment': 'Remove alignment'
+}	
 };

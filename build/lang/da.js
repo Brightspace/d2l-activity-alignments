@@ -9,15 +9,15 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
 * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDaBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDaBehavior = {
-	daDk: {
-		'add': 'Add',
-		'addLabel': 'Add selection',
-		'cancel': 'Cancel',
-		'cancelLabel': 'Cancel selection',
-		'error': 'An error has occured',
-		'removeAlignment': 'Remove alignment',
-		'alignmentRemoved': 'Alignment removed',
-		'directAlignments': '{header-title} Aligned Directly to This Activity',
-		'indirectAlignments': '{header-title} Aligned to Rubric Criteria'
-	}
+	da: {
+          'add': 'Tilføj',
+          'addLabel': 'Tilføj valg',
+          'alignmentRemoved': 'Justering fjernet',
+          'cancel': 'Annuller',
+          'cancelLabel': 'Annuller valg',
+          'directAlignments': '{header-title} justeret direkte til denne aktivitet',
+          'error': 'Der opstod en fejl',
+          'indirectAlignments': '{header-title} justeret til rubrikkriterier',
+          'removeAlignment': 'Fjern justering'
+}	
 };

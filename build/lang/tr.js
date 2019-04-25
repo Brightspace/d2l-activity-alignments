@@ -10,14 +10,14 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangTrBehavior = {
 	tr: {
-		'add': 'Add',
-		'addLabel': 'Add selection',
-		'cancel': 'Cancel',
-		'cancelLabel': 'Cancel selection',
-		'error': 'An error has occured',
-		'removeAlignment': 'Remove alignment',
-		'alignmentRemoved': 'Alignment removed',
-		'directAlignments': '{header-title} Aligned Directly to This Activity',
-		'indirectAlignments': '{header-title} Aligned to Rubric Criteria'
-	}
+          'add': 'Ekle',
+          'addLabel': 'Seçimi ekle',
+          'alignmentRemoved': 'Hizalama kaldırıldı',
+          'cancel': 'İptal',
+          'cancelLabel': 'Seçimi iptal et',
+          'directAlignments': '{header-title} Doğrudan Bu Etkinliğe Hizalandı',
+          'error': 'Bir hata oluştu',
+          'indirectAlignments': '{header-title} Rubrik Kriterlerine Hizalandı',
+          'removeAlignment': 'Hizalamayı kaldır'
+}	
 };

@@ -10,14 +10,14 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangJaBehavior = {
 	ja: {
-		'add': 'Add',
-		'addLabel': 'Add selection',
-		'cancel': 'Cancel',
-		'cancelLabel': 'Cancel selection',
-		'error': 'An error has occured',
-		'removeAlignment': 'Remove alignment',
-		'alignmentRemoved': 'Alignment removed',
-		'directAlignments': '{header-title} Aligned Directly to This Activity',
-		'indirectAlignments': '{header-title} Aligned to Rubric Criteria'
-	}
+          'add': '追加',
+          'addLabel': '選択の追加',
+          'alignmentRemoved': '整合性が削除されました',
+          'cancel': 'キャンセル',
+          'cancelLabel': '選択のキャンセル',
+          'directAlignments': '{header-title} このアクティビティに直接整合されました',
+          'error': 'エラーが発生しました',
+          'indirectAlignments': '{header-title} 注釈条件に整合されました',
+          'removeAlignment': '整合性を削除'
+}	
 };

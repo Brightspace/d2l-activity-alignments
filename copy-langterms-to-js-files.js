@@ -22,7 +22,7 @@ var langMap = {
 	'zh-tw': 'ZhTw'
 };
 
-// loop through all json files
+// loop through all js files
 buildFiles.forEach(function(filename, index) {
 	// get lang name from file
 	this[index] = filename.substring(0, filename.length-3)

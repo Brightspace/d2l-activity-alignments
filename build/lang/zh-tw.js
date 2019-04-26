@@ -9,7 +9,7 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
 * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhTwBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhTwBehavior = {
-	zhtw: {
+	zhTw: {
 		'add': '新增',
 		'addLabel': '新增選擇項目',
 		'alignmentRemoved': '校準已移除',

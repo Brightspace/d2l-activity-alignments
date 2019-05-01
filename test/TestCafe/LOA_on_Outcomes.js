@@ -15,6 +15,25 @@ const instructorUser = Role(baseUrl + '/d2l/login', async t => {
 		.click(login.loginButton);
 });
 
+// const getLatestSiteUrl = ClientFunction(() => {
+// 	links = document.querySelectorAll('a');
+
+//     for (i = 0; i < links.length; i++) {
+//         if (links[i].text.includes('(Green)')) {
+//             return links[i].href
+//         }
+//     }
+// });
+
+// fixture `setup`;
+
+// test ('get latest qa site', async t => {
+// 	await t
+// 		.navigateTo('https://quad.build.d2l/QASites');
+// 	const latestLink = getLatestSiteUrl();
+// 	await t
+// 		.expect(latestLink).eql('qa')
+// });
 // const d2lsupportUser = Role(baseUrl + '/d2l/login', async t => {
 // 	await t
 // 		.typeText(login.userName, 'd2lsupport')
@@ -22,61 +41,101 @@ const instructorUser = Role(baseUrl + '/d2l/login', async t => {
 // 		.click(login.loginButton);
 // });
 
-const mouseupOnDropdown = ClientFunction(() => {
-	var event;
-	event = document.createEvent('MouseEvents');
-	event.initMouseEvent('mouseup',true,true,window);
-	var openDropdownButton;
-	openDropdownButton = document.querySelector('.d2l-datalist-item-content').querySelector('d2l-button-icon');
-	openDropdownButton.dispatchEvent(event);
-});
+// const mouseupOnDropdown = ClientFunction(() => {
+// 	var event;
+// 	event = document.createEvent('MouseEvents');
+// 	event.initMouseEvent('mouseup',true,true,window);
+// 	var openDropdownButton;
+// 	openDropdownButton = document.querySelector('.d2l-datalist-item-content').querySelector('d2l-button-icon');
+// 	openDropdownButton.dispatchEvent(event);
+// });
 
-const clickOnMenuItem = ClientFunction(() => {
-	var firstMenuItem =  document.querySelector('.d2l-datalist-item-content d2l-dropdown d2l-menu-item.d2l-menu-item-first');
-	firstMenuItem.click();
-});
-
-// const ClickOnFirstCheckboxAndAdd = ClientFunction(() => {
-// 	// var alignment = document.querySelector('d2l-select-outcomes').shadowRoot.activeElement
-// 	// alignment.shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.activeElement.click();
-// 	var alignment = document.querySelector('d2l-select-outcomes').shadowRoot.querySelector('d2l-alignment-update');
-// 	alignment.shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('label > input[type="checkbox"]').click();
-// 	var dialogButtons = alignment.shadowRoot.querySelectorAll('d2l-button');
-// 	var i;
-// 	for (i = 0; i < dialogButtons.length; i++) {
-// 		if (dialogButtons[i].hasAttribute('primary')) {
-// 			dialogButtons[i].click();
-// 		}
-// 	}
+// const clickOnMenuItem = ClientFunction(() => {
+// 	var firstMenuItem =  document.querySelector('.d2l-datalist-item-content d2l-dropdown d2l-menu-item.d2l-menu-item-first');
+// 	firstMenuItem.click();
 // });
 
 // const setToGotIt = ClientFunction(() => {
 // 	document.querySelector('d2l-activity-alignments').shadowRoot.querySelector('d2l-user-alignment-list').shadowRoot.querySelector('d2l-alignment').shadowRoot.querySelector('d2l-outcomes-level-of-achievements').shadowRoot.querySelector('d2l-squishy-button#item-1').click();
 // });
 
-/*eslint-disable */
-fixture `Getting Started`
-//     .page `https://qa108010459g.bspc.com/d2l/le/lessons/131621/units/114060`
-	// .beforeEach( async t => {
-	//     await waitForWebComponentsReady()
-	// });
-	// .beforeEach(async t => {
-	// 	await t.expect(Selector('input[type="text"]').exists).ok({ timeout: 10000 });
-	// });
-/*eslint-enable */
+// const hasDefaultScale = ClientFunction(() => {
+// 	var ulElement = document.querySelector('.d2l-datalist-container').children[2];
+// 	if (ulElement.nodeName === 'UL' && ulElement.classList.contains('d2l-hidden')) {
+// 		return false
+// 	}
+// 	return true
+// });
 
-test ('Add a Default Scale', async t => {
+// const conditionalTesting = (name, testToRun) => {
+// 	// name = `${name}`
+// 	test('navigate to page',async t => {
+// 		await t
+// 			.useRole(instructorUser)
+// 			.navigateTo(`${baseUrl}/d2l/le/6606/loa/create`);
+// 		const defaultScale = hasDefaultScale();
+// 	});
+	
+// 	if (defaultScale) {
+// 	  test(name, testToRun)
+// 	} else {
+// 	  test.skip(name, testToRun)
+// 	}
+//   }
+
+fixture `Select`;
+
+test ('test1', async t => {
 	await t
-		.useRole(instructorUser)
-		.navigateTo(`${baseUrl}/d2l/le/6606/loa/create`)
-		.click(Selector('button').withText('Save and Close'));
-	await mouseupOnDropdown();
-	await clickOnMenuItem();
+		.navigateTo('http://127.0.0.1:8081/components/d2l-activity-alignments/demo/')
+		.wait(3000);//because webcomponts don't do 'end events' correctly so we have to make sure it is loaded before we go looking for stuff in the shadowRoots
+	const checkBox = Selector(() => {
+		const alignment = document.querySelector('d2l-select-outcomes').shadowRoot.querySelector('d2l-alignment-update').shadowRoot
+		return alignment.querySelector('d2l-input-checkbox').shadowRoot.querySelector('label > input[type="checkbox"]');
+	});
+	const addButton = await Selector(() => {
+		const alignments = document.querySelector('d2l-select-outcomes').shadowRoot.querySelector('d2l-alignment-update').shadowRoot
+		return alignments.querySelector('d2l-button')
+	});
 	await t
-		.click(Selector('.d2l-button').withText('Set as default'));
-	await t
-		.expect(Selector('div.d2l-textblock.d2l-textblock-strong').textContent).eql('Default');
+		.click(checkBox)
+		.expect(addButton.hasAttribute('disabled')).notOk()
 });
+
+// fixture `Site Setup`;
+
+// conditionalTesting('Add a Default Scale if necessary',async t => {
+// 	await t
+// 		.useRole(instructorUser)
+// 		.navigateTo(`${baseUrl}/d2l/le/6606/loa/create`)
+// 		.click(Selector('button').withText('Save and Close'));
+// 	await mouseupOnDropdown();
+// 	await clickOnMenuItem();
+// 	await t
+// 		.click(Selector('.d2l-button').withText('Set as default'));
+// 	await t
+// 		.expect(Selector('div.d2l-textblock.d2l-textblock-strong').textContent).eql('Default');
+// });
+// test 
+// 	.before(async t =>{
+// 		await t
+// 			.useRole(instructorUser)
+// 			.navigateTo(`${baseUrl}/d2l/le/6606/loa/create`);
+// 	})
+// 	('Add a Default Scale if necessary', async t => {
+		
+// 	// if (isScaleCreated) {
+
+// 	// }
+// 		await t
+// 			.click(Selector('button').withText('Save and Close'));
+// 		await mouseupOnDropdown();
+// 		await clickOnMenuItem();
+// 		await t
+// 			.click(Selector('.d2l-button').withText('Set as default'));
+// 		await t
+// 			.expect(Selector('div.d2l-textblock.d2l-textblock-strong').textContent).eql('Default');
+// });
 
 // test ('Add an Intent List to the course', async t => {
 // 	await t

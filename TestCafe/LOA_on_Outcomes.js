@@ -31,7 +31,3 @@ test ('Add Button is Disabled After Canceling Selection', async t =>{
 		.click(cancelButton)
 		.expect(t.ctx.addButton.hasAttribute('disabled')).ok();
 });
-
-const scroll = ClientFunction(function() {
-    window.scrollBy(0,2000)
-});

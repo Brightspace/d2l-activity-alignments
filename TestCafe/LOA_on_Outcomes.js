@@ -1,5 +1,4 @@
 import { Selector } from 'testcafe';
-import { ClientFunction } from 'testcafe';
 
 fixture `Select`// eslint-disable-line no-undef
 	.page `http://127.0.0.1:8081/components/d2l-activity-alignments/demo/`

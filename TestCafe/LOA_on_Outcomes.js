@@ -1,8 +1,8 @@
 import { Selector } from 'testcafe';
 
-fixture `Select`;
+fixture `Select`;// eslint-disable-line no-undef
 
-test ('Add Button Available After Selecting First Outcome', async t => {
+test ('Add Button Available After Selecting First Outcome', async t => {// eslint-disable-line no-undef
 	await t
 		.navigateTo('http://127.0.0.1:8081/components/d2l-activity-alignments/demo/')
 		.wait(3000);//because webcomponts don't do 'end events' correctly so we have to make sure it is loaded before we go looking for stuff in the shadowRoots

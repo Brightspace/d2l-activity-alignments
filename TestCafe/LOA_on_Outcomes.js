@@ -20,7 +20,7 @@ test ('Add Button Is Not Disabled', async t => {// eslint-disable-line no-undef
 		.expect(t.ctx.addButton.hasAttribute('disabled')).notOk();
 });
 
-test ('Add Button is Disabled After Canceling Selection', async t =>{
+test ('Add Button is Disabled After Canceling Selection', async t =>{// eslint-disable-line no-undef
 	const cancelButton = Selector(() => {
 		const alignments = document.querySelector('d2l-select-outcomes').shadowRoot.querySelector('d2l-alignment-update').shadowRoot;
 		return alignments.querySelectorAll('d2l-button');

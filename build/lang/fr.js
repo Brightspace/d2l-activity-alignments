@@ -12,6 +12,7 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrBehavior = {
 	fr: {
 		'add': 'Inclure',
 		'addLabel': 'Inclure la sélection',
+		'browseOutcome': 'Browse Learning Outcomes',
 		'cancel': 'Annuler',
 		'cancelLabel': 'Annuler la sélection',
 		'error': 'Une erreur est survenue',

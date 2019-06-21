@@ -2,6 +2,7 @@
    "add" : "添加",
    "addLabel" : "Add selection",
    "alignmentRemoved" : "Alignment removed",
+   "browseOutcome": "Browse Learning Outcomes",
    "cancel" : "取消",
    "cancelLabel" : "Cancel selection",
    "directAlignments" : "{header-title} Aligned Directly to This Activity",

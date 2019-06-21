@@ -2,6 +2,7 @@
    "add" : "Lägg till",
    "addLabel" : "Lägg till markering",
    "alignmentRemoved" : "Justeringen har tagits bort",
+   "browseOutcome": "Browse Learning Outcomes",
    "cancel" : "Avbryt",
    "cancelLabel" : "Avbryt val",
    "directAlignments" : "{header-title} är direkt justerad efter den här aktiviteten",

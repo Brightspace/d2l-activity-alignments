@@ -8,6 +8,7 @@ import 'd2l-multi-select/d2l-multi-select-list-item.js';
 import 'd2l-multi-select/d2l-multi-select-list.js';
 import 'd2l-hypermedia-constants/d2l-hypermedia-constants.js';
 import 'd2l-button/d2l-button-icon.js';
+import 'd2l-tooltip/d2l-tooltip.js';
 import './localize-behavior.js';
 import './d2l-siren-map-helper.js';
 
@@ -63,7 +64,9 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 						text="[[localize('browseOutcome')]]"
 						style$="[[_iconStyle]]"
 						on-click="_updateAlignments"
+						id="browse-outcome-button"
 					></d2l-button-icon>
+					<d2l-tooltip for="browse-outcome-button" position="top">[[localize('browseOutcome')]]</d2l-tooltip>
 				</template>
 			</d2l-multi-select-list>
 			<div style="display: none;">

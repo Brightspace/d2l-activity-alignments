@@ -2,6 +2,7 @@
    "add" : "إضافة",
    "addLabel" : "إضافة تحديد",
    "alignmentRemoved" : "تمت إزالة المحاذاة",
+   "browseOutcome": "Browse Learning Outcomes",
    "cancel" : "إلغاء",
    "cancelLabel" : "إلغاء التحديد",
    "directAlignments" : "تمت محاذاة {header-title} مباشرة مع هذا النشاط",

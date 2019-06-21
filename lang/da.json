@@ -2,6 +2,7 @@
    "add" : "Tilføj",
    "addLabel" : "Tilføj valg",
    "alignmentRemoved" : "Justering fjernet",
+   "browseOutcome": "Browse Learning Outcomes",
    "cancel" : "Annuller",
    "cancelLabel" : "Annuller valg",
    "directAlignments" : "{header-title} justeret direkte til denne aktivitet",

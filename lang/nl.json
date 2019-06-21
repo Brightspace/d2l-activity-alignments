@@ -2,6 +2,7 @@
    "add" : "Toevoegen",
    "addLabel" : "Selectie toevoegen",
    "alignmentRemoved" : "Afstemming verwijderd",
+   "browseOutcome": "Browse Learning Outcomes",
    "cancel" : "Annuleren",
    "cancelLabel" : "Selectie annuleren",
    "directAlignments" : "{header-title} rechtstreeks afgestemd op deze activiteit",

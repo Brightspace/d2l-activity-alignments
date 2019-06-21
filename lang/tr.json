@@ -2,6 +2,7 @@
    "add" : "Ekle",
    "addLabel" : "Seçimi ekle",
    "alignmentRemoved" : "Hizalama kaldırıldı",
+   "browseOutcome": "Browse Learning Outcomes",
    "cancel" : "İptal",
    "cancelLabel" : "Seçimi iptal et",
    "directAlignments" : "{header-title} Doğrudan Bu Etkinliğe Hizalandı",

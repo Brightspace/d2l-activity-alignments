@@ -12,6 +12,7 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangJaBehavior = {
 	ja: {
 		'add': 'Add',
 		'addLabel': 'Add selection',
+		'browseOutcome': 'Browse Learning Outcomes',
 		'cancel': 'Cancel',
 		'cancelLabel': 'Cancel selection',
 		'error': 'An error has occured',

@@ -2,6 +2,7 @@
    "add" : "Ajouter",
    "addLabel" : "Ajouter la sélection",
    "alignmentRemoved" : "Alignement supprimé",
+   "browseOutcome": "Browse Learning Outcomes",
    "cancel" : "Annuler",
    "cancelLabel" : "Annuler la sélection",
    "directAlignments" : "{header-title} aligné directement avec cette activité",

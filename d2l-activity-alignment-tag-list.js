@@ -42,6 +42,11 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 				notify: true,
 				readOnly: true,
 				computed: '_isEmptyList(_alignmentHrefs, _alignmentMap, _intentMap, _outcomeMap)'
+			},
+			browseOutcomesText: {
+				type: String,
+				value: null,
+				reflectToAttribute: true
 			}
 		};
 	}
@@ -61,12 +66,12 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 				<template is="dom-if" if="[[_canUpdate(entity,readOnly)]]">
 					<d2l-button-icon
 						icon="d2l-tier1:add"
-						text="[[localize('browseOutcome')]]"
+						text="[[browseOutcomesText]]"
 						style$="[[_iconStyle]]"
 						on-click="_updateAlignments"
 						id="browse-outcome-button"
 					></d2l-button-icon>
-					<d2l-tooltip for="browse-outcome-button" position="top">[[localize('browseOutcome')]]</d2l-tooltip>
+					<d2l-tooltip for="browse-outcome-button" position="top">[[browseOutcomesText]]</d2l-tooltip>
 				</template>
 			</d2l-multi-select-list>
 			<div style="display: none;">

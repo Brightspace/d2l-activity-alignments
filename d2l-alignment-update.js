@@ -22,7 +22,7 @@ import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import './d2l-alignment-intent.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import {dom} from '@polymer/polymer/lib/legacy/polymer.dom.js'
+import {dom} from '@polymer/polymer/lib/legacy/polymer.dom.js';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-alignment-update">
@@ -221,22 +221,22 @@ Polymer({
 				}
 				//this._focusNext(target);
 			} else if (e.keyCode === this._keyCodes.UP) {
-				var prevOption=target.previousSibling;
+				var prevOption = target.previousSibling;
 				if (prevOption) {
-					prevOption.focus()
+					prevOption.focus();
 				}
 				//this._focusPrevious(target);
 			} else if (e.keyCode === this._keyCodes.SPACE) {
 				var childCheckbox = target.firstChild;
 				var isChecked = childCheckbox.getAttribute('checked');
 				if (isChecked === '') {
-					childCheckbox.removeAttribute('checked','');
-					childCheckbox.setAttribute('aria-checked','false');
-					childCheckbox.setAttribute('aria-selected','false');
+					childCheckbox.removeAttribute('checked', '');
+					childCheckbox.setAttribute('aria-checked', 'false');
+					childCheckbox.setAttribute('aria-selected', 'false');
 				} else {
-					childCheckbox.setAttribute('checked','');
-					childCheckbox.setAttribute('aria-checked','true');
-					childCheckbox.setAttribute('aria-selected','true');
+					childCheckbox.setAttribute('checked', '');
+					childCheckbox.setAttribute('aria-checked', 'true');
+					childCheckbox.setAttribute('aria-selected', 'true');
 				}
 				this.onOutcomeSelectChangeOnKeydown(childCheckbox);
 			}
@@ -252,13 +252,13 @@ Polymer({
 	},
 
 	_handleOptionFocus:function(e) {
-		var list=e.target.parentNode;
-		list.setAttribute('tabindex','-1')
+		var list = e.target.parentNode;
+		list.setAttribute('tabindex', '-1');
 	},
 
 	_handleOptionBlur:function(e) {
-		var list=e.target.parentNode;
-		list.setAttribute('tabindex','0')
+		var list = e.target.parentNode;
+		list.setAttribute('tabindex', '0');
 	},
 
 	_focusNext: function(target) {

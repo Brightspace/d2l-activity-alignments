@@ -231,12 +231,8 @@ Polymer({
 				var isChecked = childCheckbox.getAttribute('checked');
 				if (isChecked === '') {
 					childCheckbox.removeAttribute('checked', '');
-					childCheckbox.setAttribute('aria-checked', 'false');
-					childCheckbox.setAttribute('aria-selected', 'false');
 				} else {
 					childCheckbox.setAttribute('checked', '');
-					childCheckbox.setAttribute('aria-checked', 'true');
-					childCheckbox.setAttribute('aria-selected', 'true');
 				}
 				this.onOutcomeSelectChangeOnKeydown(childCheckbox);
 			}

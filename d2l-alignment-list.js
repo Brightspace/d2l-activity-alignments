@@ -236,14 +236,14 @@ Polymer({
 			href => alignmentMap[href].properties.relationshipType !== 'owned'
 		);
 	},
-	
+
 	_isEmpty: function(object) {
-		for (var x in object) { 
-			return false; 
+		for (var x in object) {
+			return false;
 		}
 		return true;
 	},
-	
+
 	_onAlignmentRemove: function(e) {
 		const newMap = this._alignmentMap;
 		delete newMap[e.detail.entity.getLinkByRel('self').href];

@@ -10,14 +10,14 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior = {
 	nl: {
-    'add': 'Toevoegen',
-    'addLabel': 'Selectie toevoegen',
-    'alignmentRemoved': 'Afstemming verwijderd',
-    'cancel': 'Annuleren',
-    'cancelLabel': 'Selectie annuleren',
-    'directAlignments': '{headerTitle} rechtstreeks afgestemd op deze activiteit',
-    'error': 'Er is een fout opgetreden',
-    'indirectAlignments': '{headerTitle} afgestemd op rubriccriteria',
-    'removeAlignment': 'Afstemming verwijderen'
+		'add': 'Toevoegen',
+		'addLabel': 'Selectie toevoegen',
+		'alignmentRemoved': 'Afstemming verwijderd',
+		'cancel': 'Annuleren',
+		'cancelLabel': 'Selectie annuleren',
+		'directAlignments': '{headerTitle} rechtstreeks afgestemd op deze activiteit',
+		'error': 'Er is een fout opgetreden',
+		'indirectAlignments': '{headerTitle} afgestemd op rubriccriteria',
+		'removeAlignment': 'Afstemming verwijderen'
 }
 };

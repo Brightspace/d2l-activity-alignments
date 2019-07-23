@@ -10,14 +10,14 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrBehavior = {
 	fr: {
-    'add': 'Ajouter',
-    'addLabel': 'Ajouter la sélection',
-    'alignmentRemoved': 'Alignement supprimé',
-    'cancel': 'Annuler',
-    'cancelLabel': 'Annuler la sélection',
-    'directAlignments': '{headerTitle} aligné directement avec cette activité',
-    'error': 'Une erreur est survenue',
-    'indirectAlignments': '{headerTitle} aligné avec les critères de la grille d’évaluation',
-    'removeAlignment': 'Supprimer l’alignement'
+		'add': 'Ajouter',
+		'addLabel': 'Ajouter la sélection',
+		'alignmentRemoved': 'Alignement supprimé',
+		'cancel': 'Annuler',
+		'cancelLabel': 'Annuler la sélection',
+		'directAlignments': '{headerTitle} aligné directement avec cette activité',
+		'error': 'Une erreur est survenue',
+		'indirectAlignments': '{headerTitle} aligné avec les critères de la grille d’évaluation',
+		'removeAlignment': 'Supprimer l’alignement'
 }
 };

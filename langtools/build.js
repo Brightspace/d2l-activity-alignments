@@ -85,13 +85,11 @@ config.langNames.forEach(langName => {
 	let langJson = null;
 	try {
 		const langContents = fs.readFileSync(langPath);
-		// const langContents = langContentsfirst.toString().replace(/\"/g,"'");
-		// console.log(langContents)
 		langJson = JSON.parse(langContents);
 	} catch (e) {
 		let msg = null;
 		if (e instanceof SyntaxError) {
-			msg = 'Lang file is not valid JSON'+e;
+			msg = 'Lang file is not valid JSON';
 		} else {
 			msg = 'Unable to read lang file';
 		}
@@ -110,7 +108,7 @@ config.langNames.forEach(langName => {
 		},
 		{
 			regex: /{{langData}}/g,
-			value: JSON.stringify(langJson, null, '\t\t').replace(/\"/g,"'")
+			value: JSON.stringify(langJson, null, '\t\t').replace(/"/g, "'")
 		}
 	];
 

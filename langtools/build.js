@@ -3,8 +3,8 @@
  * Builds lang data from JSON files into javascript
  */
 const
-	fs = require('fs'),
-	yargs = require('yargs');
+	fs = require('fs'), // eslint-disable-line no-undef
+	yargs = require('yargs'); // eslint-disable-line no-undef
 
 const args = yargs.usage('USAGE: $0 [options]\n\nBuilds lang data from JSON files into javascript.')
 	.strict(true)

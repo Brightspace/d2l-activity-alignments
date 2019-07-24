@@ -2,8 +2,8 @@
  * Copies new lang terms from the source file to all other lang term files
  */
 const
-	fs = require('fs'),
-	yargs = require('yargs');
+	fs = require('fs'), // eslint-disable-line no-undef
+	yargs = require('yargs'); // eslint-disable-line no-undef
 
 const args = yargs.usage('USAGE: $0 [options]\n\nCopies new lang terms from the source file to all other lang term files. Default behaviour will only copy new terms over, leaving existing translations intact. If an existing term is modified, you must run with the `--all` flag to ensure all terms are overwritten; however all translations will need to be redone.')
 	.strict(true)

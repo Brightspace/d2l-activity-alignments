@@ -19,5 +19,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangTrBehavior = {
 		'error': 'Bir hata oluştu',
 		'indirectAlignments': '{headerTitle} Rubrik Kriterlerine Hizalandı',
 		'removeAlignment': 'Hizalamayı kaldır'
-}
+	}
 };

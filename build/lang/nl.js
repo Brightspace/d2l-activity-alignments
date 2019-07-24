@@ -19,5 +19,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior = {
 		'error': 'Er is een fout opgetreden',
 		'indirectAlignments': '{headerTitle} afgestemd op rubriccriteria',
 		'removeAlignment': 'Afstemming verwijderen'
-}
+	}
 };

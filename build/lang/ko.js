@@ -19,5 +19,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangKoBehavior = {
 		'error': '오류 발생',
 		'indirectAlignments': '{headerTitle} 루브릭 기준에 따라 정렬됨',
 		'removeAlignment': '정렬 제거'
-}
+	}
 };

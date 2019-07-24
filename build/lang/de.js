@@ -19,5 +19,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDeBehavior = {
 		'error': 'Es ist ein Fehler aufgetreten.',
 		'indirectAlignments': '{headerTitle} Auf Bewertungsschemakriterien ausgerichtet',
 		'removeAlignment': 'Ausrichtung entfernen'
-}
+	}
 };

@@ -19,5 +19,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangJaBehavior = {
 		'error': 'エラーが発生しました',
 		'indirectAlignments': '{headerTitle} 注釈条件に整合されました',
 		'removeAlignment': '整合性を削除'
-}
+	}
 };

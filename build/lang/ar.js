@@ -19,5 +19,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangArBehavior = {
 		'error': 'حدث خطأ',
 		'indirectAlignments': 'تمت محاذاة {headerTitle} مع معيار آلية التقييم',
 		'removeAlignment': 'إزالة المحاذاة'
-}
+	}
 };

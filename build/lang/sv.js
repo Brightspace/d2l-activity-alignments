@@ -19,5 +19,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangSvBehavior = {
 		'error': 'Ett fel har inträffat',
 		'indirectAlignments': '{headerTitle} är justerad efter rubriceringskriterier',
 		'removeAlignment': 'Ta bort justering'
-}
+	}
 };

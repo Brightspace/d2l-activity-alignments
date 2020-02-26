@@ -61,7 +61,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 			.d2l-hierchical-list {
 				overflow: auto;
 				overflow-x: hidden;
-				height: 85%;
+				height: 400px;
 				border: 1px solid var(--d2l-color-gypsum);
 			}
 			.d2l-selected-outcomes {
@@ -69,10 +69,21 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 				text-align: right;
 				width: 100%
 			}
+
+			d2l-input-search {
+				margin-bottom: 12px;
+			}
 		</style>
+		
 		<siren-entity-loading href="[[href]]" token="[[token]]" style="width:100%;">
 			<div class="d2l-select-outcomes-hierarchical-main">
-				<d2l-select-outcomes-hierarchical-list class="d2l-hierchical-list" href="[[_getHierarchy(entity)]]" token="[[token]]" alignments="[[_alignments]]"></d2l-select-outcomes-hierarchical-list>
+				<d2l-input-search
+					label="Search"
+					placeholder="Search..."
+					on-d2l-input-search-searched="_onSearch"
+				>
+				</d2l-input-search>
+				<d2l-select-outcomes-hierarchical-list class="d2l-hierchical-list" href="[[_getHierarchy(entity)]]" token="[[token]]" alignments="[[_alignments]]" search-text="[[_searchText]]"></d2l-select-outcomes-hierarchical-list>
 				<div class="d2l-alignment-update-buttons">
 					<d2l-button primary="" disabled="[[_buttonsDisabled]]" on-tap="_add" aria-label="[[alignButtonText]]">[[alignButtonText]]</d2l-button>
 					<d2l-button on-tap="_cancel" aria-label="[[localize('cancelLabel')]]">[[localize('cancel')]]</d2l-button>
@@ -114,6 +125,9 @@ Polymer({
 		_alignmentsSize: {
 			type: Number,
 			value: 0
+		},
+		_searchText: {
+			type: String
 		}
 	},
 
@@ -199,5 +213,9 @@ Polymer({
 
 	_alignmentsListChanged: function() {
 		this._alignmentsSize = this._alignments.size;
+	},
+
+	_onSearch: function(e) {
+		this.set('_searchText', e.detail.value);
 	}
 });

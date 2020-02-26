@@ -49,12 +49,6 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 				margin-top: 0.5rem;
 			}
 		</style>
-		<d2l-input-search
-			label="Search"
-			placeholder="Search..."
-			on-d2l-input-search-searched="_onSearch"
-		>
-		</d2l-input-search>
 		<template is="dom-if" if="[[_isEmptySearchResult]]">
 			<div class="center">
 				<h3>No results found for '[[_searchText]]'</h3>
@@ -62,7 +56,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 		</template>
 		<siren-entity-loading href="[[href]]" token="[[token]]">
 			<div class="d2l-alignment-update-content">
-				<d2l-outcome-hierarchy-item item="[[_getHierarchyStart(entity)]]" alignments="[[alignments]]" current-level="[[level]]"></d2l-outcome-hierarchy-item>
+				<d2l-outcome-hierarchy-item item="[[displayedHierarchyItems]]" alignments="[[alignments]]" current-level="[[level]]"></d2l-outcome-hierarchy-item>
 			</div>
 		</siren-entity-loading>
 	</template>
@@ -88,7 +82,15 @@ Polymer({
 		level: {
 			type: Number,
 			value: 0,
-		}
+		},
+		hierarchyItems: {
+			type: Object,
+			computed: '_getHierarchyStart(entity)'
+		},
+		displayedHierarchyItems: {
+			type: Array,
+			computed: '_getDisplayedHierarchyItems(hierarchyItems, searchText)'
+		},
 	},
 
 	_getHierarchyStart: function(entity) {
@@ -102,5 +104,47 @@ Polymer({
 		};
 
 		return hierarchyRoot;
-	}
+	},
+
+	_getDisplayedHierarchyItems: function(items, searchText) {
+		if (!items) return [];
+		if (!searchText) return items;
+
+		const copy = JSON.parse(JSON.stringify(items)); // we don't want to contaminate the source data
+		return this._filterHierachy(copy, searchText);
+	},
+
+	_filterHierachy: function(item, searchText) {
+		const isLeaf = (entity) => entity && entity.class.includes('leaf-outcome');
+		const isRoot = (entity) => entity.class.includes('outcomes-root');
+
+		if (isRoot(item)) {
+			const topLevels = [];
+			for (const i of item.entities) {
+				const filtered = this._filterHierachy(i, searchText);
+				if (filtered) {
+					topLevels.push(filtered);
+				}
+			}
+			return { ...item, entities: topLevels };
+		} else if (isLeaf(item)) {
+			const search = (item, searchText = '') => {
+				const searchTarget = (item && item.properties && item.properties.description)
+					? item.properties.description.toLowerCase().normalize()
+					: '';
+				const searchTextLower = searchText.trim().toLowerCase().normalize();
+				return searchTarget.indexOf(searchTextLower) > -1;
+			};
+			return search(item, searchText) ? item : null;
+		} else {
+			const filteredSublevels = [];
+			for (const i of item.entities) {
+				if (this._filterHierachy(i, searchText)) {
+					filteredSublevels.push(i);
+				}
+			}
+			item.entities = filteredSublevels;
+			return filteredSublevels.length !== 0 ? item : null;
+		}
+	},
 });

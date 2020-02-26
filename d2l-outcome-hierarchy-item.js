@@ -186,7 +186,7 @@ Polymer({
 		},
 		_collapsed: {
 			type: Boolean,
-			value: true
+			value: false
 		},
 		_iconStyle: {
 			type: String,
@@ -229,12 +229,12 @@ Polymer({
 		if (this._isSelected) {
 			this.updateStyles({
 				'--sublevel-cell-margin': `${marginLeft}px`,
-				'--leaf-background-colour': `var(--d2l-color-celestine-plus-2)`
+				'--leaf-background-colour': 'var(--d2l-color-celestine-plus-2)'
 			});
 		} else {
 			this.updateStyles({
 				'--sublevel-cell-margin': `${marginLeft}px`,
-				'--leaf-background-colour': `transparent`,
+				'--leaf-background-colour': 'transparent',
 			});
 		}
 	},
@@ -291,12 +291,12 @@ Polymer({
 		var target = e.target;
 		if (target.checked) {
 			this.updateStyles({
-				'--leaf-background-colour': `var(--d2l-color-celestine-plus-2)`,
+				'--leaf-background-colour': 'var(--d2l-color-celestine-plus-2)',
 			});
 			this.alignments.add(this.item.properties.objectiveId);
 		} else {
 			this.updateStyles({
-				'--leaf-background-colour': `transparent`,
+				'--leaf-background-colour': 'transparent',
 			});
 			this.alignments.delete(this.item.properties.objectiveId);
 		}

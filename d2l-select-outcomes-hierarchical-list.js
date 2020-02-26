@@ -28,58 +28,25 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 			:host {
 				display: block;
 				overflow: hidden;
-				width: 100%;
 				height: 100%;
 			}
 
 			.d2l-alignment-update-content {
+				width: 100%;
 				display: flex;
 				flex-direction: column;
-				flex: 1;
+				margin-top: -2px;
 			}
 
-			.d2l-hierarchy-tree{
+			.d2l-hierarchy-tree {
+				width: 100%;
 				list-style-type: none;
 				padding-inline-start: 0px;
+				z-index:2;
 			}
 
 			d2l-alert {
 				margin-top: 0.5rem;
-			}
-
-			ul {
-				padding: 0;
-				flex: 1;
-				overflow: auto;
-				word-break: break-word;
-				border: 1px solid transparent;
-				border-top-color: var(--d2l-color-gypsum);
-				margin-bottom: 0px;
-				margin-block-start: 0em;
-			}
-
-			li {
-				position: relative;
-				list-style-type: none;
-				margin-top: -1px;
-				border: 1px solid transparent;
-				border-top-color: var(--d2l-color-gypsum);
-				color: var(--d2l-color-ferrite);
-				padding: 1.5rem 1.25rem 0rem;
-			}
-
-			d2l-input-checkbox {
-				margin: 0;
-			}
-
-			d2l-input-checkbox:hover {
-				z-index: 1;
-				background-color: var(--d2l-color-celestine-plus-2);
-				color: var(--d2l-color-celestine);
-			}
-
-			.center {
-				text-align: center;
 			}
 		</style>
 		<d2l-input-search
@@ -95,13 +62,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 		</template>
 		<siren-entity-loading href="[[href]]" token="[[token]]">
 			<div class="d2l-alignment-update-content">
-				<ul class="d2l-hierarchy-tree" tabindex="0">
-					<template is="dom-repeat" items="[[_displayedHierarchyItems]]">
-						<li tabindex="-1" role="option" aria-selected$="[[_getAriaChecked(item)]]" aria-checked$="[[_getAriaChecked(item)]]">
-							<d2l-outcome-hierarchy-item id$="[[id]]" item="[[item]]" alignments="[[alignments]]"></d2l-outcome-hierarchy-item>
-						</li>
-					</template>
-				</ul>
+				<d2l-outcome-hierarchy-item item="[[_getHierarchyStart(entity)]]" alignments="[[alignments]]" current-level="[[level]]"></d2l-outcome-hierarchy-item>
 			</div>
 		</siren-entity-loading>
 	</template>
@@ -124,94 +85,22 @@ Polymer({
 		alignments: {
 			type: Set
 		},
-
-		_displayedHierarchyItems: {
-			type: Array,
-			computed: '_getDisplayedHierarchyItems(_hierarchyItems, _searchText)'
-		},
-
-		_hierarchyItems: {
-			type: Array,
-			computed: '_getHierarchyItems(entity)'
-		},
-
-		_searchText: {
-			type: String
-		},
-
-		_isEmptySearchResult: {
-			type: Boolean,
-			value: false,
-			computed: '_getIsEmptySearchResult(_displayedHierarchyItems)'
+		level: {
+			type: Number,
+			value: 0,
 		}
 	},
 
-	_getAriaChecked: function(candidate) {
-		if (this._getChecked(candidate)) {
-			return 'true';
+	_getHierarchyStart: function(entity) {
+		if (!entity || !entity.hasSubEntityByClass('hierarchical-outcome')) {
+			return undefined;
 		}
-		return 'false';
-	},
 
-	_getChecked: function(candidate) {
-		return true;
-	},
+		var hierarchyRoot = {
+			entities: entity.getSubEntitiesByClass('hierarchical-outcome'),
+			class: ['hierarchical-outcome', 'outcomes-root']
+		};
 
-	_getHierarchyItems: function(entity) {
-		if (!entity || !entity.hasSubEntityByClass('hierarchical-outcome')) return [];
-		return entity.getSubEntitiesByClass('hierarchical-outcome');
-	},
-
-	_isLeafOutcome: function(entity) {
-		return entity && entity.class.includes('leaf-outcome');
-	},
-
-	_filterHierachy: function(item, searchText) {
-		if (Array.isArray(item)) {
-			// Top level tree
-			const topLevels = [];
-			for (const i of item) {
-				const filtered = this._filterHierachy(i, searchText);
-				if (filtered) {
-					topLevels.push(filtered);
-				}
-			}
-			return topLevels;
-		} else if (this._isLeafOutcome(item)) {
-			const search = (item, searchText = '') => {
-				const searchTarget = (item && item.properties && item.properties.description)
-					? item.properties.description.toLowerCase().normalize()
-					: '';
-				const searchTextLower = searchText.trim().toLowerCase().normalize();
-				return searchTarget.indexOf(searchTextLower) > -1;
-			};
-			return search(item, searchText) ? item : null;
-		} else {
-			// subtrees
-			const filteredSublevels = [];
-			for (const i of item.entities) {
-				if (this._filterHierachy(i, searchText)) {
-					filteredSublevels.push(i);
-				}
-			}
-			item.entities = filteredSublevels;
-			return filteredSublevels.length !== 0 ? item : null;
-		}
-	},
-
-	_getDisplayedHierarchyItems: function(items, searchText) {
-		if (!items) return [];
-		if (!searchText) return items;
-
-		const copy = JSON.parse(JSON.stringify(items)); // we don't want to contaminate the source data
-		return this._filterHierachy(copy, searchText);
-	},
-
-	_getIsEmptySearchResult: function(items) {
-		return items && items.length === 0;
-	},
-
-	_onSearch: function(e) {
-		this._searchText = e.detail.value;
+		return hierarchyRoot;
 	}
 });

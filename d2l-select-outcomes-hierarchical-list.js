@@ -6,7 +6,6 @@ import '@polymer/polymer/polymer-legacy.js';
 
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
-import { Actions, Classes, Rels } from 'd2l-hypermedia-constants';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-inputs/d2l-input-checkbox.js';
@@ -18,7 +17,6 @@ import './d2l-alignment-intent.js';
 import './d2l-outcome-hierarchy-item.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import {dom} from '@polymer/polymer/lib/legacy/polymer.dom.js';
 import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
 
 const $_documentContainer = document.createElement('template');
@@ -113,6 +111,7 @@ Polymer({
 
 	attached() {
 		IronA11yAnnouncer.requestAvailability();
+		IronA11yAnnouncer.mode = 'assertive';
 	},
 
 	_getHierarchyStart: function(entity) {

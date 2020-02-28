@@ -288,7 +288,7 @@ Polymer({
 	},
 
 	_onOutcomeSelectChange: function(e) {
-		// Known issue: when a cell is selected, e.g. first cell, and type something in the search, the first cell will still be in selected state(not re-rendered)
+		// Known issue: when a cell is selected, e.g. first cell, and type something in the search, the first cell will still be in selected state(not re-rendered); or first render and there's a cell selected, but background is not changed
 		var target = e.target;
 		if (target.checked) {
 			this.updateStyles({

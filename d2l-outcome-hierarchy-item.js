@@ -36,11 +36,8 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 			}
 
 			.d2l-outcome-heading > * {
-				margin: 0px;
-				font-family: Lato; 
-				font-size: 16px; 
-				font-weight: bold;
-				line-height: 100%;
+				margin: -3px 0px 0px 5px !important;
+				@apply --d2l-heading-3;
 			}
 
 			.d2l-collapsible-node {

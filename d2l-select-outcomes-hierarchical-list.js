@@ -169,11 +169,14 @@ Polymer({
 			return { ...item, entities: topLevels };
 		} else if (isLeaf(item)) {
 			const search = (item, searchText = '') => {
-				const searchTarget = (item && item.properties && item.properties.description)
+				const description = (item && item.properties && item.properties.description)
 					? item.properties.description.toLowerCase().normalize()
 					: '';
+				const notation = (item && item.properties && item.properties.notation)
+					? item.properties.notation.toLowerCase().normalize()
+					: '';
 				const searchTextLower = searchText.trim().toLowerCase().normalize();
-				return searchTarget.indexOf(searchTextLower) > -1;
+				return description.indexOf(searchTextLower) > -1 || notation.indexOf(searchTextLower) > -1;
 			};
 			return search(item, searchText) ? item : null;
 		} else {

@@ -12,7 +12,6 @@ import '@polymer/polymer/polymer-legacy.js';
 
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
-import { Rels } from 'd2l-hypermedia-constants';
 import './d2l-select-outcomes-hierarchical-list.js';
 import 'd2l-inputs/d2l-input-search.js';
 import 'd2l-alert/d2l-alert.js';
@@ -74,6 +73,12 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 			d2l-input-search {
 				margin-bottom: 24px;
 			}
+
+			.search-result-number {
+				margin-bottom: 24px;
+				@apply --d2l-body-standard;
+			}
+			
 		</style>
 		
 		<siren-entity-loading href="[[href]]" token="[[token]]" style="width:100%;">
@@ -82,10 +87,20 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 					label="Search Outcomes"
 					placeholder="Search..."
 					on-d2l-input-search-searched="_onSearch"
-					aria-live="assertive"
 				>
 				</d2l-input-search>
-				<d2l-select-outcomes-hierarchical-list class="d2l-hierchical-list" href="[[_getHierarchy(entity)]]" token="[[token]]" alignments="[[_alignments]]" search-text="[[_searchText]]"></d2l-select-outcomes-hierarchical-list>
+				<div class="search-result-number" hidden="[[!_showSearchResultsNumber]]">
+					[[_searchResultsNumber]] search results for <b>'[[_searchText]]'</b>
+				</div>
+				<d2l-select-outcomes-hierarchical-list
+					class="d2l-hierchical-list"
+					href="[[_getHierarchy(entity)]]"
+					token="[[token]]"
+					alignments="[[_alignments]]"
+					search-text="[[_searchText]]"
+					on-search-results-changed="_onSearchResultsChanged"
+				>
+				</d2l-select-outcomes-hierarchical-list>
 				<div class="d2l-alignment-update-buttons">
 					<d2l-button primary="" disabled="[[_buttonsDisabled]]" on-tap="_add" aria-label="[[alignButtonText]]">[[alignButtonText]]</d2l-button>
 					<d2l-button on-tap="_cancel" aria-label="[[localize('cancelLabel')]]">[[localize('cancel')]]</d2l-button>
@@ -130,6 +145,15 @@ Polymer({
 		},
 		_searchText: {
 			type: String
+		},
+		_showSearchResultsNumber: {
+			type: Boolean,
+			value: false,
+			computed: '_computeShowSearchResultsNumber(_searchText, _searchResultsNumber)'
+		},
+		_searchResultsNumber: {
+			type: Number,
+			value: 0
 		}
 	},
 
@@ -219,5 +243,13 @@ Polymer({
 
 	_onSearch: function(e) {
 		this.set('_searchText', e.detail.value);
+	},
+
+	_computeShowSearchResultsNumber: function(searchText, resultsNumber) {
+		return searchText && searchText.length > 0 && resultsNumber > 0;
+	},
+
+	_onSearchResultsChanged(e) {
+		this._searchResultsNumber = e.detail.value || 0;
 	}
 });

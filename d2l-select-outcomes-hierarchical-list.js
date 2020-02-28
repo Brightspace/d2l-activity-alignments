@@ -146,6 +146,11 @@ Polymer({
 			{ text: `${numOfLeaves} search results.` },
 			{ bubbles: true }
 		);
+		this.dispatchEvent(new CustomEvent(
+			'search-results-changed',
+			{ bubbles: true, composed: false, detail: { value: numOfLeaves } }
+		));
+
 		return filtered;
 	},
 

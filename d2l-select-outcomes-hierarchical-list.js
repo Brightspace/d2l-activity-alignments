@@ -41,7 +41,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 				width: 100%;
 				list-style-type: none;
 				padding-inline-start: 0px;
-				z-index:2;
+				z-index: 2;
 			}
 
 			d2l-alert {
@@ -56,7 +56,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 		</style>
 		<template is="dom-if" if="[[_isEmptySearchResult]]">
 			<div class="no-result-container">
-				No results found for <b>'[[searchText]]'</b>
+				No results found for '<b>[[searchText]]</b>'
 			</div>
 		</template>
 		<template is="dom-if" if="[[!_isEmptySearchResult]]">

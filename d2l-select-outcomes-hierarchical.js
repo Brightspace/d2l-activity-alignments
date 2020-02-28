@@ -90,7 +90,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 				>
 				</d2l-input-search>
 				<div class="search-result-number" hidden="[[!_showSearchResultsNumber]]">
-					[[_searchResultsNumber]] search results for <b>'[[_searchText]]'</b>
+					[[_searchResultsNumber]] search results for '<b>[[_searchText]]</b>'
 				</div>
 				<d2l-select-outcomes-hierarchical-list
 					class="d2l-hierchical-list"

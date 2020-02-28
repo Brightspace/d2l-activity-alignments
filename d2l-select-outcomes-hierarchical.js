@@ -72,7 +72,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 			}
 
 			d2l-input-search {
-				margin-bottom: 12px;
+				margin-bottom: 24px;
 			}
 		</style>
 		

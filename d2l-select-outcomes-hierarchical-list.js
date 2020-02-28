@@ -11,6 +11,7 @@ import 'd2l-colors/d2l-colors.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-inputs/d2l-input-checkbox.js';
 import 'd2l-alert/d2l-alert.js';
+import 'd2l-typography/d2l-typography.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import './d2l-alignment-intent.js';
@@ -52,7 +53,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 			.no-result-container {
 				margin-top: 24px;
 				text-align: center;
-				font-size: large;
+				@apply --d2l-body-standard;
 			}
 		</style>
 		<template is="dom-if" if="[[_isEmptySearchResult]]">

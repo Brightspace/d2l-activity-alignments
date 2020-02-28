@@ -48,17 +48,25 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 			d2l-alert {
 				margin-top: 0.5rem;
 			}
+
+			.no-result-container {
+				margin-top: 28px;
+				text-align: center;
+				font-size: large;
+			}
 		</style>
 		<template is="dom-if" if="[[_isEmptySearchResult]]">
-			<div class="center">
-				<h3>No results found for '[[_searchText]]'</h3>
+			<div class="no-result-container">
+				No results found for <b>'[[searchText]]'</b>
 			</div>
 		</template>
-		<siren-entity-loading href="[[href]]" token="[[token]]">
-			<div class="d2l-alignment-update-content">
-				<d2l-outcome-hierarchy-item item="[[displayedHierarchyItems]]" alignments="[[alignments]]" current-level="[[level]]"></d2l-outcome-hierarchy-item>
-			</div>
-		</siren-entity-loading>
+		<template is="dom-if" if="[[!_isEmptySearchResult]]">
+			<siren-entity-loading href="[[href]]" token="[[token]]">
+				<div class="d2l-alignment-update-content">
+					<d2l-outcome-hierarchy-item item="[[displayedHierarchyItems]]" alignments="[[alignments]]" current-level="[[level]]"></d2l-outcome-hierarchy-item>
+				</div>
+			</siren-entity-loading>
+		</template>
 	</template>
 
 
@@ -79,18 +87,27 @@ Polymer({
 		alignments: {
 			type: Set
 		},
+
 		level: {
 			type: Number,
 			value: 0,
 		},
+
 		hierarchyItems: {
 			type: Object,
 			computed: '_getHierarchyStart(entity)'
 		},
+
 		displayedHierarchyItems: {
 			type: Array,
 			computed: '_getDisplayedHierarchyItems(hierarchyItems, searchText)'
 		},
+
+		_isEmptySearchResult: {
+			type: Boolean,
+			value: false,
+			computed: '_getIsEmptySearchResult(displayedHierarchyItems)'
+		}
 	},
 
 	attached() {
@@ -177,5 +194,9 @@ Polymer({
 			}
 			return subtotal;
 		}
-	}
+	},
+
+	_getIsEmptySearchResult: function(items) {
+		return items && items.entities && items.entities.length === 0;
+	},
 });

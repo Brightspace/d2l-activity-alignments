@@ -50,7 +50,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 			}
 
 			.no-result-container {
-				margin-top: 28px;
+				margin-top: 24px;
 				text-align: center;
 				font-size: large;
 			}

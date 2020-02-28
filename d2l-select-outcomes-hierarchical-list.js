@@ -10,7 +10,6 @@ import { Actions, Classes, Rels } from 'd2l-hypermedia-constants';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-inputs/d2l-input-checkbox.js';
-import 'd2l-inputs/d2l-input-search.js';
 import 'd2l-alert/d2l-alert.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
@@ -19,6 +18,7 @@ import './d2l-outcome-hierarchy-item.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import {dom} from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
 
 const $_documentContainer = document.createElement('template');
 
@@ -93,6 +93,10 @@ Polymer({
 		},
 	},
 
+	attached() {
+		IronA11yAnnouncer.requestAvailability();
+	},
+
 	_getHierarchyStart: function(entity) {
 		if (!entity || !entity.hasSubEntityByClass('hierarchical-outcome')) {
 			return undefined;
@@ -108,10 +112,24 @@ Polymer({
 
 	_getDisplayedHierarchyItems: function(items, searchText) {
 		if (!items) return [];
-		if (!searchText) return items;
+		if (!searchText === undefined) return items;
+		if (searchText === '') {
+			IronA11yAnnouncer.instance.fire('iron-announce',
+				{ text: 'Search cleared' },
+				{ bubbles: true }
+			);
+			return items;
+		}
 
 		const copy = JSON.parse(JSON.stringify(items)); // we don't want to contaminate the source data
-		return this._filterHierachy(copy, searchText);
+		const filtered = this._filterHierachy(copy, searchText);
+		const numOfLeaves = this._getNumOfLeaves(filtered);
+
+		IronA11yAnnouncer.instance.fire('iron-announce',
+			{ text: `${numOfLeaves} search results.` },
+			{ bubbles: true }
+		);
+		return filtered;
 	},
 
 	_filterHierachy: function(item, searchText) {
@@ -147,4 +165,17 @@ Polymer({
 			return filteredSublevels.length !== 0 ? item : null;
 		}
 	},
+
+	_getNumOfLeaves: function(tree) {
+		const isLeaf = (entity) => entity && entity.class.includes('leaf-outcome');
+		if (isLeaf(tree)) {
+			return 1;
+		} else {
+			let subtotal = 0;
+			for (const i of tree.entities) {
+				subtotal += this._getNumOfLeaves(i);
+			}
+			return subtotal;
+		}
+	}
 });

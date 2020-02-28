@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@brightspace-ui-labs/multi-select": "^3",
+    "@polymer/iron-a11y-announcer": "^3.0.2",
     "@polymer/polymer": "^3.0.0",
     "d2l-alert": "BrightspaceUI/alert#semver:^4",
     "d2l-button": "BrightspaceUI/button#semver:^5",

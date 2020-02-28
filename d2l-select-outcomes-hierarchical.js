@@ -14,6 +14,7 @@ import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import { Rels } from 'd2l-hypermedia-constants';
 import './d2l-select-outcomes-hierarchical-list.js';
+import 'd2l-inputs/d2l-input-search.js';
 import 'd2l-alert/d2l-alert.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -78,9 +79,10 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 		<siren-entity-loading href="[[href]]" token="[[token]]" style="width:100%;">
 			<div class="d2l-select-outcomes-hierarchical-main">
 				<d2l-input-search
-					label="Search"
+					label="Search Outcomes"
 					placeholder="Search..."
 					on-d2l-input-search-searched="_onSearch"
+					aria-live="assertive"
 				>
 				</d2l-input-search>
 				<d2l-select-outcomes-hierarchical-list class="d2l-hierchical-list" href="[[_getHierarchy(entity)]]" token="[[token]]" alignments="[[_alignments]]" search-text="[[_searchText]]"></d2l-select-outcomes-hierarchical-list>

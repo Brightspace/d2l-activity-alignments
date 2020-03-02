@@ -109,7 +109,7 @@ Polymer({
 		}
 	},
 
-	attached() {
+	attached: function() {
 		IronA11yAnnouncer.requestAvailability();
 		IronA11yAnnouncer.mode = 'assertive';
 	},
@@ -178,7 +178,7 @@ Polymer({
 				const searchTextLower = searchText.trim().toLowerCase().normalize();
 				return description.indexOf(searchTextLower) > -1 || notation.indexOf(searchTextLower) > -1;
 			};
-			return search(item, searchText) ? item : null;
+			return search(item, searchText) ? this._applyBoldText(item, searchText) : null;
 		} else {
 			const filteredSublevels = [];
 			for (const i of item.entities) {
@@ -189,6 +189,14 @@ Polymer({
 			item.entities = filteredSublevels;
 			return filteredSublevels.length !== 0 ? item : null;
 		}
+	},
+
+	_applyBoldText: function(entity, searchText) {
+		if (!entity || !searchText) return entity;
+
+		const searchRegex = new RegExp(searchText, 'ig');
+		entity.properties.description = entity.properties.description.replace(searchRegex, '<b>$&</b>');
+		return entity;
 	},
 
 	_getNumOfLeaves: function(tree) {

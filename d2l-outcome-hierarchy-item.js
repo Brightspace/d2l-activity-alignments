@@ -116,12 +116,14 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 			<d2l-input-checkbox class="[[_leafClass]]" tabindex="-1" not-tabbable="true" checked="[[_isSelected]]" on-change="_onOutcomeSelectChange" data-index$="[[index]]" >
 				<div class="d2l-outcome-wrap">
 					<template is="dom-if" if="[[_hasOutcomeIdentifier(item)]]">
-						<div class="d2l-outcome-identifier">[[getOutcomeIdentifier(item)]]</div>
+						<div class="d2l-outcome-identifier">
+							<d2l-bold-text-wrapper content="[[getOutcomeIdentifier(item)]]">
+						</div>
 					</template>
 					<div class="d2l-outcome-text">
 						<s-html hidden="[[!_fromTrustedSource(item)]]" html="[[getOutcomeDescriptionHtml(item)]]"></s-html>
 						<div hidden="[[_fromTrustedSource(item)]]">
-							<d2l-bold-text-wrapper  content="[[getOutcomeDescriptionPlainText(item)]]">
+							<d2l-bold-text-wrapper content="[[getOutcomeDescriptionPlainText(item)]]">
 						</div>
 					</div>
 				</div>

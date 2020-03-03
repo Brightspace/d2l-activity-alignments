@@ -196,6 +196,7 @@ Polymer({
 
 		const searchRegex = new RegExp(searchText, 'ig');
 		entity.properties.description = entity.properties.description.replace(searchRegex, '<b>$&</b>');
+		entity.properties.notation = entity.properties.notation.replace(searchRegex, '<b>$&</b>');
 		return entity;
 	},
 

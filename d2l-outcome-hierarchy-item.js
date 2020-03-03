@@ -16,6 +16,7 @@ import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-button/d2l-button.js';
 import 's-html/s-html.js';
+import './d2l-bold-text-wrapper.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
 const $_documentContainer = document.createElement('template');
@@ -119,7 +120,9 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 					</template>
 					<div class="d2l-outcome-text">
 						<s-html hidden="[[!_fromTrustedSource(item)]]" html="[[getOutcomeDescriptionHtml(item)]]"></s-html>
-						<span hidden="[[_fromTrustedSource(item)]]">[[getOutcomeDescriptionPlainText(item)]]</span>
+						<div hidden="[[_fromTrustedSource(item)]]">
+							<d2l-bold-text-wrapper  content="[[getOutcomeDescriptionPlainText(item)]]">
+						</div>
 					</div>
 				</div>
 			</d2l-input-checkbox>

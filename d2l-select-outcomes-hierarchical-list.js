@@ -127,18 +127,18 @@ Polymer({
 		return hierarchyRoot;
 	},
 
-	_getDisplayedHierarchyItems: function(items, searchText) {
-		if (!items) return [];
-		if (!searchText === undefined) return items;
+	_getDisplayedHierarchyItems: function(entity, searchText) {
+		if (!entity) return [];
+		if (!searchText === undefined) return entity;
 		if (searchText === '') {
 			IronA11yAnnouncer.instance.fire('iron-announce',
 				{ text: this.localize('searchCleared') },
 				{ bubbles: true }
 			);
-			return items;
+			return entity;
 		}
 
-		const copy = JSON.parse(JSON.stringify(items)); // we don't want to contaminate the source data
+		const copy = JSON.parse(JSON.stringify(entity)); // we don't want to contaminate the source data
 		const filtered = this._filterHierachy(copy, searchText);
 		const numOfLeaves = this._getNumOfLeaves(filtered);
 
@@ -154,40 +154,40 @@ Polymer({
 		return filtered;
 	},
 
-	_filterHierachy: function(item, searchText) {
+	_filterHierachy: function(entity, searchText) {
 		const isLeaf = (entity) => entity && entity.class.includes('leaf-outcome');
 		const isRoot = (entity) => entity.class.includes('outcomes-root');
 
-		if (isRoot(item)) {
+		if (isRoot(entity)) {
 			const topLevels = [];
-			for (const i of item.entities) {
+			for (const i of entity.entities) {
 				const filtered = this._filterHierachy(i, searchText);
 				if (filtered) {
 					topLevels.push(filtered);
 				}
 			}
-			return { ...item, entities: topLevels };
-		} else if (isLeaf(item)) {
-			const search = (item, searchText = '') => {
-				const description = (item && item.properties && item.properties.description)
-					? item.properties.description.toLowerCase().normalize()
+			return { ...entity, entities: topLevels };
+		} else if (isLeaf(entity)) {
+			const search = (entity, searchText = '') => {
+				const description = (entity && entity.properties && entity.properties.description)
+					? entity.properties.description.toLowerCase().normalize()
 					: '';
-				const notation = (item && item.properties && item.properties.notation)
-					? item.properties.notation.toLowerCase().normalize()
+				const notation = (entity && entity.properties && entity.properties.notation)
+					? entity.properties.notation.toLowerCase().normalize()
 					: '';
 				const searchTextLower = searchText.trim().toLowerCase().normalize();
 				return description.indexOf(searchTextLower) > -1 || notation.indexOf(searchTextLower) > -1;
 			};
-			return search(item, searchText) ? this._applyBoldText(item, searchText) : null;
+			return search(entity, searchText) ? this._applyBoldText(entity, searchText) : null;
 		} else {
 			const filteredSublevels = [];
-			for (const i of item.entities) {
+			for (const i of entity.entities) {
 				if (this._filterHierachy(i, searchText)) {
 					filteredSublevels.push(i);
 				}
 			}
-			item.entities = filteredSublevels;
-			return filteredSublevels.length !== 0 ? item : null;
+			entity.entities = filteredSublevels;
+			return filteredSublevels.length !== 0 ? entity : null;
 		}
 	},
 

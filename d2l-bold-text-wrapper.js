@@ -29,26 +29,18 @@ class BoldTextWrapper extends mixinBehaviors([], PolymerElement) {
 		return html`
             <style>
                 :host {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: stretch;
+                    display: inline;
                 }
 			</style>
-			<div style="display: inline;">
-				<template is="dom-repeat" items="[[parsedContent]]">
-					<template is="dom-if" if="[[item.bold]]">
-						<b>[[item.data]]</b>
-					</template>
-					<template is="dom-if" if="[[!item.bold]]">
-						[[item.data]]
-					</template>
+			<template is="dom-repeat" items="[[parsedContent]]">
+				<template is="dom-if" if="[[!item.bold]]">
+					[[item.data]]
 				</template>
-			</div>
+				<template is="dom-if" if="[[item.bold]]">
+					<b>[[item.data]]</b>
+				</template>
+			</template>
         `;
-	}
-
-	ready() {
-		super.ready();
 	}
 
 	_computeParsedContent(content) {

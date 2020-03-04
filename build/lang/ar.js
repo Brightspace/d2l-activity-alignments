@@ -18,6 +18,12 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangArBehavior = {
 		'directAlignments': 'تمت محاذاة {headerTitle} مباشرة مع هذا النشاط',
 		'error': 'حدث خطأ',
 		'indirectAlignments': 'تمت محاذاة {headerTitle} مع معيار آلية التقييم',
-		'removeAlignment': 'إزالة المحاذاة'
-	}
+		'noSearchResultFor': 'No results found for {searchText}',
+		'removeAlignment': 'إزالة المحاذاة',
+		'searchCleared': 'Search cleared',
+		'searchOutcomes': 'Search Outcomes',
+		'searchPlaceholder': 'Search...',
+		'searchResultFor': '{numOfResults} search results for {searchText}',
+		'searchResultsNumber': '{numOfResults} search results'
+}
 };

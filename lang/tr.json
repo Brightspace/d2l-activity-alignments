@@ -7,5 +7,11 @@
     "directAlignments": "{headerTitle} Doğrudan Bu Etkinliğe Hizalandı",
     "error": "Bir hata oluştu",
     "indirectAlignments": "{headerTitle} Rubrik Kriterlerine Hizalandı",
-    "removeAlignment": "Hizalamayı kaldır"
+    "noSearchResultFor": "No results found for {searchText}",
+    "removeAlignment": "Hizalamayı kaldır",
+    "searchCleared": "Search cleared",
+    "searchOutcomes": "Search Outcomes",
+    "searchPlaceholder": "Search...",
+    "searchResultFor": "{numOfResults} search results for {searchText}",
+    "searchResultsNumber": "{numOfResults} search results"
 }

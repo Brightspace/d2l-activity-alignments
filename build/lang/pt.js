@@ -18,6 +18,12 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangPtBehavior = {
 		'directAlignments': '{headerTitle} Alinhado diretamente a esta atividade',
 		'error': 'Ocorreu um erro',
 		'indirectAlignments': '{headerTitle} Alinhado aos critérios de rubrica',
-		'removeAlignment': 'Remover alinhamento'
-	}
+		'noSearchResultFor': 'No results found for {searchText}',
+		'removeAlignment': 'Remover alinhamento',
+		'searchCleared': 'Search cleared',
+		'searchOutcomes': 'Search Outcomes',
+		'searchPlaceholder': 'Search...',
+		'searchResultFor': '{numOfResults} search results for {searchText}',
+		'searchResultsNumber': '{numOfResults} search results'
+}
 };

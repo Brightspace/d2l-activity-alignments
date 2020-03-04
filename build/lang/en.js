@@ -18,6 +18,12 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEnBehavior = {
 		'removeAlignment': 'Remove alignment',
 		'alignmentRemoved': 'Alignment removed',
 		'directAlignments': '{headerTitle} Aligned Directly to This Activity',
-		'indirectAlignments': '{headerTitle} Aligned to Rubric Criteria'
-	}
+		'indirectAlignments': '{headerTitle} Aligned to Rubric Criteria',
+		'searchOutcomes': 'Search Outcomes',
+		'searchPlaceholder': 'Search...',
+		'searchCleared': 'Search cleared',
+		'searchResultsNumber': '{numOfResults} search results',
+		'searchResultFor': '{numOfResults} search results for {searchText}',
+		'noSearchResultFor': 'No results found for {searchText}'
+}
 };

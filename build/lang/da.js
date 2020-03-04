@@ -18,6 +18,12 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDaBehavior = {
 		'directAlignments': '{headerTitle} justeret direkte til denne aktivitet',
 		'error': 'Der opstod en fejl',
 		'indirectAlignments': '{headerTitle} justeret til rubrikkriterier',
-		'removeAlignment': 'Fjern justering'
-	}
+		'noSearchResultFor': 'No results found for {searchText}',
+		'removeAlignment': 'Fjern justering',
+		'searchCleared': 'Search cleared',
+		'searchOutcomes': 'Search Outcomes',
+		'searchPlaceholder': 'Search...',
+		'searchResultFor': '{numOfResults} search results for {searchText}',
+		'searchResultsNumber': '{numOfResults} search results'
+}
 };

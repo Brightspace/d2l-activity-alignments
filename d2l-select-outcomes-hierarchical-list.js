@@ -56,7 +56,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 		</style>
 		<template is="dom-if" if="[[_isEmptySearchResult]]">
 			<div class="no-result-container">
-				No results found for '<b>[[searchText]]</b>'
+				[[localize('noSearchResultFor', 'searchText', searchText)]]
 			</div>
 		</template>
 		<template is="dom-if" if="[[!_isEmptySearchResult]]">
@@ -106,7 +106,7 @@ Polymer({
 			type: Boolean,
 			value: false,
 			computed: '_getIsEmptySearchResult(displayedHierarchyItems)'
-		}
+		},
 	},
 
 	attached: function() {
@@ -132,7 +132,7 @@ Polymer({
 		if (!searchText === undefined) return items;
 		if (searchText === '') {
 			IronA11yAnnouncer.instance.fire('iron-announce',
-				{ text: 'Search cleared' },
+				{ text: this.localize('searchCleared') },
 				{ bubbles: true }
 			);
 			return items;
@@ -143,7 +143,7 @@ Polymer({
 		const numOfLeaves = this._getNumOfLeaves(filtered);
 
 		IronA11yAnnouncer.instance.fire('iron-announce',
-			{ text: `${numOfLeaves} search results.` },
+			{ text: this.localize('searchResultsNumber', 'numOfResults', numOfLeaves) },
 			{ bubbles: true }
 		);
 		this.dispatchEvent(new CustomEvent(

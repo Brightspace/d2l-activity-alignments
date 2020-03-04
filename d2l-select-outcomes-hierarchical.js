@@ -84,13 +84,13 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 		<siren-entity-loading href="[[href]]" token="[[token]]" style="width:100%;">
 			<div class="d2l-select-outcomes-hierarchical-main">
 				<d2l-input-search
-					label="Search Outcomes"
-					placeholder="Search..."
+					label="[[localize('searchOutcomes')]]"
+					placeholder="[[localize('searchPlaceholder')]]"
 					on-d2l-input-search-searched="_onSearch"
 				>
 				</d2l-input-search>
 				<div class="search-result-number" hidden="[[!_showSearchResultsNumber]]">
-					[[_searchResultsNumber]] search results for '<b>[[_searchText]]</b>'
+					[[localize('searchResultFor', 'numOfResults', _searchResultsNumber, 'searchText', _searchText)]]
 				</div>
 				<d2l-select-outcomes-hierarchical-list
 					class="d2l-hierchical-list"

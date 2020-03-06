@@ -18,12 +18,12 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior = {
 		'directAlignments': '{headerTitle} rechtstreeks afgestemd op deze activiteit',
 		'error': 'Er is een fout opgetreden',
 		'indirectAlignments': '{headerTitle} afgestemd op rubriccriteria',
-		'noSearchResultFor': 'No results found for {searchText}',
+		'noSearchResultFor': 'No results found for "{searchText}"',
 		'removeAlignment': 'Afstemming verwijderen',
 		'searchCleared': 'Search cleared',
 		'searchOutcomes': 'Search Outcomes',
 		'searchPlaceholder': 'Search...',
-		'searchResultFor': '{numOfResults} search results for {searchText}',
+		'searchResultFor': '{numOfResults} search results for "{searchText}"',
 		'searchResultsNumber': '{numOfResults} search results'
 }
 };

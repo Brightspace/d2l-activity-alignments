@@ -18,12 +18,12 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFiBehavior = {
 		'directAlignments': '{headerTitle} Aligned Directly to This Activity',
 		'error': 'An error has occured',
 		'indirectAlignments': '{headerTitle} Aligned to Rubric Criteria',
-		'noSearchResultFor': 'No results found for {searchText}',
+		'noSearchResultFor': 'No results found for "{searchText}"',
 		'removeAlignment': 'Remove alignment',
 		'searchCleared': 'Search cleared',
 		'searchOutcomes': 'Search Outcomes',
 		'searchPlaceholder': 'Search...',
-		'searchResultFor': '{numOfResults} search results for {searchText}',
+		'searchResultFor': '{numOfResults} search results for "{searchText}"',
 		'searchResultsNumber': '{numOfResults} search results'
 }
 };

@@ -23,7 +23,7 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEnBehavior = {
 		'searchPlaceholder': 'Search...',
 		'searchCleared': 'Search cleared',
 		'searchResultsNumber': '{numOfResults} search results',
-		'searchResultFor': '{numOfResults} search results for {searchText}',
-		'noSearchResultFor': 'No results found for {searchText}'
+		'searchResultFor': '{numOfResults} search results for "{searchText}"',
+		'noSearchResultFor': 'No results found for "{searchText}"'
 }
 };

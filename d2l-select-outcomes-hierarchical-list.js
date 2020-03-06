@@ -154,6 +154,20 @@ Polymer({
 		return filtered;
 	},
 
+	_search: function(entity, searchText = '') {
+		const description = (entity && entity.properties && entity.properties.description)
+			? entity.properties.description.toLowerCase().normalize()
+			: '';
+		const notation = (entity && entity.properties && entity.properties.notation)
+			? entity.properties.notation.toLowerCase().normalize()
+			: '';
+		const searchTextLower = searchText.trim().toLowerCase().normalize();
+		const splitText = searchTextLower.split(' ');
+
+		const containsText = (i) => description.indexOf(i) > -1 || notation.indexOf(i) > -1;
+		return splitText.every(containsText);
+	},
+
 	_filterHierachy: function(entity, searchText) {
 		const isLeaf = (entity) => entity && entity.class.includes('leaf-outcome');
 		const isRoot = (entity) => entity.class.includes('outcomes-root');
@@ -168,17 +182,7 @@ Polymer({
 			}
 			return { ...entity, entities: topLevels };
 		} else if (isLeaf(entity)) {
-			const search = (entity, searchText = '') => {
-				const description = (entity && entity.properties && entity.properties.description)
-					? entity.properties.description.toLowerCase().normalize()
-					: '';
-				const notation = (entity && entity.properties && entity.properties.notation)
-					? entity.properties.notation.toLowerCase().normalize()
-					: '';
-				const searchTextLower = searchText.trim().toLowerCase().normalize();
-				return description.indexOf(searchTextLower) > -1 || notation.indexOf(searchTextLower) > -1;
-			};
-			return search(entity, searchText) ? this._applyBoldText(entity, searchText) : null;
+			return this._search(entity, searchText) ? this._applyBoldText(entity, searchText) : null;
 		} else {
 			const filteredSublevels = [];
 			for (const i of entity.entities) {
@@ -194,9 +198,11 @@ Polymer({
 	_applyBoldText: function(entity, searchText) {
 		if (!entity || !searchText) return entity;
 
-		const searchRegex = new RegExp(searchText, 'ig');
-		entity.properties.description = entity.properties.description.replace(searchRegex, '<b>$&</b>');
-		entity.properties.notation = entity.properties.notation.replace(searchRegex, '<b>$&</b>');
+		for (const i of searchText.split(' ')) {
+			const searchRegex = new RegExp(i, 'ig');
+			entity.properties.description = entity.properties.description.replace(searchRegex, '<b>$&</b>');
+			entity.properties.notation = entity.properties.notation.replace(searchRegex, '<b>$&</b>');
+		}
 		return entity;
 	},
 

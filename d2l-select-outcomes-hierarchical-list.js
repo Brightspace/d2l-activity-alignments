@@ -162,7 +162,7 @@ Polymer({
 			? entity.properties.notation.toLowerCase().normalize()
 			: '';
 		const searchTextLower = searchText.trim().toLowerCase().normalize();
-		const splitText = searchTextLower.split(' ');
+		const splitText = searchTextLower.split(' ').filter(i => i);
 
 		const containsText = (i) => description.indexOf(i) > -1 || notation.indexOf(i) > -1;
 		return splitText.every(containsText);
@@ -198,7 +198,7 @@ Polymer({
 	_applyBoldText: function(entity, searchText) {
 		if (!entity || !searchText) return entity;
 
-		for (const i of searchText.split(' ')) {
+		for (const i of searchText.split(' ').filter(i => i)) {
 			const searchRegex = new RegExp(i, 'ig');
 			entity.properties.description = entity.properties.description.replace(searchRegex, '<b>$&</b>');
 			entity.properties.notation = entity.properties.notation.replace(searchRegex, '<b>$&</b>');

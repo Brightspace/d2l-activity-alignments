@@ -135,7 +135,7 @@ Polymer({
 
 	_getDisplayedHierarchyItems: function(entity, searchText) {
 		if (!entity) return [];
-		if (!searchText === undefined) return entity;
+		if (searchText === undefined) return entity;
 		if (searchText === '') {
 			IronA11yAnnouncer.instance.fire('iron-announce',
 				{ text: this.localize('searchCleared') },

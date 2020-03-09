@@ -179,23 +179,12 @@ Polymer({
 		const isRoot = (entity) => entity.class.includes('hierarchy-start');
 
 		if (isRoot(entity)) {
-			const topLevels = [];
-			for (const i of entity.entities) {
-				const filtered = this._filterHierachy(i, searchText);
-				if (filtered) {
-					topLevels.push(filtered);
-				}
-			}
+			const topLevels = entity.entities.filter(i => this._filterHierachy(i, searchText));
 			return { ...entity, entities: topLevels };
 		} else if (isLeaf(entity)) {
 			return this._search(entity, searchText) ? this._applyBoldText(entity, searchText) : null;
 		} else {
-			const filteredSublevels = [];
-			for (const i of entity.entities) {
-				if (this._filterHierachy(i, searchText)) {
-					filteredSublevels.push(i);
-				}
-			}
+			const filteredSublevels = entity.entities.filter(i => this._filterHierachy(i, searchText));
 			entity.entities = filteredSublevels;
 			return filteredSublevels.length !== 0 ? entity : null;
 		}
@@ -214,15 +203,7 @@ Polymer({
 
 	_getNumOfLeaves: function(tree) {
 		const isLeaf = (entity) => entity && entity.class.includes('leaf-outcome');
-		if (isLeaf(tree)) {
-			return 1;
-		} else {
-			let subtotal = 0;
-			for (const i of tree.entities) {
-				subtotal += this._getNumOfLeaves(i);
-			}
-			return subtotal;
-		}
+		return isLeaf(tree) ? 1 : tree.entities.reduce((acc, curr) => acc + this._getNumOfLeaves(curr), 0);
 	},
 
 	_getIsEmptySearchResult: function(items) {

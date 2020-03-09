@@ -27,5 +27,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEnBehavior = {
 		'noSearchResultFor': 'No results found for "{searchText}"',
 		'selected': 'selected',
 		'outcomesHierarchicalTree': 'Outcomes Hierarchical Tree'
-}
+	}
 };

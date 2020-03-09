@@ -27,5 +27,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsBehavior = {
 		'searchResultFor': '{numOfResults} search results for "{searchText}"',
 		'searchResultsNumber': '{numOfResults} search results',
 		'selected': 'selected '
-}
+	}
 };

@@ -172,6 +172,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 										current-level="[[_nextLevel]]"
 										parentNode="[[root]]"
 										is-last="[[_getOutcomeIsLast(outcomesIndex)]]"
+										search-text="[[searchText]]"
 										on-focus-next="_focusNextSibling"
 										on-focus-previous="_focusPreviousSibling"
 										on-focus-parent="_focusSelf"
@@ -204,6 +205,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 									current-level="[[_nextLevel]]"
 									parentNode="[[root]]"
 									is-last="[[_getOutcomeIsLast(outcomesIndex)]]"
+									search-text="[[searchText]]"
 									on-focus-next="_focusNextSibling"
 									on-focus-previous="_focusPreviousSibling"
 									on-focus-parent="_focusSelf"
@@ -285,7 +287,7 @@ Polymer({
 	},
 
 	observers: [
-		'_setIsSelectedState(item, alignments)',
+		'_setIsSelectedState(item, alignments, searchText)',
 		'_setAriaSelected(item, _isSelected)'
 	],
 
@@ -413,6 +415,10 @@ Polymer({
 	_setIsSelectedState: function(item, alignments) {
 		const canSelect = alignments && item && item.properties && item.properties.objectiveId;
 		this._isSelected = canSelect ? alignments.has(item.properties.objectiveId) : false;
+
+		this.updateStyles({
+			'--leaf-background-colour': this._isSelected ? 'var(--d2l-color-celestine-plus-2)' : 'transparent',
+		});
 	},
 
 	_hasOutcomeIdentifier: function(entity) {
@@ -442,7 +448,6 @@ Polymer({
 	},
 
 	_onOutcomeSelectChange: function(e) {
-		// Known issue: when a cell is selected, e.g. first cell, and type something in the search, the first cell will still be in selected state(not re-rendered); or first render and there's a cell selected, but background is not changed
 		var target = e.target;
 		if (target.checked) {
 			this._isSelected = true;

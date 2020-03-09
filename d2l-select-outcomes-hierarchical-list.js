@@ -67,6 +67,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 						item="[[displayedHierarchyItems]]"
 						alignments="[[alignments]]"
 						current-level="[[level]]"
+						search-text="[[searchText]]"
 					></d2l-outcome-hierarchy-item>
 				</div>
 			</siren-entity-loading>

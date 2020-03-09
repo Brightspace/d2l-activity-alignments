@@ -33,8 +33,8 @@ class BoldTextWrapper extends mixinBehaviors([], PolymerElement) {
                 }
 			</style>
 			<template is="dom-repeat" items="[[parsedContent]]"
-			><template is="dom-if" if="[[!item.bold]]">[[item.data]]</template
-			><template is="dom-if" if="[[item.bold]]"><b>[[item.data]]</b></template
+				><template is="dom-if" if="[[!item.bold]]">[[item.data]]</template
+				><template is="dom-if" if="[[item.bold]]"><b>[[item.data]]</b></template
 			></template>
         `;
 	}

@@ -13,5 +13,7 @@
 	"searchCleared": "Search cleared",
 	"searchResultsNumber": "{numOfResults} search results",
 	"searchResultFor": "{numOfResults} search results for \"{searchText}\"",
-	"noSearchResultFor": "No results found for \"{searchText}\""
+	"noSearchResultFor": "No results found for \"{searchText}\"",
+	"selected": "selected",
+	"outcomesHierarchicalTree": "Outcomes Hierarchical Tree"
 }

@@ -58,7 +58,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 				align-items: center;
 				margin: 1rem;
 			}
-			.d2l-hierchical-list {
+			.d2l-hierarchical-list {
 				overflow: auto;
 				overflow-x: hidden;
 				height: 100%;
@@ -93,19 +93,21 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 					[[localize('searchResultFor', 'numOfResults', _searchResultsNumber, 'searchText', _searchText)]]
 				</div>
 				<d2l-select-outcomes-hierarchical-list
-					class="d2l-hierchical-list"
+					aria-busy="[[_loading]]"
+					class="d2l-hierarchical-list"
 					href="[[_getHierarchy(entity)]]"
 					token="[[token]]"
 					alignments="[[_alignments]]"
 					search-text="[[_searchText]]"
 					on-search-results-changed="_onSearchResultsChanged"
+					
 				>
 				</d2l-select-outcomes-hierarchical-list>
 				<div class="d2l-alignment-update-buttons">
 					<d2l-button primary="" disabled="[[_buttonsDisabled]]" on-tap="_add" aria-label="[[alignButtonText]]">[[alignButtonText]]</d2l-button>
 					<d2l-button on-tap="_cancel" aria-label="[[localize('cancelLabel')]]">[[localize('cancel')]]</d2l-button>
 					<d2l-loading-spinner hidden$="[[!_loading]]"></d2l-loading-spinner>
-					<div class="d2l-selected-outcomes">[[_alignmentsSize]] selected outcomes</div>
+					<div class="d2l-selected-outcomes">[[_alignmentsSize]] [[localize('selected')]]</div>
 				</div>
 				<template is="dom-if" if="[[_showError]]">
 					<d2l-alert type="error">[[localize('error')]]</d2l-alert>
@@ -191,7 +193,7 @@ Polymer({
 		}
 	},
 
-	_handleError: function(e) {
+	_handleError: function() {
 		this._showError = true;
 	},
 

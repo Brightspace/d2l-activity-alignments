@@ -1,5 +1,5 @@
 /**
-`d2l-select-outcomes-hierchical-list`
+`d2l-select-outcomes-hierarchical-list`
 */
 
 import '@polymer/polymer/polymer-legacy.js';
@@ -62,7 +62,12 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 		<template is="dom-if" if="[[!_isEmptySearchResult]]">
 			<siren-entity-loading href="[[href]]" token="[[token]]">
 				<div class="d2l-alignment-update-content">
-					<d2l-outcome-hierarchy-item item="[[displayedHierarchyItems]]" alignments="[[alignments]]" current-level="[[level]]"></d2l-outcome-hierarchy-item>
+					<d2l-outcome-hierarchy-item
+						tabindex="0"
+						item="[[_getHierarchyStart(entity)]]"
+						alignments="[[alignments]]"
+						current-level="[[level]]"
+					></d2l-outcome-hierarchy-item>
 				</div>
 			</siren-entity-loading>
 		</template>
@@ -121,7 +126,7 @@ Polymer({
 
 		var hierarchyRoot = {
 			entities: entity.getSubEntitiesByClass('hierarchical-outcome'),
-			class: ['hierarchical-outcome', 'outcomes-root']
+			class: ['hierarchical-outcome', 'hierarchy-start']
 		};
 
 		return hierarchyRoot;

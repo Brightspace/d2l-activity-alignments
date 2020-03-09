@@ -64,7 +64,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 				<div class="d2l-alignment-update-content">
 					<d2l-outcome-hierarchy-item
 						tabindex="0"
-						item="[[_getHierarchyStart(entity)]]"
+						item="[[displayedHierarchyItems]]"
 						alignments="[[alignments]]"
 						current-level="[[level]]"
 					></d2l-outcome-hierarchy-item>
@@ -175,7 +175,7 @@ Polymer({
 
 	_filterHierachy: function(entity, searchText) {
 		const isLeaf = (entity) => entity && entity.class.includes('leaf-outcome');
-		const isRoot = (entity) => entity.class.includes('outcomes-root');
+		const isRoot = (entity) => entity.class.includes('hierarchy-start');
 
 		if (isRoot(entity)) {
 			const topLevels = [];

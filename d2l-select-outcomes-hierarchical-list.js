@@ -191,8 +191,9 @@ Polymer({
 	_applyBoldText: function(entity, searchText) {
 		if (!entity || !searchText) return entity;
 
+		const escapeRegExp = (s) => s.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 		for (const i of searchText.split(' ').filter(i => i)) {
-			const searchRegex = new RegExp(i, 'ig');
+			const searchRegex = new RegExp(escapeRegExp(i), 'ig');
 			entity.properties.description = entity.properties.description.replace(searchRegex, '<b>$&</b>');
 			entity.properties.notation = entity.properties.notation.replace(searchRegex, '<b>$&</b>');
 		}

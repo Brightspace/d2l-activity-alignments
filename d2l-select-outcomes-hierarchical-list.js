@@ -18,6 +18,7 @@ import './d2l-outcome-hierarchy-item.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
+import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
 
 const $_documentContainer = document.createElement('template');
 
@@ -85,7 +86,8 @@ Polymer({
 	behaviors: [
 		D2L.PolymerBehaviors.Siren.EntityBehavior,
 		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior
+		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
+		OutcomeParserBehavior
 	],
 
 	properties: {
@@ -161,12 +163,8 @@ Polymer({
 	},
 
 	_search: function(entity, searchText = '') {
-		const description = (entity && entity.properties && entity.properties.description)
-			? entity.properties.description.toLowerCase().normalize()
-			: '';
-		const notation = (entity && entity.properties && entity.properties.notation)
-			? entity.properties.notation.toLowerCase().normalize()
-			: '';
+		const description = this.getOutcomeDescriptionPlainText(entity).toLowerCase().normalize();
+		const notation = this.getOutcomeIdentifier(entity).toLowerCase().normalize();
 		const searchTextLower = searchText.trim().toLowerCase().normalize();
 		const splitText = searchTextLower.split(' ').filter(i => i);
 

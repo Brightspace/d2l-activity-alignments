@@ -287,7 +287,7 @@ Polymer({
 	},
 
 	observers: [
-		'_setIsSelectedState(item, alignments, searchText)',
+		'_setIsSelectedState(item, alignments)',
 		'_setAriaSelected(item, _isSelected)'
 	],
 

@@ -128,7 +128,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 			<template is="dom-if" if="[[_isLeafNode(item)]]">
 				<div>
 					<d2l-input-checkbox id="checkbox" tabindex="-1" not-tabbable="true" checked="[[_isSelected]]" on-change="_onOutcomeSelectChange" data-index$="[[index]]" >
-						<div class="d2l-outcome-wrap">
+						<div class="d2l-outcome-wrap" aria-label$="[[_leafAriaLabel]]">
 							<template is="dom-if" if="[[_hasOutcomeIdentifier(item)]]">
 								<div class="d2l-outcome-identifier">
 									<d2l-bold-text-wrapper content="[[getOutcomeIdentifier(item)]]"></d2l-bold-text-wrapper>
@@ -287,7 +287,11 @@ Polymer({
 		_headerAriaLabel: {
 			type: String,
 			computed: '_computeHeaderAriaLabel(item, _collapsed, currentLevel)',
-		}
+		},
+		_leafAriaLabel: {
+			type: String,
+			computed: '_computeLeafAriaLabel(item, _isSelected)',
+		},
 	},
 
 	observers: [
@@ -671,10 +675,19 @@ Polymer({
 	},
 
 	_computeHeaderAriaLabel: function(item, collapsed, level) {
-		if (item === undefined || collapsed === undefined) return undefined;
-		
+		if (item === undefined || collapsed === undefined || !item.properties) return undefined;
+
 		const name = this.getOutcomeIdentifier(item);
 		const status = collapsed ? 'collapsed' : 'expanded';
-		return `Tree level ${level}, ${status}, ${name}`;
-	}
+		return `Tree level ${level} - ${status} - ${name}`;
+	},
+
+	_computeLeafAriaLabel: function(item, isSelected) {
+		if (item === undefined || isSelected === undefined || !item.properties) return undefined;
+
+		const shortCode = this.getOutcomeIdentifier(item);
+		const description = this.getOutcomeDescriptionPlainText(item);
+		const status = isSelected ? 'selected' : 'not selected';
+		return `Tree leaf - ${shortCode} - ${status} - ${description}`;
+	},
 });

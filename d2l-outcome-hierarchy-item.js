@@ -146,7 +146,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 			</template>
 			<template is="dom-if" if="[[_isNonLeafNode(item)]]">
 				<div>
-					<div class="d2l-collapsible-node">
+					<div class="d2l-collapsible-node" aria-label$="[[_headerAriaLabel]]">
 						<div class="node-header-content">
 							<d2l-icon icon="[[_collapseIcon]]"></d2l-icon>
 							<div class="d2l-outcome-heading">
@@ -283,6 +283,10 @@ Polymer({
 		_ariaExpanded: {
 			type: String,
 			computed: '_getAriaExpanded(item, _collapsed)'
+		},
+		_headerAriaLabel: {
+			type: String,
+			computed: '_computeHeaderAriaLabel(item, _collapsed, currentLevel)',
 		}
 	},
 
@@ -664,5 +668,13 @@ Polymer({
 		} else {
 			this.focus();
 		}
+	},
+
+	_computeHeaderAriaLabel: function(item, collapsed, level) {
+		if (item === undefined || collapsed === undefined) return undefined;
+		
+		const name = this.getOutcomeIdentifier(item);
+		const status = collapsed ? 'collapsed' : 'expanded';
+		return `Tree level ${level}, ${status}, ${name}`;
 	}
 });

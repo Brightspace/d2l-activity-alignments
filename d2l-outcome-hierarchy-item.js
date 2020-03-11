@@ -675,19 +675,19 @@ Polymer({
 	},
 
 	_computeHeaderAriaLabel: function(item, collapsed, level) {
-		if (item === undefined || collapsed === undefined || !item.properties) return undefined;
+		if (!item || !item.properties || collapsed === undefined) return undefined;
 
 		const name = this.getOutcomeIdentifier(item);
 		const status = collapsed ? 'collapsed' : 'expanded';
 		return `Tree level ${level} - ${status} - ${name}`;
 	},
 
-	_computeLeafAriaLabel: function(item, isSelected) {
-		if (item === undefined || isSelected === undefined || !item.properties) return undefined;
+	_computeLeafAriaLabel: function(item, selected) {
+		if (!item || !item.properties || selected === undefined) return undefined;
 
 		const shortCode = this.getOutcomeIdentifier(item);
 		const description = this.getOutcomeDescriptionPlainText(item);
-		const status = isSelected ? 'selected' : 'not selected';
+		const status = selected ? 'selected' : 'not selected';
 		return `Tree leaf - ${shortCode} - ${status} - ${description}`;
 	},
 });

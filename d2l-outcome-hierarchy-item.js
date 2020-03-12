@@ -124,8 +124,8 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 			id="container"
 			tabindex="-1"
 			role="treeitem"
-			aria-selected="[[_ariaSelected]]"
-			aria-expanded="[[_ariaExpanded]]">
+			aria-selected$="[[_ariaSelected]]"
+			aria-expanded$="[[_ariaExpanded]]">
 			<template is="dom-if" if="[[_isLeafNode(item)]]">
 				<div>
 					<d2l-input-checkbox id="checkbox" tabindex="-1" not-tabbable="true" checked="[[_isSelected]]" on-change="_onOutcomeSelectChange" data-index$="[[index]]" >
@@ -389,9 +389,9 @@ Polymer({
 	},
 
 	_setAriaSelected: function(item, _isSelected) {
-		if (!item || !item.class || !this._isLeafNode(item)) {
+		if (!item || !item.class) {
 			this._ariaSelected = undefined;
-		} else if (_isSelected) {
+		} else if (_isSelected || !this._isLeafNode(item)) {
 			this._ariaSelected = 'true';
 		} else {
 			this._ariaSelected = 'false';

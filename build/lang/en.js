@@ -27,11 +27,10 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEnBehavior = {
 		'noSearchResultFor': 'No results found for "{searchText}"',
 		'selected': 'selected',
 		'outcomesHierarchicalTree': 'Outcomes Hierarchical Tree',
-		'a11yCollapsed': 'collapsed',
-		'a11yExpanded': 'expanded',
-		'a11ySelected': 'selected',
-		'a11yNotSelected': 'not selected',
+		'collapsed': 'collapsed',
+		'expanded': 'expanded',
+		'notSelected': 'not selected',
 		'a11yHeaderAriaLabel': 'Tree level {level} - {status} - {name}',
 		'a11yLeafAriaLabel': 'Tree leaf {shortCode} - {status} - {description}'
-	}
+}
 };

@@ -230,8 +230,8 @@ Polymer({
 	is: 'd2l-outcome-hierarchy-item',
 
 	behaviors: [
+		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
 		OutcomeParserBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior
 	],
 
 	properties: {
@@ -262,8 +262,7 @@ Polymer({
 			computed: '_getNextLevel(currentLevel)'
 		},
 		_isSelected: {
-			type: Boolean,
-			value: false
+			type: Boolean
 		},
 		parentNode: {
 			type: Object
@@ -680,11 +679,11 @@ Polymer({
 		if (!item || !item.properties || collapsed === undefined) return undefined;
 
 		const name = this.getOutcomeIdentifier(item);
-		const status = collapsed ? this.localize('a11yCollapsed') : this.localize('a11yExpanded');
+		const status = collapsed ? 'collapsed' : 'expanded';
 
 		return this.localize('a11yHeaderAriaLabel',
 			'level', level,
-			'status', status,
+			'status', this.localize(status),
 			'name', name
 		);
 	},
@@ -692,9 +691,9 @@ Polymer({
 	_computeLeafAriaLabel: function(item, selected) {
 		if (!item || !item.properties || selected === undefined) return undefined;
 
-		const shortCode = this.getOutcomeIdentifier(item);
-		const description = this.getOutcomeDescriptionPlainText(item);
-		const status = selected ? 'a11ySelected' : 'a11yNotSelected';
+		const shortCode = this.getOutcomeIdentifier(item) || '';
+		const description = this.getOutcomeDescriptionPlainText(item) || '';
+		const status = selected ? 'selected' : 'notSelected';
 
 		return this.localize('a11yLeafAriaLabel',
 			'shortCode', shortCode,

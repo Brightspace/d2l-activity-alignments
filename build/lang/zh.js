@@ -10,6 +10,12 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhBehavior = {
 	zh: {
+		'a11yCollapsed': 'collapsed',
+		'a11yExpanded': 'expanded',
+		'a11yHeaderAriaLabel': 'Tree level {level} - {status} - {name}',
+		'a11yLeafAriaLabel': 'Tree leaf {shortCode} - {status} - {description}',
+		'a11yNotSelected': 'not selected',
+		'a11ySelected': 'selected',
 		'add': '添加',
 		'addLabel': 'Add selection',
 		'alignmentRemoved': 'Alignment removed',

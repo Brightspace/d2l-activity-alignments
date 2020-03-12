@@ -10,6 +10,12 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangKoBehavior = {
 	ko: {
+		'a11yCollapsed': 'collapsed',
+		'a11yExpanded': 'expanded',
+		'a11yHeaderAriaLabel': 'Tree level {level} - {status} - {name}',
+		'a11yLeafAriaLabel': 'Tree leaf {shortCode} - {status} - {description}',
+		'a11yNotSelected': 'not selected',
+		'a11ySelected': 'selected',
 		'add': '추가',
 		'addLabel': '선택 항목 추가',
 		'alignmentRemoved': '정렬이 제거됨',

@@ -197,11 +197,18 @@ Polymer({
 			searchWords.splice(searchWords.indexOf('b'), 1);
 			searchWords.unshift('b');
 		}
+		const dedupWords = searchWords.filter(item => {
+			for (const i of searchWords) {
+				if (i !== item && i.indexOf(item) > -1) {
+					return false;
+				}
+			}
+			return true;
+		});
 
-		for (const i of searchWords) {
+		for (const i of dedupWords) {
 			const searchRegex = new RegExp(escapeRegExp(i), 'ig');
 			entity.properties.description = entity.properties.description.replace(searchRegex, '<b>$&</b>');
-			entity.properties.notation = entity.properties.notation.replace(searchRegex, '<b>$&</b>');
 		}
 		return entity;
 	},

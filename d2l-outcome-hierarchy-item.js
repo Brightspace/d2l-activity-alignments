@@ -17,6 +17,7 @@ import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-button/d2l-button.js';
 import 's-html/s-html.js';
 import './d2l-bold-text-wrapper.js';
+import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
 const $_documentContainer = document.createElement('template');
@@ -131,7 +132,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 						<div class="d2l-outcome-wrap" aria-label$="[[_leafAriaLabel]]">
 							<template is="dom-if" if="[[_hasOutcomeIdentifier(item)]]">
 								<div class="d2l-outcome-identifier">
-									<d2l-bold-text-wrapper content="[[getOutcomeIdentifier(item)]]"></d2l-bold-text-wrapper>
+									<d2l-bold-text-wrapper content="[[_getOutcomeIdentifier(item, searchText)]]"></d2l-bold-text-wrapper>
 								</div>
 							</template>
 							<div class="d2l-outcome-text">
@@ -229,7 +230,8 @@ Polymer({
 	is: 'd2l-outcome-hierarchy-item',
 
 	behaviors: [
-		OutcomeParserBehavior
+		OutcomeParserBehavior,
+		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior
 	],
 
 	properties: {
@@ -291,7 +293,7 @@ Polymer({
 		_leafAriaLabel: {
 			type: String,
 			computed: '_computeLeafAriaLabel(item, _isSelected)',
-		},
+		}
 	},
 
 	observers: [
@@ -678,8 +680,13 @@ Polymer({
 		if (!item || !item.properties || collapsed === undefined) return undefined;
 
 		const name = this.getOutcomeIdentifier(item);
-		const status = collapsed ? 'collapsed' : 'expanded';
-		return `Tree level ${level} - ${status} - ${name}`;
+		const status = collapsed ? this.localize('a11yCollapsed') : this.localize('a11yExpanded');
+
+		return this.localize('a11yHeaderAriaLabel',
+			'level', level,
+			'status', status,
+			'name', name
+		);
 	},
 
 	_computeLeafAriaLabel: function(item, selected) {
@@ -687,7 +694,38 @@ Polymer({
 
 		const shortCode = this.getOutcomeIdentifier(item);
 		const description = this.getOutcomeDescriptionPlainText(item);
-		const status = selected ? 'selected' : 'not selected';
-		return `Tree leaf - ${shortCode} - ${status} - ${description}`;
+		const status = selected ? 'a11ySelected' : 'a11yNotSelected';
+
+		return this.localize('a11yLeafAriaLabel',
+			'shortCode', shortCode,
+			'status', this.localize(status),
+			'description', description
+		);
 	},
+
+	_getOutcomeIdentifier(entity, searchText) {
+		let content = this.getOutcomeIdentifier(entity);
+		if (!content || !searchText) return content;
+
+		const escapeRegExp = (s) => s.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+		const searchWords = [...new Set(searchText.split(' ').filter(i => i))];
+		if (searchWords.indexOf('b') > 0) { // 'b' has to be the first item, otherwise all <b> tag will be messed up
+			searchWords.splice(searchWords.indexOf('b'), 1);
+			searchWords.unshift('b');
+		}
+		const dedupWords = searchWords.filter(item => {
+			for (const i of searchWords) {
+				if (i !== item && i.indexOf(item) > -1) {
+					return false;
+				}
+			}
+			return true;
+		});
+
+		for (const i of dedupWords) {
+			const searchRegex = new RegExp(escapeRegExp(i), 'ig');
+			content = content.replace(searchRegex, '<b>$&</b>');
+		}
+		return content;
+	}
 });

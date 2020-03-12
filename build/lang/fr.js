@@ -32,5 +32,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrBehavior = {
 		'searchResultFor': '{numOfResults} Résultats de recherche pour "{searchText}"',
 		'searchResultsNumber': '{numOfResults} résultats de recherche',
 		'selected': 'selected '
-}
+	}
 };

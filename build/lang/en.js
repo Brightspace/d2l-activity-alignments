@@ -32,5 +32,5 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEnBehavior = {
 		'notSelected': 'not selected',
 		'a11yHeaderAriaLabel': 'Tree level {level} - {status} - {name}',
 		'a11yLeafAriaLabel': 'Tree leaf {shortCode} - {status} - {description}'
-}
+	}
 };

@@ -44,7 +44,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 
 			.d2l-outcome-heading > * {
 				margin: -6px 0px 0px 5px !important;
-				@apply --d2l-heading-3;
+				@apply --d2l-heading-4;
 			}
 
 			.d2l-collapsible-node {
@@ -155,7 +155,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 							<d2l-icon icon="[[_collapseIcon]]"></d2l-icon>
 							<div class="d2l-outcome-heading">
 								<template is="dom-if" if="[[_hasOutcomeDescription(item)]]">
-									<h4>[[getOutcomeDescriptionPlainText(item)]]</h4>
+									[[getOutcomeDescriptionPlainText(item)]]
 								</template>
 							</div>
 						</div>

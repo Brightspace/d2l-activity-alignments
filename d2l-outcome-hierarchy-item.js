@@ -31,6 +31,10 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 				--sublevel-cell-margin: 6px;
 			}
 
+			* {
+				outline: none;
+			}
+
 			.d2l-outcome-wrap {
 				display: flex;
 				flex-direction: column-reverse;

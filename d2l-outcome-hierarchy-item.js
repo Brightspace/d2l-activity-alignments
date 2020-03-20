@@ -15,6 +15,7 @@ import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 'd2l-button/d2l-button.js';
+import '@polymer/iron-collapse/iron-collapse.js';
 import 's-html/s-html.js';
 import './d2l-bold-text-wrapper.js';
 import './localize-behavior.js';
@@ -86,6 +87,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 				word-break: break-word;
 				margin-bottom: 0px;
 				margin-block-start: 0em;
+				transition:visibility 0.3s linear,opacity 0.3s linear;
 			}
 
 			li {
@@ -120,6 +122,10 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 				background-color: var(--leaf-background-colour);
 				border: var(--leaf-border);
 				margin:-2px;
+			}
+
+			#children-collapse {
+				--iron-collapse-transition-duration: 200ms;
 			}
 
 		</style>
@@ -160,7 +166,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 							</div>
 						</div>
 					</div>
-					<template is="dom-if" if="[[!_collapsed]]">
+					<iron-collapse opened$=[[!_collapsed]] id="children-collapse">
 						<ul role="group">
 							<template is="dom-repeat" items="[[_children]]" index-as="outcomesIndex">
 								<li class$="[[_getCellClass(item)]]" tabindex="-1">
@@ -185,7 +191,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 								</li>
 							</template>
 						</ul>
-					</template>
+					</iron-collapse>
 				</div>
 			</template>
 			<template is="dom-if" if="[[_isHierarchyStart(item)]]">
@@ -681,8 +687,7 @@ Polymer({
 
 	_computeHeaderAriaLabel: function(item, collapsed, level) {
 		if (!item || !item.properties || collapsed === undefined) return undefined;
-
-		const name = this.getOutcomeIdentifier(item);
+		const name = this.getOutcomeDescriptionPlainText(item);
 		const status = collapsed ? 'collapsed' : 'expanded';
 
 		return this.localize('a11yHeaderAriaLabel',

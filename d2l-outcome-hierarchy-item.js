@@ -45,6 +45,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 
 			.d2l-outcome-heading {
 				margin-top: 10px;
+				margin-right: 24px
 			}
 
 			.d2l-outcome-heading > * {
@@ -54,7 +55,8 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 
 			.d2l-collapsible-node {
 				display: flex;
-				background-color: #F9FBFF;
+				background-color: var(--non-leaf-background);
+				border: var(--leaf-border);
 			}
 
 			.node-header-content {
@@ -122,10 +124,10 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
                 border-bottom-color: var(--d2l-color-gypsum);
 			}
 
-			d2l-outcome-hierarchy-item {
+			.leaf-node-container {
 				background-color: var(--leaf-background-colour);
 				border: var(--leaf-border);
-				margin:-2px;
+				margin: -2px;
 			}
 
 			#children-collapse {
@@ -140,7 +142,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 			aria-selected$="[[_ariaSelected]]"
 			aria-expanded$="[[_ariaExpanded]]">
 			<template is="dom-if" if="[[_isLeafNode(item)]]">
-				<div>
+				<div class="leaf-node-container">
 					<d2l-input-checkbox id="checkbox" tabindex="-1" not-tabbable="true" checked="[[_isSelected]]" on-change="_onOutcomeSelectChange" data-index$="[[index]]" >
 						<div class="d2l-outcome-wrap" aria-label$="[[_leafAriaLabel]]">
 							<template is="dom-if" if="[[_hasOutcomeIdentifier(item)]]">
@@ -329,7 +331,8 @@ Polymer({
 
 		const marginLeft = 12 * this.currentLevel;
 		this.updateStyles({
-			'--leaf-border': '2px solid transparent'
+			'--leaf-border': '2px solid transparent',
+			'--non-leaf-background': '#F9FBFF',
 		});
 		if (this._isSelected) {
 			this.updateStyles({
@@ -371,7 +374,8 @@ Polymer({
 		this.dispatchEvent(event);
 
 		this.updateStyles({
-			'--leaf-border': '2px solid var(--d2l-color-celestine-plus-1)'
+			'--leaf-border': '2px solid var(--d2l-color-celestine-plus-1)',
+			'--non-leaf-background': 'var(--d2l-color-celestine-plus-2)',
 		});
 
 		this._focus = true;
@@ -381,7 +385,8 @@ Polymer({
 
 	onBlur: function() {
 		this.updateStyles({
-			'--leaf-border': '2px solid transparent'
+			'--leaf-border': '2px solid transparent',
+			'--non-leaf-background': '#F9FBFF',
 		});
 		this._blurContainer();
 		this._focus = false;

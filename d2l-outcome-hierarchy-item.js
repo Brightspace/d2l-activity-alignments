@@ -45,12 +45,14 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 
 			.d2l-outcome-heading {
 				margin-top: 10px;
-				margin-right: 24px
+				margin-right: 24px;
+				line-height: 32px;
 			}
 
 			.d2l-outcome-heading > * {
 				margin: -6px 0px 0px 5px !important;
-				@apply --d2l-heading-4;
+				font-size: var(--d2l-heading-4_-_font-size);
+				font-weight: var(--d2l-heading-4_-_font-weight);
 			}
 
 			.d2l-collapsible-node {
@@ -62,6 +64,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 			.node-header-content {
 				display: -webkit-inline-box;
 				margin-left: var(--sublevel-cell-margin);
+				line-height: 28px;
 			}
 
 			.d2l-outcome-identifier {
@@ -167,7 +170,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 							<d2l-icon icon="[[_collapseIcon]]"></d2l-icon>
 							<div class="d2l-outcome-heading">
 								<template is="dom-if" if="[[_hasOutcomeDescription(item)]]">
-									[[getOutcomeDescriptionPlainText(item)]]
+									<h4>[[getOutcomeDescriptionPlainText(item)]]</h4>
 								</template>
 							</div>
 						</div>

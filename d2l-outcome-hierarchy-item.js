@@ -458,8 +458,6 @@ Polymer({
 
 	_expandCollapse: function(event) {
 		this._collapsed = !this._collapsed;
-		this.blur();
-		this._focusSelf();
 		if (event) {
 			event.stopPropagation();
 		}

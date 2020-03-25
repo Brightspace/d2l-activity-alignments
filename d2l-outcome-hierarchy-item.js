@@ -371,7 +371,7 @@ Polymer({
 			if (elem) {
 				elem.focus({
 					preventScroll: true
-				  });
+				});
 			}
 		}
 		const event = new CustomEvent('focus-child');
@@ -640,7 +640,7 @@ Polymer({
 		}
 		e ? this.focus() : this.focus({
 			preventScroll: true
-		  });
+		});
 	},
 
 	_onFocusChild: function(e) {

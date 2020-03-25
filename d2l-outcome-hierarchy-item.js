@@ -369,7 +369,9 @@ Polymer({
 		} else {
 			const elem = this.shadowRoot.getElementById('container');
 			if (elem) {
-				elem.focus();
+				elem.focus({
+					preventScroll: true
+				  });
 			}
 		}
 		const event = new CustomEvent('focus-child');
@@ -458,6 +460,8 @@ Polymer({
 
 	_expandCollapse: function(event) {
 		this._collapsed = !this._collapsed;
+		this.blur();
+		this._focusSelf();
 		if (event) {
 			event.stopPropagation();
 		}
@@ -629,13 +633,14 @@ Polymer({
 		this.dispatchEvent(event);
 	},
 
-	_focusSelf: function() {
+	_focusSelf: function(e) {
 		this._blurContainer();
 		if (this._isHierarchyStart(this.item)) {
-			this._selectFirstNode();
-		} else {
-			this.focus();
+			return this._selectFirstNode();
 		}
+		e ? this.focus() : this.focus({
+			preventScroll: true
+		  });
 	},
 
 	_onFocusChild: function(e) {

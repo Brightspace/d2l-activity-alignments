@@ -176,7 +176,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-outcome-hierarchy-i
 						</div>
 					</div>
 					<iron-collapse opened$=[[!_collapsed]] id="children-collapse">
-						<ul role="group">
+						<ul>
 							<template is="dom-repeat" items="[[_children]]" index-as="outcomesIndex">
 								<li class$="[[_getCellClass(item)]]" tabindex="-1">
 									<d2l-outcome-hierarchy-item

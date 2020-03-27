@@ -24,6 +24,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 		<style>
 			:host {
 				display: flex;
+				--hierarchical-list-height: 520px;
 			}
 
 			* {
@@ -66,7 +67,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 			.d2l-hierarchical-list {
 				overflow: auto;
 				overflow-x: hidden;
-				height: 520px;
+				height: var(--hierarchical-list-height);
 				border: 1px solid var(--d2l-color-gypsum);
 			}
 			.d2l-selected-outcomes {
@@ -165,6 +166,10 @@ Polymer({
 		}
 	},
 
+	observers: [
+		'_updateHierarchicalListHeight(maxHeight)',
+	],
+
 	behaviors: [
 		D2L.PolymerBehaviors.Siren.EntityBehavior,
 		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
@@ -259,5 +264,13 @@ Polymer({
 
 	_onSearchResultsChanged(e) {
 		this._searchResultsNumber = e.detail.value || 0;
-	}
+	},
+
+	_updateHierarchicalListHeight: function(maxHeight) {
+		if (maxHeight) {
+			this.updateStyles({
+				'--hierarchical-list-height': maxHeight,
+			});
+		}
+	},
 });

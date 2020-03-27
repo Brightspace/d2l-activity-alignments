@@ -227,7 +227,6 @@ Polymer({
 	},
 
 	_cancel: function() {
-		this._buttonsDisabled = true;
 		this.dispatchEvent(new CustomEvent('d2l-alignment-list-cancelled', {
 			bubbles: true,
 			composed: true
@@ -247,6 +246,7 @@ Polymer({
 					bubbles: true,
 					composed: true
 				}));
+				this._buttonsDisabled = false;
 			}.bind(this));
 	},
 

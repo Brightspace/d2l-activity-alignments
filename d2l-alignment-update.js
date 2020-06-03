@@ -191,7 +191,7 @@ Polymer({
 			type: Boolean,
 			value: false
 		},
-		deferredSubmit: {
+		deferredSave: {
 			type: Boolean
 		}
 	},
@@ -417,11 +417,11 @@ Polymer({
 	_add: function() {
 		this._buttonsDisabled = true;
 		this._performActionAndUpdate(/* @this */ function() {
-			const actionName = this.deferredSubmit ? Actions.alignments.deferredSubmit : Actions.alignments.submit;
+			const actionName = this.deferredSave ? Actions.alignments.deferredSubmit : Actions.alignments.submit;
 			return this.candidates.getActionByName(actionName);
 		})
 			.then(function() {
-				!this.deferredSubmit && window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
+				!this.deferredSave && window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
 				this.dispatchEvent(new CustomEvent('d2l-alignment-list-added', {
 					bubbles: true,
 					composed: true

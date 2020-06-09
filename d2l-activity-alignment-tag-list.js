@@ -185,7 +185,16 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		const actionName = this.deferredSave ? this.HypermediaActions.alignments.deferredRemoveAlignment : this.HypermediaActions.alignments.removeAlignment;
 		const deleteAlignmentAction = alignment.getActionByName(actionName);
 		if (!deleteAlignmentAction) return;
-		this.performSirenAction(deleteAlignmentAction);
+		this.performSirenAction(deleteAlignmentAction).then(()=> {
+			this.dispatchEvent(
+				new CustomEvent(
+					'd2l-activity-alignment-outcomes-removed', {
+						composed: true,
+						bubbles: true
+					}
+				)
+			);
+		});
 	}
 
 	_canUpdate(entity, readOnly) {

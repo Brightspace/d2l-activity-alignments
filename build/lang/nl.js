@@ -22,14 +22,14 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior = {
 		'error': 'Er is een fout opgetreden',
 		'expanded': 'uitgevouwen',
 		'indirectAlignments': '{headerTitle} afgestemd op rubriccriteria',
-		'noSearchResultFor': 'Geen resultaten gevonden voor "{searchText}"',
+		'noSearchResultFor': 'Geen resultaten gevonden voor \'{searchText}\'',
 		'notSelected': 'niet geselecteerd',
 		'outcomesHierarchicalTree': 'Hiërarchische structuur voor uitkomsten',
 		'removeAlignment': 'Afstemming verwijderen',
 		'searchCleared': 'Zoekopdracht gewist',
 		'searchOutcomes': 'Resultaten zoekopdracht',
 		'searchPlaceholder': 'Zoeken...',
-		'searchResultFor': '{numOfResults} zoekresultaten voor "{searchText}"',
+		'searchResultFor': '{numOfResults} zoekresultaten voor \'{searchText}\'',
 		'searchResultsNumber': '{numOfResults} zoekresultaten',
 		'selected': 'geselecteerd'
 	}

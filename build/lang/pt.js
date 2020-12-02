@@ -28,7 +28,7 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangPtBehavior = {
 		'removeAlignment': 'Remover alinhamento',
 		'searchCleared': 'Pesquisa apagada',
 		'searchOutcomes': 'Resultados de Pesquisa',
-		'searchPlaceholder': 'Pesquisar...',
+		'searchPlaceholder': 'Pesquisar…',
 		'searchResultFor': '{numOfResults} resultados de pesquisa para "{searchText}"',
 		'searchResultsNumber': '{numOfResults} resultados de pesquisa',
 		'selected': 'selecionados'

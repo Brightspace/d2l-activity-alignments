@@ -10,8 +10,8 @@ window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.Polymer
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrBehavior = {
 	fr: {
-		'a11yHeaderAriaLabel': 'Niveau de l\'arborescence {level} – {status} – {name}',
-		'a11yLeafAriaLabel': 'Élément de l\'arbre {shortCode} – {status} – {description}',
+		'a11yHeaderAriaLabel': 'Niveau de l’arborescence {level} – {status} – {name}',
+		'a11yLeafAriaLabel': 'Élément de l’arbre {shortCode} – {status} – {description}',
 		'add': 'Ajouter',
 		'addLabel': 'Ajouter la sélection',
 		'alignmentRemoved': 'Alignement supprimé',
@@ -24,11 +24,11 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrBehavior = {
 		'indirectAlignments': '{headerTitle} aligné avec les critères de la grille d’évaluation',
 		'noSearchResultFor': 'Aucun résultat trouvé pour "{searchText}".',
 		'notSelected': 'non sélectionné(e)',
-		'outcomesHierarchicalTree': 'Résultats de l\'arborescence hiérarchique',
+		'outcomesHierarchicalTree': 'Résultats de l’arborescence hiérarchique',
 		'removeAlignment': 'Supprimer l’alignement',
 		'searchCleared': 'Recherche effacée',
 		'searchOutcomes': 'Résultats de la recherche',
-		'searchPlaceholder': 'Rechercher…',
+		'searchPlaceholder': 'Recherche…',
 		'searchResultFor': '{numOfResults} résultat(s) de la recherche pour "{searchText}"',
 		'searchResultsNumber': '{numOfResults} résultat(s) de la recherche',
 		'selected': 'sélectionné(s)'

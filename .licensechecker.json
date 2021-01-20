@@ -13,6 +13,7 @@
 		"qrcode-terminal@^0.10.0": "Apache-2.0",
 		"stackframe@^0.3.1": "Public-Domain",
 		"url-template@^2.0.8": "BSD-3-Clause",
+		"valid-url@^1.0.9": "MIT",
 		"wct-browser-legacy@^1.0.2": "BSD-3-Clause"
 	}
 }

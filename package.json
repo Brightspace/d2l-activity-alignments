@@ -2,7 +2,7 @@
   "name": "d2l-activity-alignments",
   "version": "2.0.23",
   "scripts": {
-    "lang:build": "lang-build -ec langtools/config.json",
+    "lang:build": "lang-build -es \"\t\" -c langtools/config.json",
     "lang:copy": "lang-copy -svc langtools/config.json",
     "lint": "npm run lint:eslint && npm run lint:polymer",
     "lint:eslint": "eslint . --ext .js,.html",

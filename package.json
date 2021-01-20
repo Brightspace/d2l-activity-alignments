@@ -4,10 +4,9 @@
   "scripts": {
     "lang:build": "lang-build -ec langtools/config.json",
     "lang:copy": "lang-copy -svc langtools/config.json",
-    "lang:lint": "eslint build/lang",
-    "test": "polymer test --skip-plugin sauce && npm run testcafe:chrome",
-    "lint:eslint": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
+    "lint:eslint": "eslint . --ext .js,.html",
     "lint:polymer": "polymer lint",
+    "test": "polymer test --skip-plugin sauce && npm run testcafe:chrome",
     "serve": "FOR /F \"tokens=*\" %F IN ('hostname') DO polymer serve --hostname %F.desire2learn.d2l",
     "serve:local": "polymer serve",
     "testcafe:chrome": "testcafe \"saucelabs:Chrome@73.0:Windows 10\" TestCafe/LOA_on_Outcomes.js --app \"polymer serve\"",

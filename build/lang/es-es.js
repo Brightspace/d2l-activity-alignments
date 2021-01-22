@@ -4,35 +4,35 @@ window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
 window.D2L.language = window.D2L.language || {};
-window.D2L.language.es = {
-	'a11yHeaderAriaLabel': 'Nivel de árbol {level}: {status}: {name}',
-	'a11yLeafAriaLabel': 'Hoja de árbol {shortCode}: {status}: {description}',
-	'add': 'Agregar',
+window.D2L.language.esEs = {
+	'a11yHeaderAriaLabel': 'Nivel de árbol {level} - {status} - {name}',
+	'a11yLeafAriaLabel': 'Hoja de árbol {shortCode} - {status} - {description}',
+	'add': 'Añadir',
 	'addLabel': 'Agregar selección',
 	'alignmentRemoved': 'Alineación eliminada',
 	'cancel': 'Cancelar',
 	'cancelLabel': 'Cancelar selección',
-	'collapsed': 'contraído',
+	'collapsed': 'contraída',
 	'directAlignments': '{headerTitle} alineado directamente con esta actividad',
-	'error': 'Se produjo un error',
-	'expanded': 'expandido',
+	'error': 'Se ha producido un error',
+	'expanded': 'expandida',
 	'indirectAlignments': '{headerTitle} alineado con los criterios de la rúbrica',
-	'noSearchResultFor': 'No se encontraron resultados para “{searchText}”',
+	'noSearchResultFor': 'No se han encontrado resultados para "{searchText}"',
 	'notSelected': 'no seleccionado',
 	'outcomesHierarchicalTree': 'Árbol jerárquico de resultados',
 	'removeAlignment': 'Quitar la alineación',
-	'searchCleared': 'Se borró la búsqueda',
-	'searchOutcomes': 'Buscar resultados',
+	'searchCleared': 'Búsqueda borrada',
+	'searchOutcomes': 'Resultados de la búsqueda',
 	'searchPlaceholder': 'Buscar…',
-	'searchResultFor': '{numOfResults} resultados de búsqueda para “{searchText}”',
+	'searchResultFor': '{numOfResults} resultados de búsqueda de "{searchText}"',
 	'searchResultsNumber': '{numOfResults} resultados de búsqueda',
-	'selected': 'seleccionado'
+	'selected': 'seleccionado(s)'
 };
 
 /*
- * Es lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsBehavior
+ * EsEs lang terms
+ * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsEsBehavior
  */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsBehavior = {
-	es: window.D2L.language.es
+D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsEsBehavior = {
+	esEs: window.D2L.language.esEs
 };

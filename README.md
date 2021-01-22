@@ -1,5 +1,7 @@
 # \<d2l-activity-alignments\>
 
+[![CI][CI Badge]][CI Workflows]
+
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
@@ -72,3 +74,7 @@ document.getElementById( 'my-alignments' ).addEventListener( 'd2l-activity-align
 });
 </script>
 ```
+
+<!-- links -->
+[CI Badge]: https://github.com/Brightspace/d2l-activity-alignments/workflows/CI/badge.svg?branch=master
+[CI Workflows]: https://github.com/Brightspace/d2l-activity-alignments/actions?query=workflow%3ACI+branch%3Amaster

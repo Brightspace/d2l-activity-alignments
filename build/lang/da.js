@@ -3,8 +3,9 @@ window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.language = window.D2L.language || {};
-window.D2L.language.da = {
+window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
+window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
+window.D2L.SelectOutcomes.Language.Da = {
 	'a11yHeaderAriaLabel': 'Træniveau {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Træstruktur {shortCode} - {status} - {description}',
 	'add': 'Tilføj',
@@ -34,5 +35,5 @@ window.D2L.language.da = {
  * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDaBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDaBehavior = {
-	da: window.D2L.language.da
+	da: window.D2L.SelectOutcomes.Language.Da
 };

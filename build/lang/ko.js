@@ -3,8 +3,9 @@ window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.language = window.D2L.language || {};
-window.D2L.language.ko = {
+window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
+window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
+window.D2L.SelectOutcomes.Language.Ko = {
 	'a11yHeaderAriaLabel': '트리 레벨 {level} - {status} - {name}',
 	'a11yLeafAriaLabel': '트리 리프 {shortCode} - {status} - {description}',
 	'add': '추가',
@@ -34,5 +35,5 @@ window.D2L.language.ko = {
  * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangKoBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangKoBehavior = {
-	ko: window.D2L.language.ko
+	ko: window.D2L.SelectOutcomes.Language.Ko
 };

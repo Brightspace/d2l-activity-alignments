@@ -3,8 +3,9 @@ window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.language = window.D2L.language || {};
-window.D2L.language.nl = {
+window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
+window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
+window.D2L.SelectOutcomes.Language.Nl = {
 	'a11yHeaderAriaLabel': 'Structuurniveau {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Structuurblad {shortCode} - {status} - {description}',
 	'add': 'Toevoegen',
@@ -34,5 +35,5 @@ window.D2L.language.nl = {
  * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior = {
-	nl: window.D2L.language.nl
+	nl: window.D2L.SelectOutcomes.Language.Nl
 };

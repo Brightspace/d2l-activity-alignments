@@ -3,8 +3,9 @@ window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.language = window.D2L.language || {};
-window.D2L.language.ar = {
+window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
+window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
+window.D2L.SelectOutcomes.Language.Ar = {
 	'a11yHeaderAriaLabel': 'مستوى الشجرة {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'ورقة الشجرة {shortCode} - {status} - {description}',
 	'add': 'إضافة',
@@ -34,5 +35,5 @@ window.D2L.language.ar = {
  * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangArBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangArBehavior = {
-	ar: window.D2L.language.ar
+	ar: window.D2L.SelectOutcomes.Language.Ar
 };

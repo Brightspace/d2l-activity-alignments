@@ -3,8 +3,9 @@ window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.language = window.D2L.language || {};
-window.D2L.language.zh = {
+window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
+window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
+window.D2L.SelectOutcomes.Language.Zh = {
 	'a11yHeaderAriaLabel': '树级 {level} - {status} - {name}',
 	'a11yLeafAriaLabel': '树叶 {shortCode} - {status} - {description}',
 	'add': '添加',
@@ -34,5 +35,5 @@ window.D2L.language.zh = {
  * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhBehavior = {
-	zh: window.D2L.language.zh
+	zh: window.D2L.SelectOutcomes.Language.Zh
 };

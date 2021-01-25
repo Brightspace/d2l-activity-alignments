@@ -3,8 +3,9 @@ window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.language = window.D2L.language || {};
-window.D2L.language.tr = {
+window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
+window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
+window.D2L.SelectOutcomes.Language.Tr = {
 	'a11yHeaderAriaLabel': 'Ağaç seviyesi {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Ağaç yaprağı {shortCode} - {status} - {description}',
 	'add': 'Ekle',
@@ -34,5 +35,5 @@ window.D2L.language.tr = {
  * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangTrBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangTrBehavior = {
-	tr: window.D2L.language.tr
+	tr: window.D2L.SelectOutcomes.Language.Tr
 };

@@ -3,8 +3,9 @@ window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.language = window.D2L.language || {};
-window.D2L.language.cy = {
+window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
+window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
+window.D2L.SelectOutcomes.Language.Cy = {
 	'a11yHeaderAriaLabel': 'Lefel Coeden {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Deilen Coeden {shortCode} - {status} - {description}',
 	'add': 'Ychwanegu',
@@ -34,5 +35,5 @@ window.D2L.language.cy = {
  * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangCyBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangCyBehavior = {
-	cy: window.D2L.language.cy
+	cy: window.D2L.SelectOutcomes.Language.Cy
 };

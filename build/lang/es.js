@@ -3,8 +3,9 @@ window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.language = window.D2L.language || {};
-window.D2L.language.es = {
+window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
+window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
+window.D2L.SelectOutcomes.Language.Es = {
 	'a11yHeaderAriaLabel': 'Nivel de árbol {level}: {status}: {name}',
 	'a11yLeafAriaLabel': 'Hoja de árbol {shortCode}: {status}: {description}',
 	'add': 'Agregar',
@@ -34,5 +35,5 @@ window.D2L.language.es = {
  * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsBehavior
  */
 D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsBehavior = {
-	es: window.D2L.language.es
+	es: window.D2L.SelectOutcomes.Language.Es
 };

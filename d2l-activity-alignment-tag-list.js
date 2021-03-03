@@ -76,7 +76,7 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 						text="[[_getOutcomeTextDescription(item)]]"
 						short-text="[[_getOutcomeShortDescription(item)]]"
 						max-chars="40"
-						deletable="[[_canDelete(item,readOnly)]]"
+						deletable$="[[_canDelete(item, readOnly)]]"
 						on-d2l-labs-multi-select-list-item-deleted="_removeOutcome"
 					></d2l-labs-multi-select-list-item>
 				</template>

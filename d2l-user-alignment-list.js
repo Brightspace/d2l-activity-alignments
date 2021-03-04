@@ -65,7 +65,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-user-alignment-list
 				padding: 0;
 				overflow: auto;
 				margin: 0;
-				margin-top: 0.9rem;
+				margin-top: -1.3rem;
 			}
 
 			li {

@@ -36,7 +36,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-alignment-list">
 				/* The standard button box-shadow width */
 				--d2l-alignment-list-overflow-margin: 4px;
 			}
-			
+
 			.d2l-alignment-list-content {
 				display: flex;
 				flex-direction: column;
@@ -67,7 +67,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-alignment-list">
 				padding: 0;
 				overflow: auto;
 				margin: 0;
-				margin-top: 0.9rem;
+				margin-top: -1.3rem;
 			}
 
 			li {
@@ -100,7 +100,7 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-alignment-list">
 			d2l-alert {
 				margin-top: 0.5rem;
 			}
-			
+
 			.alignment-list-header {
 				@apply --d2l-heading-3;
 				margin-bottom: 0;

@@ -37,10 +37,10 @@
     "type-detect": "1.0.0"
   },
   "dependencies": {
-    "@brightspace-ui-labs/multi-select": "BrightspaceUILabs/multi-select#semver:^4",
+    "@brightspace-ui-labs/multi-select": "github:BrightspaceUILabs/multi-select#semver:^4",
     "@polymer/iron-a11y-announcer": "^3.0.2",
-    "@polymer/polymer": "^3.0.0",
     "@polymer/iron-collapse": "^3.0.1",
+    "@polymer/polymer": "^3.0.0",
     "d2l-alert": "BrightspaceUI/alert#semver:^4",
     "d2l-button": "BrightspaceUI/button#semver:^5",
     "d2l-colors": "BrightspaceUI/colors#semver:^4",

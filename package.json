@@ -1,6 +1,6 @@
 {
   "name": "d2l-activity-alignments",
-  "version": "2.0.25",
+  "version": "2.0.26",
   "scripts": {
     "lang:build": "lang-build -es \"\t\" -c langtools/config.json",
     "lang:copy": "lang-copy -svc langtools/config.json",
@@ -37,14 +37,14 @@
     "type-detect": "1.0.0"
   },
   "dependencies": {
-    "@brightspace-ui-labs/multi-select": "github:BrightspaceUILabs/multi-select#semver:^4",
+    "@brightspace-ui-labs/multi-select": "BrightspaceUILabs/multi-select#semver:^4",
     "@polymer/iron-a11y-announcer": "^3.0.2",
     "@polymer/iron-collapse": "^3.0.1",
     "@polymer/polymer": "^3.0.0",
     "d2l-alert": "BrightspaceUI/alert#semver:^4",
     "d2l-button": "BrightspaceUI/button#semver:^5",
     "d2l-colors": "BrightspaceUI/colors#semver:^4",
-    "d2l-fetch-siren-entity-behavior": "Brightspace/d2l-fetch-siren-entity-behavior.git#semver:^6",
+    "d2l-fetch-siren-entity-behavior": "Brightspace/d2l-fetch-siren-entity-behavior#semver:^6",
     "d2l-hypermedia-constants": "^6",
     "d2l-icons": "BrightspaceUI/icons#semver:^6",
     "d2l-inputs": "BrightspaceUI/inputs#semver:^2",
@@ -53,7 +53,7 @@
     "d2l-offscreen": "BrightspaceUI/offscreen#semver:^4",
     "d2l-outcomes-level-of-achievements": "Brightspace/outcomes-level-of-achievement-ui#semver:^3",
     "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#semver:^1",
-    "d2l-resize-aware": "github:BrightspaceUI/resize-aware#semver:^1",
+    "d2l-resize-aware": "BrightspaceUI/resize-aware#semver:^1",
     "d2l-typography": "BrightspaceUI/typography#semver:^7",
     "s-html": "Brightspace/s-html#semver:^2"
   }

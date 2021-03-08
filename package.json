@@ -4,6 +4,7 @@
   "scripts": {
     "lang:build": "lang-build -es \"\t\" -c langtools/config.json",
     "lang:copy": "lang-copy -svc langtools/config.json",
+    "license-check": "d2l-license-checker",
     "lint": "npm run lint:eslint && npm run lint:polymer",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:polymer": "polymer lint",
@@ -41,6 +42,7 @@
     "@polymer/iron-demo-helpers": "^3.0.0",
     "@webcomponents/webcomponentsjs": "^2.2.3",
     "babel-eslint": "^10.0.1",
+    "d2l-license-checker": "^3.2.0",
     "d2l-polymer-langtools": "^1.2.1",
     "eslint": "^5.14.1",
     "eslint-config-brightspace": "^0.4.1",

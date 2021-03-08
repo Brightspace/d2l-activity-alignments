@@ -77,7 +77,7 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		return html`
 			<style>
 				.tag-list-container {
-					display: flex;
+					display: inline-flex;
 					justify-content: center;
 					align-items: center;
 				}

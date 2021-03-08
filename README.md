@@ -87,7 +87,7 @@ document.getElementById( 'my-alignments' ).addEventListener( 'd2l-activity-align
  2. Run `npm run lang:copy` (this will copy term to other files)
  3. Manually add french translations to `/lang/fr.json` (google translate. This is in case auto-translations don't run in time, if we don't have french, we can get fined)
  4. Run `npm run lang:build`
- 5. Run `npm run lang:lint -- --fix`
+ 5. Run `npm run format`
 
 #### Modifying a lang term
 
@@ -95,7 +95,7 @@ document.getElementById( 'my-alignments' ).addEventListener( 'd2l-activity-align
  2. Run `npm run lang:copy -- term1 term2...` (where `term1,term2` are the terms you'd like to modify).
  3. Manually modify french translations to `/lang/fr.json`
  4. Run `npm run lang:build`
- 5. Run `npm run lang:lint -- --fix`
+ 5. Run `npm run format`
 
 <!-- links -->
 [CI Badge]: https://github.com/Brightspace/d2l-activity-alignments/workflows/CI/badge.svg?branch=master

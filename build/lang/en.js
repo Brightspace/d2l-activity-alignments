@@ -14,10 +14,13 @@ window.D2L.SelectOutcomes.Language.En = {
 	'cancel': 'Cancel',
 	'cancelLabel': 'Cancel selection',
 	'collapsed': 'collapsed',
+	'defaultTagType': 'Tags',
 	'directAlignments': '{headerTitle} Aligned Directly to This Activity',
 	'error': 'An error has occured',
 	'expanded': 'expanded',
 	'indirectAlignments': '{headerTitle} Aligned to Rubric Criteria',
+	'navigationDescription': '{title}: Use arrow keys to navigate {typeName}, use delete or backspace key to remove {typeName}.',
+	'navigationDescriptionNoActions': '{title}: Use arrow keys to navigate {typeName}.',
 	'noSearchResultFor': 'No results found for "{searchText}"',
 	'notSelected': 'not selected',
 	'outcomesHierarchicalTree': 'Outcomes Hierarchical Tree',
@@ -27,10 +30,7 @@ window.D2L.SelectOutcomes.Language.En = {
 	'searchPlaceholder': 'Search...',
 	'searchResultFor': '{numOfResults} search results for "{searchText}"',
 	'searchResultsNumber': '{numOfResults} search results',
-	'selected': 'selected',
-	'defaultTagType': 'Tags',
-	'navigationDescription': '{title}: Use arrow keys to navigate {typeName}, use delete or backspace key to remove {typeName}.',
-	'navigationDescriptionNoActions': '{title}: Use arrow keys to navigate {typeName}.'
+	'selected': 'selected'
 };
 
 /*

@@ -78,9 +78,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Check licenses
-        run: |
-          npm install d2l-license-checker --no-save
-          npx license-checker-ci
+        run: npm run license-check
   verify-languages:
     name: Verify Languages
     timeout-minutes: 5
@@ -124,14 +122,14 @@ jobs:
               echo 'File sets do not match, missing sources ❌'
               echo '----------------'
               printf '%s\n' "${missing_sources[@]}"
-              echo '----------------'   
+              echo '----------------'
               match=false
           fi
           if (( ${#missing_targets[@]} )); then
               echo 'File sets do not match, missing targets ❌'
               echo '----------------'
               printf '%s\n' "${missing_targets[@]}"
-              echo '----------------'   
+              echo '----------------'
               match=false
           fi
           if $match; then
@@ -147,7 +145,7 @@ jobs:
               echo '----------------'
               echo "$changes"
               echo '----------------'
-              echo 'Did you forget to run npm run lang:build?'        
+              echo 'Did you forget to run npm run lang:build?'
               match=false
           fi
           if $match; then

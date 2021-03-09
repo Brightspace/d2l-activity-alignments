@@ -59,6 +59,16 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 			hideIndirectAlignments: {
 				type: Boolean,
 				value: false
+			},
+			typeName: {
+				type: String,
+				value: null,
+				reflectToAttribute: true
+			},
+			title: {
+				type: String,
+				value: null,
+				reflectToAttribute: true
 			}
 		};
 	}
@@ -66,21 +76,32 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 	static get template() {
 		return html`
 			<style>
-				d2l-labs-multi-select-list-item {
-					margin-top: 3px;
+				.tag-list-container {
+					display: inline-flex;
+					justify-content: center;
+					align-items: center;
+				}
+
+				.hidden {
+					display: none;
 				}
 			</style>
-			<d2l-labs-multi-select-list>
-				<template is="dom-repeat" items="[[_mappings]]">
-					<d2l-labs-multi-select-list-item
-						text="[[_getOutcomeTextDescription(item)]]"
-						short-text="[[_getOutcomeShortDescription(item)]]"
-						max-chars="40"
-						deletable$="[[_canDelete(item, readOnly)]]"
-						on-d2l-labs-multi-select-list-item-deleted="_removeOutcome"
-					></d2l-labs-multi-select-list-item>
-				</template>
-				<template is="dom-if" if="[[_canUpdate(entity,readOnly)]]">
+			<div id="navigation-description" aria-hidden="true" class="hidden">
+				[[_getNavigationDescription(title, typeName, readOnly, _mappings)]]
+			</div>
+			<div class="tag-list-container">
+				<d2l-labs-multi-select-list aria-describedby="navigation-description">
+					<template is="dom-repeat" items="[[_mappings]]">
+						<d2l-labs-multi-select-list-item
+							text="[[_getOutcomeTextDescription(item)]]"
+							short-text="[[_getOutcomeShortDescription(item)]]"
+							max-chars="40"
+							deletable$="[[_canDelete(item, readOnly)]]"
+							on-d2l-labs-multi-select-list-item-deleted="_removeOutcome"
+						></d2l-labs-multi-select-list-item>
+					</template>
+				</d2l-labs-multi-select-list>
+				<template is="dom-if" if="[[_canUpdate(entity, readOnly)]]">
 					<d2l-button-icon
 						icon="d2l-tier1:add"
 						aria-label$="[[browseOutcomesText]]"
@@ -88,10 +109,12 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 						on-click="_updateAlignments"
 						id="browse-outcome-button"
 					></d2l-button-icon>
-					<d2l-tooltip for="browse-outcome-button" position="top">[[browseOutcomesText]]</d2l-tooltip>
+					<d2l-tooltip for="browse-outcome-button" position="top">
+						[[browseOutcomesText]]
+					</d2l-tooltip>
 				</template>
-			</d2l-labs-multi-select-list>
-			<div style="display: none;">
+			<div>
+			<div class="hidden">
 				<template is="dom-repeat" items="[[_alignmentHrefs]]">
 					<d2l-siren-map-helper href="[[item]]" token="[[token]]" map="{{_alignmentMap}}"></d2l-siren-map-helper>
 				</template>
@@ -215,7 +238,8 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 	_updateAlignments(event) {
 		this.dispatchEvent(
 			new CustomEvent(
-				'd2l-activity-alignment-tags-update', {
+				'd2l-activity-alignment-tags-update',
+				{
 					composed: true,
 					bubbles: true,
 					sirenAction: this.entity.getActionByName(this.HypermediaActions.alignments.startUpdateAlignments),
@@ -227,6 +251,38 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 
 	_isIndirectAlignment(alignment) {
 		return alignment && alignment.properties && alignment.properties.relationshipType === 'referenced';
+	}
+
+	_getNavigationDescription(title, typeName, readOnly, outcomeMappings) {
+		if (!title && !typeName) {
+			return;
+		}
+
+		if (!typeName) {
+			typeName = this.localize('defaultTagType');
+		}
+
+		if (!title) {
+			title = typeName;
+		}
+
+		if (!readOnly) {
+			let canDelete = false;
+
+			for (const outcomeMapping of outcomeMappings) {
+				if (this._canDelete(outcomeMapping, readOnly)) {
+					canDelete = true;
+
+					break;
+				}
+			}
+
+			if (canDelete) {
+				return this.localize('navigationDescription', 'title', title, 'typeName', typeName);
+			}
+		}
+
+		return this.localize('navigationDescriptionNoActions', 'title', title, 'typeName', typeName);
 	}
 
 }

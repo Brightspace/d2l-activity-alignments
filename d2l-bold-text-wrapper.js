@@ -3,7 +3,6 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-hypermedia-constants/d2l-hypermedia-constants.js';
 import 'd2l-alert/d2l-alert.js';
-import './d2l-activity-alignment-tag-list.js';
 import './localize-behavior.js';
 
 class BoldTextWrapper extends mixinBehaviors([], PolymerElement) {

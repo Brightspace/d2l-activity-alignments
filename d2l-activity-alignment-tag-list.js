@@ -86,11 +86,8 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 					display: none;
 				}
 			</style>
-			<div id="navigation-description" aria-hidden="true" class="hidden">
-				[[_getNavigationDescription(title, typeName, readOnly, _mappings)]]
-			</div>
 			<div class="tag-list-container">
-				<d2l-labs-multi-select-list aria-describedby="navigation-description">
+				<d2l-labs-multi-select-list description="[[_getNavigationDescription(title, typeName, readOnly, _mappings)]]">
 					<template is="dom-repeat" items="[[_mappings]]">
 						<d2l-labs-multi-select-list-item
 							text="[[_getOutcomeTextDescription(item)]]"

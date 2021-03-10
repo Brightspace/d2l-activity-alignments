@@ -76,7 +76,7 @@ class ActivityAlignmentTags extends mixinBehaviors([
 					empty="{{_tagListIsEmpty}}"
 					browse-outcomes-text="[[browseOutcomesText]]"
 					deferred-save="[[deferredSave]]"
-					hide-indirect-alignments="[[hideIndirectAlignments]]",
+					hide-indirect-alignments="[[hideIndirectAlignments]]"
 					title="[[title]]"
 					type-name="[[typeName]]"
 				></d2l-activity-alignment-tag-list>

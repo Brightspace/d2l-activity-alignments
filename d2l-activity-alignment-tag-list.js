@@ -76,29 +76,35 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 	static get template() {
 		return html`
 			<style>
-				.tag-list-container {
+				.tag-list-wrapper {
 					display: flex;
 					flex-direction: row;
-					justify-content: center;
+					justify-content: flex-start;
 					align-items: center;
+				}
+
+				.tag-list-flex-wrapper {
+					display: flex;
 				}
 
 				.hidden {
 					display: none;
 				}
 			</style>
-			<div class="tag-list-container">
-				<d2l-labs-multi-select-list description="[[_getNavigationDescription(title, typeName, readOnly, _mappings)]]">
-					<template is="dom-repeat" items="[[_mappings]]">
-						<d2l-labs-multi-select-list-item
-							text="[[_getOutcomeTextDescription(item)]]"
-							short-text="[[_getOutcomeShortDescription(item)]]"
-							max-chars="40"
-							deletable$="[[_canDelete(item, readOnly)]]"
-							on-d2l-labs-multi-select-list-item-deleted="_removeOutcome"
-						></d2l-labs-multi-select-list-item>
-					</template>
-				</d2l-labs-multi-select-list>
+			<div class="tag-list-wrapper">
+				<div class="tag-list-flex-wrapper">
+					<d2l-labs-multi-select-list description="[[_getNavigationDescription(title, typeName, readOnly, _mappings)]]">
+						<template is="dom-repeat" items="[[_mappings]]">
+							<d2l-labs-multi-select-list-item
+								text="[[_getOutcomeTextDescription(item)]]"
+								short-text="[[_getOutcomeShortDescription(item)]]"
+								max-chars="40"
+								deletable$="[[_canDelete(item, readOnly)]]"
+								on-d2l-labs-multi-select-list-item-deleted="_removeOutcome"
+							></d2l-labs-multi-select-list-item>
+						</template>
+					</d2l-labs-multi-select-list>
+				</div>
 				<template is="dom-if" if="[[_canUpdate(entity, readOnly)]]">
 					<d2l-button-icon
 						icon="d2l-tier1:add"
@@ -111,7 +117,7 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 						[[browseOutcomesText]]
 					</d2l-tooltip>
 				</template>
-			<div>
+			</div>
 			<div class="hidden">
 				<template is="dom-repeat" items="[[_alignmentHrefs]]">
 					<d2l-siren-map-helper href="[[item]]" token="[[token]]" map="{{_alignmentMap}}"></d2l-siren-map-helper>

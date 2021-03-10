@@ -117,7 +117,7 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 						[[browseOutcomesText]]
 					</d2l-tooltip>
 				</template>
-			<div>
+			</div>
 			<div class="hidden">
 				<template is="dom-repeat" items="[[_alignmentHrefs]]">
 					<d2l-siren-map-helper href="[[item]]" token="[[token]]" map="{{_alignmentMap}}"></d2l-siren-map-helper>

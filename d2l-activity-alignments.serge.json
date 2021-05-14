@@ -1,8 +1,12 @@
 {
 	"name": "d2l-activity-alignments",
-	"source_dir": "lang/",
-	"output_file_path": "lang/%LANG%.json",
-	"output_lang_rewrite": [
+  "parser_plugin": {
+    "plugin": "parse_js"
+  },
+  "source_match": "en\\.js$",
+  "source_dir": "lang/",
+  "output_file_path": "lang/%LANG%.js",
+  "output_lang_rewrite": [
     "ar-sa ar",
     "cy-gb cy",
     "da-dk da",
@@ -20,5 +24,5 @@
     "tr-tr tr",
     "zh-cn zh",
     "zh-tw zh-tw"
-	]
+  ]
 }

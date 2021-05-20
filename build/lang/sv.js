@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.Sv = {
+export default {
 	'a11yHeaderAriaLabel': 'Trädnivå: {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Trädlöv: {shortCode} - {status} - {description}',
 	'add': 'Lägg till',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.Sv = {
 	'searchResultFor': '{numOfResults} sökresultat för "{searchText}"',
 	'searchResultsNumber': '{numOfResults} sökresultat',
 	'selected': 'vald'
-};
-
-/*
- * Sv lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangSvBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangSvBehavior = {
-	sv: window.D2L.SelectOutcomes.Language.Sv
 };

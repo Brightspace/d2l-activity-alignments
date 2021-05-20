@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.Nl = {
+export default {
 	'a11yHeaderAriaLabel': 'Structuurniveau {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Structuurblad {shortCode} - {status} - {description}',
 	'add': 'Toevoegen',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.Nl = {
 	'searchResultFor': '{numOfResults} zoekresultaten voor \'{searchText}\'',
 	'searchResultsNumber': '{numOfResults} zoekresultaten',
 	'selected': 'geselecteerd'
-};
-
-/*
- * Nl lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior = {
-	nl: window.D2L.SelectOutcomes.Language.Nl
 };

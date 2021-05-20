@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.Da = {
+export default {
 	'a11yHeaderAriaLabel': 'Træniveau {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Træstruktur {shortCode} - {status} - {description}',
 	'add': 'Tilføj',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.Da = {
 	'searchResultFor': '{numOfResults} søgeresultater for "{searchText}"',
 	'searchResultsNumber': '{numOfResults} søgeresultater',
 	'selected': 'valgt'
-};
-
-/*
- * Da lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDaBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDaBehavior = {
-	da: window.D2L.SelectOutcomes.Language.Da
 };

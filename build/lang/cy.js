@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.Cy = {
+export default {
 	'a11yHeaderAriaLabel': 'Lefel Coeden {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Deilen Coeden {shortCode} - {status} - {description}',
 	'add': 'Ychwanegu',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.Cy = {
 	'searchResultFor': '{numOfResults} o ganlyniadau chwilio ar gyfer "{searchText}"',
 	'searchResultsNumber': '{numOfResults} o ganlyniadau chwilio',
 	'selected': 'wedi’u dewis'
-};
-
-/*
- * Cy lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangCyBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangCyBehavior = {
-	cy: window.D2L.SelectOutcomes.Language.Cy
 };

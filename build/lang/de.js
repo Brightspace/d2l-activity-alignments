@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.De = {
+export default {
 	'a11yHeaderAriaLabel': 'Strukturebene {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Strukturblatt {shortCode} – {status} – {description}',
 	'add': 'Hinzufügen',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.De = {
 	'searchResultFor': '{numOfResults} Suchergebnisse für „{searchText}“',
 	'searchResultsNumber': '{numOfResults} Suchergebnisse',
 	'selected': 'ausgewählt'
-};
-
-/*
- * De lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDeBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDeBehavior = {
-	de: window.D2L.SelectOutcomes.Language.De
 };

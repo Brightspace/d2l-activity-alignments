@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.Zh = {
+export default {
 	'a11yHeaderAriaLabel': '树级 {level} - {status} - {name}',
 	'a11yLeafAriaLabel': '树叶 {shortCode} - {status} - {description}',
 	'add': '添加',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.Zh = {
 	'searchResultFor': '“{searchText}”的 {numOfResults} 个搜索结果',
 	'searchResultsNumber': '{numOfResults} 个搜索结果',
 	'selected': '已选'
-};
-
-/*
- * Zh lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhBehavior = {
-	zh: window.D2L.SelectOutcomes.Language.Zh
 };

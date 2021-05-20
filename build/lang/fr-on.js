@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.FrOn = {
+export default {
 	'a11yHeaderAriaLabel': 'Niveau de l’arborescence {level} – {status} – {name}',
 	'a11yLeafAriaLabel': 'Élément de l’arbre {shortCode} – {status} – {description}',
 	'add': 'Ajouter',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.FrOn = {
 	'searchResultFor': '{numOfResults} résultat(s) de la recherche pour "{searchText}"',
 	'searchResultsNumber': '{numOfResults} résultat(s) de la recherche',
 	'selected': 'sélectionné(s)'
-};
-
-/*
- * FrOn lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrOnBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrOnBehavior = {
-	frOn: window.D2L.SelectOutcomes.Language.FrOn
 };

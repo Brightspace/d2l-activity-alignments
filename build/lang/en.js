@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.En = {
+export default {
 	'a11yHeaderAriaLabel': 'Tree level {level} - {status} - {name}',
 	'a11yLeafAriaLabel': 'Tree leaf {shortCode} - {status} - {description}',
 	'add': 'Add',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.En = {
 	'searchResultFor': '{numOfResults} search results for "{searchText}"',
 	'searchResultsNumber': '{numOfResults} search results',
 	'selected': 'selected'
-};
-
-/*
- * En lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEnBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEnBehavior = {
-	en: window.D2L.SelectOutcomes.Language.En
 };

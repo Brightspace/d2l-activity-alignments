@@ -1,11 +1,4 @@
-import '@polymer/polymer/polymer-legacy.js';
-window.D2L = window.D2L || {};
-window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
-window.D2L.PolymerBehaviors.SelectOutcomes = window.D2L.PolymerBehaviors.SelectOutcomes || {};
-window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior || {};
-window.D2L.SelectOutcomes = window.D2L.SelectOutcomes || {};
-window.D2L.SelectOutcomes.Language = window.D2L.SelectOutcomes.Language || {};
-window.D2L.SelectOutcomes.Language.Ko = {
+export default {
 	'a11yHeaderAriaLabel': '트리 레벨 {level} - {status} - {name}',
 	'a11yLeafAriaLabel': '트리 리프 {shortCode} - {status} - {description}',
 	'add': '추가',
@@ -31,12 +24,4 @@ window.D2L.SelectOutcomes.Language.Ko = {
 	'searchResultFor': '"{searchText}"에 대한 {numOfResults} 검색 결과',
 	'searchResultsNumber': '{numOfResults} 검색 결과',
 	'selected': '선택됨'
-};
-
-/*
- * Ko lang terms
- * @polymerBehavior D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangKoBehavior
- */
-D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangKoBehavior = {
-	ko: window.D2L.SelectOutcomes.Language.Ko
 };

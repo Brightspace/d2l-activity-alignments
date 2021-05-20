@@ -1,23 +1,23 @@
 import '@polymer/polymer/polymer-legacy.js';
 import 'd2l-localize-behavior/d2l-localize-behavior.js';
-import './build/lang/ar.js';
-import './build/lang/cy.js';
-import './build/lang/da.js';
-import './build/lang/de.js';
-import './build/lang/en.js';
-import './build/lang/es-es.js';
-import './build/lang/es.js';
-import './build/lang/fr-fr.js';
-import './build/lang/fr-on.js';
-import './build/lang/fr.js';
-import './build/lang/ja.js';
-import './build/lang/ko.js';
-import './build/lang/nl.js';
-import './build/lang/pt.js';
-import './build/lang/sv.js';
-import './build/lang/tr.js';
-import './build/lang/zh-tw.js';
-import './build/lang/zh.js';
+import ar from './build/lang/ar.js';
+import cy from './build/lang/cy.js';
+import da from './build/lang/da.js';
+import de from './build/lang/de.js';
+import en from './build/lang/en.js';
+import esEs from './build/lang/es-es.js';
+import es from './build/lang/es.js';
+import frFr from './build/lang/fr-fr.js';
+import frOn from './build/lang/fr-on.js';
+import fr from './build/lang/fr.js';
+import ja from './build/lang/ja.js';
+import ko from './build/lang/ko.js';
+import nl from './build/lang/nl.js';
+import pt from './build/lang/pt.js';
+import sv from './build/lang/sv.js';
+import tr from './build/lang/tr.js';
+import zhTw from './build/lang/zh-tw.js';
+import zh from './build/lang/zh.js';
 
 window.D2L = window.D2L || {};
 window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
@@ -28,59 +28,43 @@ D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehaviorImpl = {
 	properties: {
 		locale: {
 			type: String,
-			value: function() {
-				var locale = document.documentElement.lang
-					|| document.documentElement.getAttribute('data-lang-default')
-					|| 'en-us';
+			value: () => {
+				const locale = document.documentElement.lang ||
+					document.documentElement.getAttribute('data-lang-default') ||
+					'en-us';
+
 				return locale.toLowerCase();
 			}
 		},
 		resources: {
-			value: function() {
+			value: () => {
 				return {
-					'ar': this.ar,
-					'cy': this.cy,
-					'da': this.da,
-					'de': this.de,
-					'en': this.en,
-					'es-es': this.esEs,
-					'es': this.es,
-					'fr-fr': this.frFr,
-					'fr-on': this.frOn,
-					'fr': this.fr,
-					'ja': this.ja,
-					'ko': this.ko,
-					'nl': this.nl,
-					'pt': this.pt,
-					'sv': this.sv,
-					'tr': this.tr,
-					'zh-tw': this.zhTw,
-					'zh': this.zh
+					'ar': ar,
+					'cy': cy,
+					'da': da,
+					'de': de,
+					'en': en,
+					'es-es': esEs,
+					'es': es,
+					'fr-fr': frFr,
+					'fr-on': frOn,
+					'fr': fr,
+					'ja': ja,
+					'ko': ko,
+					'nl': nl,
+					'pt': pt,
+					'sv': sv,
+					'tr': tr,
+					'zh-tw': zhTw,
+					'zh': zh
 				};
 			}
 		}
 	}
 };
+
 /** @polymerBehavior */
 window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior = [
 	D2L.PolymerBehaviors.LocalizeBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehaviorImpl,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangArBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangCyBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDaBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangDeBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEnBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsEsBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangEsBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrFrBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrOnBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangFrBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangJaBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangKoBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangNlBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangPtBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangSvBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangTrBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhTwBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior.LangZhBehavior
+	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehaviorImpl
 ];

@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "트리 레벨 {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "트리 리프 {shortCode} - {status} - {description}",

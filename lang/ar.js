@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "مستوى الشجرة {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "ورقة الشجرة {shortCode} - {status} - {description}",

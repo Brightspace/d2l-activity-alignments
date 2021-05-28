@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "Trädnivå: {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "Trädlöv: {shortCode} - {status} - {description}",

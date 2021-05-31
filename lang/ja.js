@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "ツリーレベル {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "ツリーリーフ {shortCode} - {status} - {description}",

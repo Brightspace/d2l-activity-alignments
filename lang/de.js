@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "Strukturebene {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "Strukturblatt {shortCode} – {status} – {description}",

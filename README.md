@@ -1,65 +1,27 @@
-# \<d2l-activity-alignments\>
+# d2l-activity-alignments
 
 [![CI][CI Badge]][CI Workflows]
 
-## Install the Polymer-CLI
+## Components
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
+- [Activity Alignments](#activity-alignments)
+- [Activity Alignments Tags](#activity-alignment-tags)
+- [Activity Alignments Tags (Read Only)](#activity-alignment-tags-read-only)
 
-## Viewing Your Element
+## Activity Alignments
 
-```
-$ polymer serve
-```
-The demo can be viewed at http://127.0.0.1:8081/components/d2l-activity-alignments/demo/
-
-## Running Tests
-
-```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
-
-### Test with LMS API
-
-1. Comment out request-mock.js in the demo/index.html
-  * `<script type="module" src="./request-mock.js"></script>`
-
-2. Import the required module
-  * For example: `<script type="module" src="../d2l-alignment-list.js"></script>`
-
-3. Get href and token from quad site for the module you want to test, by insepcting element using F12(chrome)
-
-4. Have fun testing
-
-### Display d2l-activity-alignments
+### Usage
 
 ```html
-<script type="module" src="../d2l-alignment-alignments.js"></script>
-
-<demo-snippet>
-  <template>
-    <d2l-activity-alignments href="<copy from quad site>" token="<copy from quad site>"></d2l-activity-alignments>
-  </template>
-</demo-snippet>
+<d2l-activity-alignments
+  href="<copy from quad site>"
+  token="<copy from quad site>">
+</d2l-activity-alignments>
 ```
 
-### Display outcome alignments in tag view
+## Activity Alignment Tags
 
-#### Read-Only View
-
-```html
-<d2l-activity-alignment-tags
-  href="<activity usage URL>"
-  token="<auth token>"
-  title="<title that represents the entire tag list>"
-  type-name="<name you want associated with the type of each tag item>"
-  read-only
-></d2l-activity-alignment-tags>
-```
-
-#### Editable View
+### Usage
 
 ```html
 <d2l-activity-alignment-tags
@@ -71,31 +33,93 @@ Your application is already set up to be tested via [web-component-tester](https
 ></d2l-activity-alignment-tags>
 
 <script>
-document.getElementById( 'my-alignments' ).addEventListener( 'd2l-activity-alignment-tags-update', function( event ) {
-  var sirenAction = event.sirenAction;
-  // Event fired when the Add button is clicked
-  // ...
-});
+document
+  .getElementById( 'my-alignments' )
+  .addEventListener( 'd2l-activity-alignment-tags-update', event => {
+    const sirenAction = event.sirenAction;
+    ...
+  });
 </script>
 ```
 
-## Lang Term Update
+## Activity Alignment Tags (Read Only)
 
-#### Adding an new lang term
+### Usage
 
- 1. Add the new term to `/lang/en.json`
- 2. Run `npm run lang:copy` (this will copy term to other files)
- 3. Manually add french translations to `/lang/fr.json` (google translate. This is in case auto-translations don't run in time, if we don't have french, we can get fined)
- 4. Run `npm run lang:build`
- 5. Run `npm run format`
+```html
+<d2l-activity-alignment-tags
+  href="<activity usage URL>"
+  token="<auth token>"
+  title="<title that represents the entire tag list>"
+  type-name="<name you want associated with the type of each tag item>"
+  read-only
+></d2l-activity-alignment-tags>
+```
 
-#### Modifying a lang term
+## Developing
 
- 1. Modify the term in `/lang/en.json`
- 2. Run `npm run lang:copy -- term1 term2...` (where `term1,term2` are the terms you'd like to modify).
- 3. Manually modify french translations to `/lang/fr.json`
- 4. Run `npm run lang:build`
- 5. Run `npm run format`
+After cloning the repo, run `npm install` to install dependencies.
+
+### Running the Demos
+
+Start local dev server that hosts the demo pages.
+
+```sh
+npm run serve:local
+```
+
+### Linting
+
+```sh
+# eslint, polymer lint and messageformat-validator
+npm run lint
+
+# eslint only
+npm run lint:eslint
+
+# polymer lint only
+npm run lint:polymer
+
+# messageformat-validator only
+npm run lint:lang
+```
+
+### Formatting
+
+```sh
+# eslint and messageformat-validator
+npm run format
+
+# eslint only
+npm run format:eslint
+
+# messageformat-validator only
+npm run format:lang
+```
+
+### Testing
+
+```sh
+# unit tests
+npm test
+```
+
+### Adding/Updating Lang Term
+
+1. Add the new term to `/lang/en.js`.
+2. Run `npm run format`, this will add any new terms to all other languages and
+   remove any terms not in `/lang/en.js` from all other languages.
+3. Manually add french translations to `/lang/fr.js`.
+   * Google translate. This is in case auto-translations don't run in time, if
+     we don't have french, we can get fined.
+
+### Versioning & Releasing
+
+Run `npm version --no-git-tag-version [major | minor | patch]` in project
+root directory, selecting the appropriate version increase type. This will bump
+the version in both `package.json` and `package-lock.json` and leave it in your
+working changes. Once checking this in and it being merged to `master` create
+a GitHub release matching the version in the `package.json`.
 
 <!-- links -->
 [CI Badge]: https://github.com/Brightspace/d2l-activity-alignments/workflows/CI/badge.svg?branch=master

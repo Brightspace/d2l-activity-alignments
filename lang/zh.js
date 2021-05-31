@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "树级 {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "树叶 {shortCode} - {status} - {description}",

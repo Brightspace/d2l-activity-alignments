@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "Lefel Coeden {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "Deilen Coeden {shortCode} - {status} - {description}",

@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "Ağaç seviyesi {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "Ağaç yaprağı {shortCode} - {status} - {description}",

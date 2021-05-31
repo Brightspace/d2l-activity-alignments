@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "Niveau d’arborescence {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "Feuille d’arborescence {shortCode} - {status} - {description}",

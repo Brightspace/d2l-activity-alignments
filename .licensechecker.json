@@ -5,7 +5,6 @@
 	"manualOverrides": {
 		"cli-table@^0.3.1": "MIT",
 		"crypto-md5@^1.0.0": "BSD-2-Clause",
-		"d2l-polymer-langtools@^1.4.0": "Public-Domain",
 		"desired-capabilities@^0.1.0": "CC0-1.0",
 		"emitter-component@^1.1.1": "MIT",
 		"fork-stream@^0.0.4": "BSD-3-Clause",

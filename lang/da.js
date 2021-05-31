@@ -1,5 +1,3 @@
-/* eslint quotes: 0 */
-
 export default {
 	"a11yHeaderAriaLabel": "Træniveau {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "Træstruktur {shortCode} - {status} - {description}",

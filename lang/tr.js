@@ -8,7 +8,7 @@ export default {
 	"cancelLabel": "Seçimi iptal et",
 	"collapsed": "daraltılmış",
 	"defaultTagType": "Etiketler",
-	"directAlignments": "{header-title} Doğrudan Bu Etkinliğe Hizalandı",
+	"directAlignments": "{headerTitle} Doğrudan Bu Etkinliğe Hizalandı",
 	"error": "Bir hata oluştu",
 	"expanded": "genişletilmiş",
 	"indirectAlignments": "{headerTitle} Rubrik Kriterlerine Hizalandı",

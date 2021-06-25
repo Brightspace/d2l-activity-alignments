@@ -13,7 +13,7 @@ export default {
 	"expanded": "expandida",
 	"indirectAlignments": "{headerTitle} alineado con los criterios de la rúbrica",
 	"navigationDescription": "{title}: utilice las teclas de flecha para desplazarse por {typeName}, utilice la tecla Supr o la de retroceso para eliminar {typeName}.",
-	"navigationDescriptionNoActions": "{title}: utilice las teclas de flecha para desplazarse por {TypeName}.",
+	"navigationDescriptionNoActions": "{title}: utilice las teclas de flecha para desplazarse por {typeName}.",
 	"noSearchResultFor": "No se han encontrado resultados para \"{searchText}\"",
 	"notSelected": "no seleccionado",
 	"outcomesHierarchicalTree": "Árbol jerárquico de resultados",

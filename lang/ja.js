@@ -13,7 +13,7 @@ export default {
 	"expanded": "展開",
 	"indirectAlignments": "{headerTitle} 注釈条件に整合されました",
 	"navigationDescription": "{title}: 矢印キーを使用して {typeName} をナビゲートし、Delete キーまたは Backspace キーを使用して {typeName} を削除します。",
-	"navigationDescriptionNoActions": "{Title}: 矢印キーを使用して {typeName} をナビゲートします。",
+	"navigationDescriptionNoActions": "{title}: 矢印キーを使用して {typeName} をナビゲートします。",
 	"noSearchResultFor": "「{searchText}」に対する結果はありません",
 	"notSelected": "選択されていません",
 	"outcomesHierarchicalTree": "結果の階層ツリー",

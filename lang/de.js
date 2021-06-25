@@ -8,7 +8,7 @@ export default {
 	"cancelLabel": "Auswahl aufheben",
 	"collapsed": "Reduziert",
 	"defaultTagType": "Tags",
-	"directAlignments": "{headerTitle} Direkt auf diese Aktivität ausgerichtet",
+	"directAlignments": "{header-title} Direkt auf diese Aktivität ausgerichtet",
 	"error": "Es ist ein Fehler aufgetreten.",
 	"expanded": "Erweitert",
 	"indirectAlignments": "{headerTitle} Auf Bewertungsschemakriterien ausgerichtet",

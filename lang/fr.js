@@ -20,7 +20,7 @@ export default {
 	"removeAlignment": "Supprimer l’alignement",
 	"searchCleared": "Recherche effacée",
 	"searchOutcomes": "Résultats de la recherche",
-	"searchPlaceholder": "Recherche…",
+	"searchPlaceholder": "Recherche en cours…",
 	"searchResultFor": "{numOfResults} résultat(s) de la recherche pour \"{searchText}\"",
 	"searchResultsNumber": "{numOfResults} résultat(s) de la recherche",
 	"selected": "sélectionné(s)"

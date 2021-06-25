@@ -1,6 +1,6 @@
 export default {
 	"a11yHeaderAriaLabel": "Nível de árvore {level} – {status} – {name}",
-	"a11yLeafAriaLabel": "Folha de árvore {shortCode} – {status} – {description}",
+	"a11yLeafAriaLabel": "Folha de árvore {shortcode} – {status} – {description}",
 	"add": "Adicionar",
 	"addLabel": "Adicionar seleção",
 	"alignmentRemoved": "Alinhamento removido",
@@ -20,7 +20,7 @@ export default {
 	"removeAlignment": "Remover alinhamento",
 	"searchCleared": "Pesquisa apagada",
 	"searchOutcomes": "Resultados de Pesquisa",
-	"searchPlaceholder": "Pesquisar…",
+	"searchPlaceholder": "Pesquisar...",
 	"searchResultFor": "{numOfResults} resultados de pesquisa para \"{searchText}\"",
 	"searchResultsNumber": "{numOfResults} resultados de pesquisa",
 	"selected": "selecionados"

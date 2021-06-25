@@ -1,7 +1,7 @@
 export default {
 	"a11yHeaderAriaLabel": "Nivel de árbol {level} - {status} - {name}",
 	"a11yLeafAriaLabel": "Hoja de árbol {shortCode} - {status} - {description}",
-	"add": "Añadir",
+	"add": "Agregar",
 	"addLabel": "Agregar selección",
 	"alignmentRemoved": "Alineación eliminada",
 	"cancel": "Cancelar",

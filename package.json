@@ -2,7 +2,7 @@
   "name": "d2l-activity-alignments",
   "version": "2.1.8",
   "scripts": {
-    "license-check": "d2l-license-checker",
+    "license-check": "d2l-license-checker -p",
     "lint": "npm run lint:eslint && npm run lint:polymer && npm run lint:lang",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:polymer": "polymer lint",

@@ -87,11 +87,6 @@ class ActivityAlignmentTags extends mixinBehaviors([
 		`;
 	}
 
-	ready() {
-		this._boundHandleError = this._handleError.bind(this);
-		super.ready();
-	}
-
 	connectedCallback() {
 		this._showError = false;
 		this.addEventListener('d2l-siren-entity-error', this._boundHandleError);
@@ -104,14 +99,19 @@ class ActivityAlignmentTags extends mixinBehaviors([
 		super.disconnectedCallback();
 	}
 
-	_handleError() {
-		this._showError = true;
+	ready() {
+		this._boundHandleError = this._handleError.bind(this);
+		super.ready();
 	}
 
 	_getAlignments(entity) {
 		return entity
 			&& entity.hasLinkByRel(this.HypermediaRels.Alignments.alignments)
 			&& entity.getLinkByRel(this.HypermediaRels.Alignments.alignments).href;
+	}
+
+	_handleError() {
+		this._showError = true;
 	}
 
 	_isEmpty(entity, tagListIsEmpty) {

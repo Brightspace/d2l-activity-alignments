@@ -73,6 +73,23 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		};
 	}
 
+	constructor() {
+		super();
+		this._alignmentMap = {};
+		this._intentMap = {};
+		this._outcomeMap = {};
+
+		const userAgent = window.navigator.userAgent;
+		if (userAgent.indexOf('Trident/') >= 0) {
+			this._iconStyle = 'transform: translateY( -0.6rem );';
+		} else if (
+			window.navigator.userAgent.indexOf('Edge/') >= 0 ||
+			window.navigator.userAgent.indexOf('WebKit') < 0
+		) {
+			this._iconStyle = 'transform: translateY( -2px );';
+		}
+	}
+
 	static get template() {
 		return html`
 			<style>
@@ -117,21 +134,14 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		`;
 	}
 
-	constructor() {
-		super();
-		this._alignmentMap = {};
-		this._intentMap = {};
-		this._outcomeMap = {};
+	_canDelete(outcomeMapping, readOnly) {
+		if (readOnly) return false;
+		const alignment = this._alignmentMap[outcomeMapping.alignmentHref];
+		return alignment && alignment.hasActionByName(this.HypermediaActions.alignments.removeAlignment);
+	}
 
-		const userAgent = window.navigator.userAgent;
-		if (userAgent.indexOf('Trident/') >= 0) {
-			this._iconStyle = 'transform: translateY( -0.6rem );';
-		} else if (
-			window.navigator.userAgent.indexOf('Edge/') >= 0 ||
-			window.navigator.userAgent.indexOf('WebKit') < 0
-		) {
-			this._iconStyle = 'transform: translateY( -2px );';
-		}
+	_canUpdate(entity, readOnly) {
+		return !readOnly && entity && entity.hasActionByName(this.HypermediaActions.alignments.startUpdateAlignments);
 	}
 
 	_getAlignmentHrefs(entity) {
@@ -156,18 +166,6 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		return alignmentEntities.map(alignment => alignment.href);
 	}
 
-	_getIntentHrefs(alignmentMap) {
-		return Object.keys(alignmentMap).map(alignmentHref =>
-			alignmentMap[alignmentHref].getLinkByRel(this.HypermediaRels.Outcomes.intent).href
-		);
-	}
-
-	_getOutcomeHrefs(intentMap) {
-		return Object.keys(intentMap).map(intentHref =>
-			intentMap[intentHref].getLinkByRel(this.HypermediaRels.Outcomes.outcome).href
-		);
-	}
-
 	_getAlignmentToOutcomeMap(alignmentHrefs, alignmentMap, intentMap, outcomeMap, hideIndirectAlignments) {
 		const mappings = [];
 		alignmentHrefs.forEach(alignmentHref => {
@@ -186,60 +184,10 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		return mappings;
 	}
 
-	_isEmptyList(mappings) {
-		return mappings.length === 0;
-	}
-
-	_getOutcomeShortDescription(outcomeMapping) {
-		const outcome = outcomeMapping.outcomeEntity;
-		if (this.outcomeHasNotation(outcome)) {
-			return outcome.properties.notation || outcome.properties.altNotation;
-		} else if (this.outcomeHasNotationOrLabel(outcome)) {
-			return this.getOutcomeIdentifier(outcome);
-		} else {
-			return undefined;
-		}
-	}
-
-	_getOutcomeTextDescription(outcomeMapping) {
-		return this.getOutcomeDescriptionPlainText(outcomeMapping.outcomeEntity);
-	}
-
-	_canDelete(outcomeMapping, readOnly) {
-		if (readOnly) return false;
-		const alignment = this._alignmentMap[outcomeMapping.alignmentHref];
-		return alignment && alignment.hasActionByName(this.HypermediaActions.alignments.removeAlignment);
-	}
-
-	_removeOutcome(event) {
-		const alignment = this._alignmentMap[event.model.item.alignmentHref];
-		if (!alignment) return;
-		const actionName = this.deferredSave ? this.HypermediaActions.alignments.deferredRemoveAlignment : this.HypermediaActions.alignments.removeAlignment;
-		const deleteAlignmentAction = alignment.getActionByName(actionName);
-		if (!deleteAlignmentAction) return;
-		this.performSirenAction(deleteAlignmentAction);
-	}
-
-	_canUpdate(entity, readOnly) {
-		return !readOnly && entity && entity.hasActionByName(this.HypermediaActions.alignments.startUpdateAlignments);
-	}
-
-	_updateAlignments(event) {
-		this.dispatchEvent(
-			new CustomEvent(
-				'd2l-activity-alignment-tags-update',
-				{
-					composed: true,
-					bubbles: true,
-					sirenAction: this.entity.getActionByName(this.HypermediaActions.alignments.startUpdateAlignments),
-					innerEvent: event
-				}
-			)
+	_getIntentHrefs(alignmentMap) {
+		return Object.keys(alignmentMap).map(alignmentHref =>
+			alignmentMap[alignmentHref].getLinkByRel(this.HypermediaRels.Outcomes.intent).href
 		);
-	}
-
-	_isIndirectAlignment(alignment) {
-		return alignment && alignment.properties && alignment.properties.relationshipType === 'referenced';
 	}
 
 	_getNavigationDescription(title, typeName, readOnly, outcomeMappings) {
@@ -272,6 +220,58 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		}
 
 		return this.localize('navigationDescriptionNoActions', 'title', title, 'typeName', typeName);
+	}
+
+	_getOutcomeHrefs(intentMap) {
+		return Object.keys(intentMap).map(intentHref =>
+			intentMap[intentHref].getLinkByRel(this.HypermediaRels.Outcomes.outcome).href
+		);
+	}
+
+	_getOutcomeShortDescription(outcomeMapping) {
+		const outcome = outcomeMapping.outcomeEntity;
+		if (this.outcomeHasNotation(outcome)) {
+			return outcome.properties.notation || outcome.properties.altNotation;
+		} else if (this.outcomeHasNotationOrLabel(outcome)) {
+			return this.getOutcomeIdentifier(outcome);
+		} else {
+			return undefined;
+		}
+	}
+
+	_getOutcomeTextDescription(outcomeMapping) {
+		return this.getOutcomeDescriptionPlainText(outcomeMapping.outcomeEntity);
+	}
+
+	_isEmptyList(mappings) {
+		return mappings.length === 0;
+	}
+
+	_isIndirectAlignment(alignment) {
+		return alignment && alignment.properties && alignment.properties.relationshipType === 'referenced';
+	}
+
+	_removeOutcome(event) {
+		const alignment = this._alignmentMap[event.model.item.alignmentHref];
+		if (!alignment) return;
+		const actionName = this.deferredSave ? this.HypermediaActions.alignments.deferredRemoveAlignment : this.HypermediaActions.alignments.removeAlignment;
+		const deleteAlignmentAction = alignment.getActionByName(actionName);
+		if (!deleteAlignmentAction) return;
+		this.performSirenAction(deleteAlignmentAction);
+	}
+
+	_updateAlignments(event) {
+		this.dispatchEvent(
+			new CustomEvent(
+				'd2l-activity-alignment-tags-update',
+				{
+					composed: true,
+					bubbles: true,
+					sirenAction: this.entity.getActionByName(this.HypermediaActions.alignments.startUpdateAlignments),
+					innerEvent: event
+				}
+			)
+		);
 	}
 
 }

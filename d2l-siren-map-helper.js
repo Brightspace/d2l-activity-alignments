@@ -15,6 +15,11 @@ class SirenMapHelper extends mixinBehaviors([
 		};
 	}
 
+	constructor() {
+		super();
+		this.map = {};
+	}
+
 	static get template() {
 		return html`
 			<style>
@@ -23,11 +28,6 @@ class SirenMapHelper extends mixinBehaviors([
 				}
 			</style>
 		`;
-	}
-
-	constructor() {
-		super();
-		this.map = {};
 	}
 
 	_onEntityChanged(entity) {

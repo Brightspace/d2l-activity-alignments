@@ -1,4 +1,3 @@
-/* global sinon D2L */
 'use strict';
 
 function stubWhitelist() { // eslint-disable-line no-unused-vars

@@ -65,7 +65,7 @@ After cloning the repo, run `npm install` to install dependencies.
 Start local dev server that hosts the demo pages.
 
 ```sh
-npm run serve:local
+npm start
 ```
 
 ### Linting

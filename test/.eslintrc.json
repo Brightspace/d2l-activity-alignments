@@ -1,3 +1,7 @@
 {
-  "extends": "brightspace/wct-polymer-3-config"
+  "extends": "brightspace/wct-polymer-3-config",
+  "globals": {
+    "axs": true,
+    "stubWhitelist": true
+  }
 }

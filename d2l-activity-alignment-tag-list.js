@@ -1,37 +1,39 @@
-import { PolymerElement, html } from '@polymer/polymer';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
-import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
+import { LocalizeMixin } from './LocalizeMixin';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
+import { Rels, Actions } from 'd2l-hypermedia-constants';
+//TODO: create Lit equivalent of this behavior (probably a mixin)
+//import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
 import '@brightspace-ui-labs/multi-select/multi-select-list-item.js';
 import '@brightspace-ui-labs/multi-select/multi-select-list.js';
-import 'd2l-hypermedia-constants/d2l-hypermedia-constants.js';
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-tooltip/d2l-tooltip.js';
 import './localize-behavior.js';
 import './d2l-siren-map-helper.js';
 
-class ActivityAlignmentTagList extends mixinBehaviors([
-	D2L.PolymerBehaviors.Siren.EntityBehavior,
-	D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-	D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
-	D2L.Hypermedia.HMConstantsBehavior,
-	OutcomeParserBehavior
-], PolymerElement) {
 
+class ActivityAlignmentTagList extends LocalizeMixin(EntityMixinLit(LitElement)) {
+
+	static get is() { return 'd2l-activity-alignment-tag-list'; }
+
+	static get styles() {
+		return css`
+			.hidden {
+				display: none;
+			}
+		`;
+	}
 	static get properties() {
 		return {
 			readOnly: {
 				type: Boolean,
-				value: false
+				attribute: 'read-only'
 			},
 			_iconStyle: {
-				type: String,
-				value: null
+				type: String
 			},
 			_alignmentHrefs: {
-				type: Array,
-				computed: '_getAlignmentHrefs(entity)'
+				type: Array
 			},
 			_alignmentMap: Object,
 			_intentMap: Object,
@@ -41,42 +43,52 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 				value: [],
 				computed: '_getAlignmentToOutcomeMap(_alignmentHrefs, _alignmentMap, _intentMap, _outcomeMap, hideIndirectAlignments)'
 			},
+			_hasUpdateAction: {
+				type: Boolean
+			},
+			//TODO: create event to notify parent
 			empty: {
-				type: Boolean,
-				notify: true,
-				readOnly: true,
-				computed: '_isEmptyList(_mappings)'
+				type: Boolean
 			},
 			browseOutcomesText: {
 				type: String,
-				value: null,
-				reflectToAttribute: true
+				attribute: 'browse-outcomes-text',
+				reflect: true
 			},
 			deferredSave: {
 				type: Boolean,
-				value: false
+				attribute: 'deferred-save'
 			},
 			hideIndirectAlignments: {
 				type: Boolean,
-				value: false
+				attribute: 'hide-indirect-alignments'
 			},
 			typeName: {
 				type: String,
-				value: null,
-				reflectToAttribute: true
+				attribute: 'type-name',
+				reflect: true
 			},
 			title: {
 				type: String,
-				value: null,
-				reflectToAttribute: true
+				reflect: true
 			}
 		};
 	}
 
 	constructor() {
 		super();
+
+		this.browseOutcomesText = null;
+		this.deferredSave = false;
+		this.empty = false;
+		this.hideIndirectAlignments = false;
+		this.readOnly = false;
+		this.title = null;
+		this.typeName = null;
+		this._alignmentHrefs = [];
 		this._alignmentMap = {};
 		this._intentMap = {};
+		this._hasUpdateAction = false;
 		this._outcomeMap = {};
 
 		const userAgent = window.navigator.userAgent;
@@ -88,48 +100,24 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		) {
 			this._iconStyle = 'transform: translateY( -2px );';
 		}
+
+		//this._setEntityType() //Need to define entity item first
+
 	}
 
-	static get template() {
+	render() {
+		const navigationDescription = this._getNavigationDescription(this.title, this.typeName, this.readOnly, this._mappings);
+		const intentHrefs = this._getIntentHrefs(this._alignmentMap);
+		const outcomeHrefs = this._getOutcomeHrefs(this._intentMap);
 		return html`
-			<style>
-				.hidden {
-					display: none;
-				}
-			</style>
-			<d2l-labs-multi-select-list description="[[_getNavigationDescription(title, typeName, readOnly, _mappings)]]">
-				<template is="dom-repeat" items="[[_mappings]]">
-					<d2l-labs-multi-select-list-item
-						text="[[_getOutcomeTextDescription(item)]]"
-						short-text="[[_getOutcomeShortDescription(item)]]"
-						max-chars="40"
-						deletable$="[[_canDelete(item, readOnly)]]"
-						on-d2l-labs-multi-select-list-item-deleted="_removeOutcome"
-					></d2l-labs-multi-select-list-item>
-				</template>
-				<template is="dom-if" if="[[_canUpdate(entity, readOnly)]]">
-					<d2l-button-icon
-						icon="d2l-tier1:add"
-						aria-label$="[[browseOutcomesText]]"
-						style$="[[_iconStyle]]"
-						on-click="_updateAlignments"
-						id="browse-outcome-button"
-					></d2l-button-icon>
-					<d2l-tooltip for="browse-outcome-button" position="top">
-						[[browseOutcomesText]]
-					</d2l-tooltip>
-				</template>
+			<d2l-labs-multi-select-list description="${navigationDescription}">
+				${this._mappings.map(item => this._renderListItem(item))}
+				${this._canUpdate(this._hasUpdateAction, this.readOnly) ? this._renderAddItemButton() : html``}
 			</d2l-labs-multi-select-list>
 			<div class="hidden">
-				<template is="dom-repeat" items="[[_alignmentHrefs]]">
-					<d2l-siren-map-helper href="[[item]]" token="[[token]]" map="{{_alignmentMap}}"></d2l-siren-map-helper>
-				</template>
-				<template is="dom-repeat" items="[[_getIntentHrefs(_alignmentMap)]]">
-					<d2l-siren-map-helper href="[[item]]" token="[[token]]" map="{{_intentMap}}"></d2l-siren-map-helper>
-				</template>
-				<template is="dom-repeat" items="[[_getOutcomeHrefs(_intentMap)]]">
-					<d2l-siren-map-helper href="[[item]]" token="[[token]]" map="{{_outcomeMap}}"></d2l-siren-map-helper>
-				</template>
+				${this._alignmentHrefs.map(item => this._renderSirenMapHelper(item, this._alignmentMap))}
+				${intentHrefs.map(item => this._renderSirenMapHelper(item, this._intentMap))}
+				${outcomeHrefs.map(item => this._renderSirenMapHelper(item, this._outcomeMap))}
 			</div>
 		`;
 	}
@@ -137,11 +125,18 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 	_canDelete(outcomeMapping, readOnly) {
 		if (readOnly) return false;
 		const alignment = this._alignmentMap[outcomeMapping.alignmentHref];
-		return alignment && alignment.hasActionByName(this.HypermediaActions.alignments.removeAlignment);
+		return alignment && alignment.hasActionByName(Actions.alignments.removeAlignment);
+	}
+	
+	_canUpdate(hasUpdateAction, readOnly) {
+		return !readOnly && hasUpdateAction;
 	}
 
-	_canUpdate(entity, readOnly) {
-		return !readOnly && entity && entity.hasActionByName(this.HypermediaActions.alignments.startUpdateAlignments);
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
 	}
 
 	_getAlignmentHrefs(entity) {
@@ -172,9 +167,9 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 			const alignment = alignmentMap[alignmentHref];
 			if (!alignment) return;
 			if (hideIndirectAlignments && this._isIndirectAlignment(alignment)) return;
-			const intent = intentMap[alignment.getLinkByRel(this.HypermediaRels.Outcomes.intent).href];
+			const intent = intentMap[alignment.getLinkByRel(Rels.Outcomes.intent).href];
 			if (!intent) return;
-			const outcome = outcomeMap[intent.getLinkByRel(this.HypermediaRels.Outcomes.outcome).href];
+			const outcome = outcomeMap[intent.getLinkByRel(Rels.Outcomes.outcome).href];
 			if (!outcome) return;
 			mappings.push({
 				alignmentHref: alignmentHref,
@@ -186,7 +181,7 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 
 	_getIntentHrefs(alignmentMap) {
 		return Object.keys(alignmentMap).map(alignmentHref =>
-			alignmentMap[alignmentHref].getLinkByRel(this.HypermediaRels.Outcomes.intent).href
+			alignmentMap[alignmentHref].getLinkByRel(Rels.Outcomes.intent).href
 		);
 	}
 
@@ -224,7 +219,7 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 
 	_getOutcomeHrefs(intentMap) {
 		return Object.keys(intentMap).map(intentHref =>
-			intentMap[intentHref].getLinkByRel(this.HypermediaRels.Outcomes.outcome).href
+			intentMap[intentHref].getLinkByRel(Rels.Outcomes.outcome).href
 		);
 	}
 
@@ -251,13 +246,63 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 		return alignment && alignment.properties && alignment.properties.relationshipType === 'referenced';
 	}
 
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+
+		this._hasUpdateAction = entity.hasActionByName(Actions.alignments.startUpdateAlignments);
+
+		entity.subEntitiesLoaded().then(() => {
+			this._alignmentHrefs = this._getAlignmentHrefs(entity);
+		});
+	}
+
 	_removeOutcome(event) {
 		const alignment = this._alignmentMap[event.model.item.alignmentHref];
 		if (!alignment) return;
-		const actionName = this.deferredSave ? this.HypermediaActions.alignments.deferredRemoveAlignment : this.HypermediaActions.alignments.removeAlignment;
+		const actionName = this.deferredSave ? Actions.alignments.deferredRemoveAlignment : Actions.alignments.removeAlignment;
 		const deleteAlignmentAction = alignment.getActionByName(actionName);
 		if (!deleteAlignmentAction) return;
 		this.performSirenAction(deleteAlignmentAction);
+	}
+
+	_renderAddItemButton() {
+		return html`
+			<d2l-button-icon
+				icon="d2l-tier1:add"
+				aria-label="${browseOutcomesText}"
+				style="${this._iconStyle}"
+				@click="${this._updateAlignments}"
+				id="browse-outcome-button"
+			></d2l-button-icon>
+			<d2l-tooltip for="browse-outcome-button" position="top">
+				${this.browseOutcomesText}
+			</d2l-tooltip>
+		`;
+	}
+	
+	_renderListItem(item) {
+		const outcomeTextDescription = this._getOutcomeTextDescription(item);
+		const outcomeShortDescription = this._getOutcomeShortDescription(item);
+		const canDelete = _canDelete(item, this.readOnly);
+		const deletedCallback = this._removeOutcome;
+		return html`
+			<d2l-labs-multi-select-list-item
+				text="${outcomeTextDescription}"
+				short-text="${outcomeShortDescription}"
+				max-chars="40"
+				deletable$="${canDelete}"
+				@on-d2l-labs-multi-select-list-item-deleted"${deletedCallback /* TODO: determine where this event is triggered */}"
+			></d2l-labs-multi-select-list-item>		
+		`;
+	}
+
+	_renderSirenMapHelper(item, map) {
+		//TODO: map attribute had a 2-way data binding - set up events for this
+		return html`
+			<d2l-siren-map-helper href="${item}" token="${this.token}" map="${map}"></d2l-siren-map-helper>
+		`;
 	}
 
 	_updateAlignments(event) {
@@ -267,7 +312,7 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 				{
 					composed: true,
 					bubbles: true,
-					sirenAction: this.entity.getActionByName(this.HypermediaActions.alignments.startUpdateAlignments),
+					sirenAction: this.entity.getActionByName(Actions.alignments.startUpdateAlignments),
 					innerEvent: event
 				}
 			)
@@ -276,4 +321,4 @@ class ActivityAlignmentTagList extends mixinBehaviors([
 
 }
 
-customElements.define('d2l-activity-alignment-tag-list', ActivityAlignmentTagList);
+customElements.define(ActivityAlignmentTagList.is, ActivityAlignmentTagList);

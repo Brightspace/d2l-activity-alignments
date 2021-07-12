@@ -1,11 +1,9 @@
-import { PolymerElement, html } from '@polymer/polymer';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
+import { css, html } from 'lit-element';
 import 'd2l-hypermedia-constants/d2l-hypermedia-constants.js';
 import 'd2l-alert/d2l-alert.js';
 import './localize-behavior.js';
 
-class BoldTextWrapper extends mixinBehaviors([], PolymerElement) {
+class BoldTextWrapper extends LitElement {
 
 	static get is() {
 		return 'd2l-bold-text-wrapper';
@@ -14,27 +12,42 @@ class BoldTextWrapper extends mixinBehaviors([], PolymerElement) {
 	static get properties() {
 		return {
 			content: {
-				type: String,
+				type: String
 			},
 			parsedContent: {
-				type: Array,
-				value: [],
-				computed: '_computeParsedContent(content)'
+				type: Array
 			}
 		};
 	}
 
-	static get template() {
+	static get styles() {
+		return css`
+			:host {
+				display: inline;
+			}
+		`;
+	}
+
+	constructor() {
+		super();
+		this.content = null;
+		this.parsedContent = [];
+	}
+
+	set content(content) {
+		this.parsedContent = this._computeParsedContent(content);
+	}
+
+	render() {
 		return html`
-            <style>
-                :host {
-                    display: inline;
-                }
-			</style>
-			<template is="dom-repeat" items="[[parsedContent]]"
-				><template is="dom-if" if="[[!item.bold]]">[[item.data]]</template
-				><template is="dom-if" if="[[item.bold]]"><b>[[item.data]]</b></template
-			></template>
+			${this.parsedContent.map(item => {
+				if(item.bold) {
+					return html`<b>${item.data}</b>`;
+				}
+				else {
+					return item.data;
+				}
+			})}
         `;
 	}
 

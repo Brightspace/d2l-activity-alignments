@@ -1,17 +1,11 @@
 /**
-`d2l-select-outcomes`
+`d2l-alignment-update`
 
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
+//NOTE (Lit): there's still lots of work to be done on this file. Make sure to test it properly when you're finished
+
 import { Actions, Classes, Rels } from 'd2l-hypermedia-constants';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-button/d2l-button.js';
@@ -20,14 +14,51 @@ import 'd2l-alert/d2l-alert.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import './d2l-alignment-intent.js';
-import './localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
+import { LocalizeMixin } from './LocalizeMixin';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-alignment-update">
-	<template strip-whitespace="">
-		<style>
+static const KEYCODES = {
+	DOWN: 40,
+	UP: 38,
+	SPACE: 32
+},
+
+class D2lAlignmentsUpdate extends EntityMixinLit(LocalizeMixin(LitElement)) {
+
+	static get is() {return 'd2l-alignment-update'; }
+
+	static get properties() {
+		return {
+			candidates: Object,
+			candidateEntities: Array,
+			//TODO (Lit): empty had notify: true - set up event instead
+			empty: {
+				type: Boolean
+			},
+			_candidatesSelfHref: {
+				type: String
+			},
+			_buttonsDisabled: {
+				type: Boolean
+			},
+			__promises: {
+				type: Number,
+				value: 0,
+			},
+			_loading: {
+				type: Boolean
+			},
+			deferredSave: {
+				type: Boolean
+			}
+		}
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: block;
 				overflow: hidden;
@@ -127,110 +158,78 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-alignment-update">
 
 			d2l-alert {
 				margin-top: 0.5rem;
-			}
-		</style>
-		<siren-entity-loading href="[[_candidatesSelfHref]]" token="[[token]]">
-			<div class="d2l-alignment-update-content">
-				<ul role="listbox" aria-multiselectable="true" aria-busy="[[_loading]]" tabindex="0" on-focus="_handleListFocus">
-					<template is="dom-repeat" items="[[candidateEntities]]">
-						<li class$="[[_getClass(index, candidateEntities)]]" tabindex="-1" role="option" aria-selected$="[[_getAriaChecked(item)]]" aria-checked$="[[_getAriaChecked(item)]]" aria-labelledby="[[id]]alignment-intent-[[index]]" on-keydown="_onKeyDown" on-focus="_handleOptionFocus" on-blur="_handleOptionBlur">
-							<d2l-input-checkbox tabindex="-1"  not-tabbable="true" checked="[[_getChecked(item)]]" indeterminate="[[_getIndeterminate(item)]]" on-change="_onOutcomeSelectChange"  data-index$="[[index]]" >
-								<d2l-alignment-intent id$="[[id]]alignment-intent-[[index]]" href="[[_getIntent(item)]]" token="[[token]]"></d2l-alignment-intent>
-							</d2l-input-checkbox>
-						</li>
-					</template>
-				</ul>
-				<div class="d2l-alignment-update-buttons">
-					<d2l-button primary="" disabled="[[_buttonsDisabled]]" on-tap="_add" aria-label="[[localize('addLabel')]]">[[localize('add')]]</d2l-button>
-					<d2l-button on-tap="_cancel" aria-label="[[localize('cancelLabel')]]">[[localize('cancel')]]</d2l-button>
-					<d2l-loading-spinner hidden$="[[!_loading]]"></d2l-loading-spinner>
-				</div>
-				<template is="dom-if" if="[[_promiseError]]">
-					<d2l-alert type="error">[[localize('error')]]</d2l-alert>
-				</template>
-			</div>
-			<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
-		</siren-entity-loading>
-	</template>
+			}		
+		`;
+	}
 
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-Polymer({
-
-	is: 'd2l-alignment-update',
-
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
-	],
-
-	properties: {
-		candidates: Object,
-		empty: {
-			type: Boolean,
-			notify: true,
-			value: true,
-			computed: '_isEmpty(candidates)'
-		},
-		_candidatesSelfHref: {
-			type: String,
-			computed: '_getSelfLink(candidates)'
-		},
-		_buttonsDisabled: {
-			type: Boolean,
-			value: true
-		},
-		__promises: {
-			type: Number,
-			value: 0
-		},
-		_loading: {
-			type: Boolean,
-			value: false
-		},
-		deferredSave: {
-			type: Boolean
-		}
-	},
-
-	observers: [
-		'_getCandidates(entity)',
-		'_updateLoading(__promises)'
-	],
-
-	_keyCodes: {
-		DOWN: 40,
-		UP: 38,
-		SPACE: 32
-	},
-
-	ready: function() {
+	constructor() {
+		super();
+		this.candidates = {};
+		this.candidateEntities = [];
+		this.deferredSave = false;
+		this.empty = true;
+		this._buttonsDisabled = true;
+		this._candidatesSelfHref = null;
+		this._loading = false;
 		this.__promise = null;
 		this.__promises = 0;
+		
 		this._handleSirenEntityLoadingFetched = this._handleSirenEntityLoadingFetched.bind(this);
-	},
 
-	attached: function() {
+		//this._setEntityType(xyz) //Need to make entity object first
+	}
+
+	connectedCallback() {
 		this.shadowRoot.querySelector('siren-entity-loading').addEventListener('siren-entity-loading-fetched', this._handleSirenEntityLoadingFetched);
-	},
+	}
 
-	detached: function() {
+	disconnectedCallback() {
 		this.shadowRoot.querySelector('siren-entity-loading').removeEventListener('siren-entity-loading-fetched', this._handleSirenEntityLoadingFetched);
-	},
+	}
 
-	_handleSirenEntityLoadingFetched: function(e) {
+	render() {
+		return html`
+			<siren-entity-loading href="${this._candidatesSelfHref}" token="${this.token}">
+				<div class="d2l-alignment-update-content">
+					<ul role="listbox" aria-multiselectable="true" aria-busy="${this._loading}" tabindex="0" @focus="${this._handleListFocus}">
+						${this.candidateEntities.map((item, index) => this._renderListItem(item, index))}
+						</template>
+					</ul>
+					<div class="d2l-alignment-update-buttons">
+						<d2l-button primary="" disabled="[[_buttonsDisabled]]" on-tap="_add" aria-label="[[localize('addLabel')]]">[[localize('add')]]</d2l-button>
+						<d2l-button on-tap="_cancel" aria-label="[[localize('cancelLabel')]]">[[localize('cancel')]]</d2l-button>
+						<d2l-loading-spinner hidden$="[[!_loading]]"></d2l-loading-spinner>
+					</div>
+					<template is="dom-if" if="[[_promiseError]]">
+						<d2l-alert type="error">[[localize('error')]]</d2l-alert>
+					</template>
+				</div>
+				<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
+			</siren-entity-loading>
+		`;
+	}
+
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
+	}
+
+	set __promises(promises) {
+		this._updateLoading(promises);
+	}
+
+	_handleSirenEntityLoadingFetched(e) {
 		if (e.target === this.shadowRoot.querySelector('siren-entity-loading')) {
 			this.dispatchEvent(new CustomEvent('d2l-alignment-list-loaded', {
 				bubbles: true,
 				composed: true
 			}));
 		}
-	},
+	}
 
-	_onKeyDown: function(e) {
+	_onKeyDown(e) {
 		var target = e.target;
 		if (e.keyCode === this._keyCodes.DOWN || e.keyCode === this._keyCodes.UP || e.keyCode === this._keyCodes.SPACE) {
 			// prevent scrolling when up/down arrows pressed
@@ -260,26 +259,26 @@ Polymer({
 			}
 			return;
 		}
-	},
+	}
 
-	_handleListFocus: function() {
+	_handleListFocus() {
 		var elem = dom(this.root).querySelector('.d2l-select-outcomes-first');
 		if (elem) {
 			elem.focus();
 		}
-	},
+	}
 
-	_handleOptionFocus:function(e) {
+	_handleOptionFocus(e) {
 		var list = e.target.parentNode;
 		list.setAttribute('tabindex', '-1');
-	},
+	}
 
-	_handleOptionBlur:function(e) {
+	_handleOptionBlur(e) {
 		var list = e.target.parentNode;
 		list.setAttribute('tabindex', '0');
-	},
+	}
 
-	_focusNext: function(target) {
+	_focusNext(target) {
 		var index = +target.dataset.index;
 		var list = this.$$('ul');
 		var item;
@@ -292,9 +291,9 @@ Polymer({
 			item = children[0];
 		}
 		item && item.firstChild && item.firstChild.focus();
-	},
+	}
 
-	_focusPrevious: function(target) {
+	_focusPrevious(target) {
 		var index = +target.dataset.index;
 		var list = this.$$('ul');
 		var item;
@@ -307,9 +306,9 @@ Polymer({
 			item = children[children.length - 1];
 		}
 		item && item.firstChild && item.firstChild.focus();
-	},
+	}
 
-	_getClass: function(index, candidates) {
+	_getClass(index, candidates) {
 		var className = '';
 		if (index === 0) {
 			className += 'd2l-select-outcomes-first';
@@ -318,9 +317,21 @@ Polymer({
 			className += ' d2l-select-outcomes-last';
 		}
 		return className;
-	},
+	}
 
-	_performActionAndUpdate: function(getAction) {
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+
+		this.candidates = this._getCandidates(entity);
+		this.empty = this._isEmpty(this.candidates);
+		this._candidatesSelfHref = this._getSelfLink(this.candidates);
+		
+	}
+
+	//TODO (Lit): verify that actions perform correctly (unsure about arguments 3 and 4 for performSirenAction)
+	_performActionAndUpdate(getAction) {
 		var self = this;
 		this._promiseError = false;
 		this.__promises++;
@@ -328,7 +339,7 @@ Polymer({
 			.then(function() {
 				var action = getAction.call(self);
 				if (action) {
-					return self.performSirenAction(action)
+					return performSirenAction(this.token, action, null, true)
 						.then(function(candidates) {
 							self.__promises--;
 							self.candidates = candidates;
@@ -347,37 +358,37 @@ Polymer({
 				self.__promises--;
 			});
 		return this.__promise;
-	},
+	}
 
-	_getCandidates: function(entity) {
+	_getCandidates(entity) {
 		if (!entity) {
 			return;
 		}
 		this._performActionAndUpdate(function() {
 			return entity.getActionByName(Actions.alignments.startUpdateAlignments);
 		});
-	},
+	}
 
-	_getChecked: function(candidate) {
+	_getChecked(candidate) {
 		return candidate.hasClass(Classes.alignments.selected);
-	},
+	}
 
-	_getIndeterminate: function(candidate) {
+	_getIndeterminate(candidate) {
 		return candidate.hasClass(Classes.alignments.indeterminate);
-	},
+	}
 
-	_getAriaChecked: function(candidate) {
+	_getAriaChecked(candidate) {
 		if (this._getChecked(candidate)) {
 			return 'true';
 		}
 		return 'false';
-	},
+	}
 
-	_getIntent: function(entity) {
+	_getIntent(entity) {
 		return entity && entity.hasLinkByRel(Rels.Outcomes.intent) && entity.getLinkByRel(Rels.Outcomes.intent).href;
-	},
+	}
 
-	_onOutcomeSelectChange: function(e) {
+	_onOutcomeSelectChange(e) {
 		var self = this;
 		var target = e.target;
 		var index = +target.dataset.index;
@@ -394,9 +405,9 @@ Polymer({
 			.then(function() {
 				self._buttonsDisabled = false;
 			});
-	},
+	}
 
-	onOutcomeSelectChangeOnKeydown: function(target) {
+	onOutcomeSelectChangeOnKeydown(target) {
 		var self = this;
 		var index = +target.dataset.index;
 		this._performActionAndUpdate(/* @this */ function() {
@@ -412,35 +423,50 @@ Polymer({
 			.then(function() {
 				self._buttonsDisabled = false;
 			});
-	},
+	}
 
-	_add: function() {
+	_add() {
 		this._buttonsDisabled = true;
 		this._performActionAndUpdate(/* @this */ function() {
 			const actionName = this.deferredSave ? Actions.alignments.deferredSubmit : Actions.alignments.submit;
 			return this.candidates.getActionByName(actionName);
 		})
 			.then(function() {
-				!this.deferredSave && window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
+				!this.deferredSave && window.D2L.Siren.EntityStore.fetch(this.href, this.token, true); //TODO (Lit): We shouldn't directly call fetch if possible - will revisit once our entities are implemented
 				this.dispatchEvent(new CustomEvent('d2l-alignment-list-added', {
 					bubbles: true,
 					composed: true
 				}));
 			}.bind(this));
-	},
+	}
 
-	_cancel: function() {
+	_cancel() {
 		if (!this._buttonsDisabled) {
 			this._buttonsDisabled = true;
-			this._getCandidates(this.entity);
+			this._getCandidates(super._entity); //Seems to be re-grabbing the original candidates before any updates were made
 		}
 		this.dispatchEvent(new CustomEvent('d2l-alignment-list-cancelled', {
 			bubbles: true,
 			composed: true
 		}));
-	},
+	}
 
-	_updateLoading: function(promises) {
+	_renderListItem(item, index) {
+
+		let alignmentIntentId = this.is();
+		alignmentIntent += "-alignment-intent-";
+		alignmentIntent += index.toString();
+
+		//TODO: verify all the events here - might need to add the @change event (renamed to something more descriptive)
+		return html`
+			<li class="${this._getClass(index, this.candidateEntities)}" tabindex="-1" role="option" aria-selected$="${this._getAriaChecked(item)}" aria-checked$="${this._getAriaChecked(item)}" aria-labelledby="${alignmentIntentId}" @keydown="${this._onKeyDown}" @focus="${this._handleOptionFocus}" @blur="${this._handleOptionBlur}">
+				<d2l-input-checkbox tabindex="-1"  not-tabbable="true" ?checked="${this._getChecked(item)}" ?indeterminate="${this._getIndeterminate(item)}" @change="${this._onOutcomeSelectChange}"  data-index="${index}" >
+					<d2l-alignment-intent id="${alignmentIntentId}" href="${this._getIntent(item)}" token="${this.token}"></d2l-alignment-intent>
+				</d2l-input-checkbox>
+			</li>
+		`;
+	}
+	_updateLoading(promises) {
 		if (promises > 0) {
 			this.debounce('loading', /* @this */ function() {
 				this._loading = this.__promises > 0;
@@ -449,13 +475,13 @@ Polymer({
 			this.cancelDebouncer('loading');
 			this._loading = false;
 		}
-	},
+	}
 
-	_isEmpty: function(candidates) {
+	_isEmpty(candidates) {
 		if (candidates.entities && candidates.entities.length > 0) {
 			return false;
 		} else {
 			return true;
 		}
 	}
-});
+}

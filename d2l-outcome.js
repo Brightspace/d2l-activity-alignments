@@ -1,26 +1,36 @@
 /**
-`d2l-select-outcomes`
+`d2l-outcome`
 
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
-import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 's-html/s-html.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
+//TODO: create Lit equivalent of this behavior (probably a mixin)
+//import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-outcome">
-	<template strip-whitespace="">
-		<style>
+
+
+</dom-module>`;
+
+document.head.appendChild($_documentContainer.content);
+class D2lOutcome extends EntityMixinLit(LitElement) {
+
+	static get is() { return 'd2l-outcome'; }
+
+	static get properties() {
+		return {
+			href: String
+		}
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: block;
 				width: 100%;
@@ -51,38 +61,40 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcome">
 
 			.d2l-outcome-wrap, .d2l-outcome-text {
 				width: 100%;
-			}
-		</style>
-		<siren-entity-loading href="[[href]]" token="[[token]]">
-			<div class="d2l-outcome-wrap">
-				<template is="dom-if" if="[[_hasOutcomeIdentifier(entity)]]">
+			}		
+		`;
+	}
+
+	constructor() {
+		super();
+		this.href = null;
+
+		//this._setEntityType(xyz) //Need to make entity object first
+		//No need currently for _onEntityChanged management since everything is retrieved from properties (no subentities to load)
+	}
+
+	render() {
+		return html`
+			<siren-entity-loading href="${this.href}" token="${this.token}">
+				<div class="d2l-outcome-wrap">
+					${this._hasOutcomeIdentifier(entity) ? html`
 					<div class="d2l-outcome-identifier">[[getOutcomeIdentifier(entity)]]</div>
-				</template>
-				<div class="d2l-outcome-text">
-					<s-html hidden="[[!_fromTrustedSource(entity)]]" html="[[getOutcomeDescriptionHtml(entity)]]"></s-html>
-					<span hidden="[[_fromTrustedSource(entity)]]">[[getOutcomeDescriptionPlainText(entity)]]</span>
+					` : html``}
+					<div class="d2l-outcome-text">
+						<s-html hidden="${!this._fromTrustedSource(entity)}" html="${this.getOutcomeDescriptionHtml(entity)}"></s-html>
+						<span hidden="${this._fromTrustedSource(entity)}">${this.getOutcomeDescriptionPlainText(entity)}</span>
+					</div>
 				</div>
-			</div>
 
-			<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
-		</siren-entity-loading>
-	</template>
+				<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
+			</siren-entity-loading>
+		`;
+	}
 
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-Polymer({
-
-	is: 'd2l-outcome',
-
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityLoadingBehavior,
-		OutcomeParserBehavior
-	],
-
-	_hasOutcomeIdentifier: function(entity) {
+	_hasOutcomeIdentifier(entity) {
 		return !!this.getOutcomeIdentifier(entity);
 	}
 
-});
+}
+
+customElements.define(D2lOutcome.is, D2lOutcome);

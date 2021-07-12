@@ -1,45 +1,62 @@
 /**
-`d2l-select-outcomes`
+`d2l-alignment-intent`
 
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import { Rels } from 'd2l-hypermedia-constants';
 import './d2l-outcome.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-const $_documentContainer = document.createElement('template');
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
 
-$_documentContainer.innerHTML = `<dom-module id="d2l-alignment-intent">
-	<template strip-whitespace="">
-		<style>
+class D2lAlignmentIntent extends EntityMixinLit(LitElement) {
+
+	static get is() { return 'd2l-alignment-intent' }
+
+	static get properties() {
+		return {
+			_outcomeHref: String
+		};
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: block;
 			}
-		</style>
-		<d2l-outcome href="[[_getOutcome(entity)]]" token="[[token]]"></d2l-outcome>
-	</template>
-
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-Polymer({
-
-	is: 'd2l-alignment-intent',
-
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-	],
-
-	_getOutcome: function(entity) {
-		return entity && entity.hasLinkByRel(Rels.Outcomes.outcome) && entity.getLinkByRel(Rels.Outcomes.outcome).href;
+		`;
 	}
 
-});
+	constructor() {
+		super();
+		this._outcomeHref = null;
+
+		//this._setEntityType(xyz) //Need to make entity object first
+	}
+
+	render() {
+		return html`
+			<d2l-outcome href="${this._outcomeHref}" token="${this.token}" d2l-outcome>
+		`;
+	}
+
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
+	}
+
+	_onEntityChanged(entity) {
+		if(!entity) {
+			return;
+		}
+
+		if(entity.hasLinkByRel(Rels.Outcomes.outcome)) {
+			this._outcomeHref = entity.getLinkByRel(Rels.Outcomes.outcome).href;
+		}
+	}
+
+}
+
+customElements.define(D2lAlignmentIntent.is, D2lAlignmentIntent);

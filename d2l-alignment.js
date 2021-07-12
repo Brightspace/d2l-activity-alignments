@@ -1,31 +1,37 @@
 /**
-`d2l-select-outcomes`
+`d2l-alignment`
 
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-icons/tier1-icons.js';
-import 'd2l-polymer-siren-behaviors/store/entity-store.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import { Actions, Rels } from 'd2l-hypermedia-constants';
 import 'd2l-outcomes-level-of-achievements/d2l-outcomes-level-of-achievements.js';
 import 'd2l-resize-aware/d2l-resize-aware.js';
 import './d2l-alignment-intent.js';
-import './localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { LocalizeMixin } from './LocalizeMixin';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
+
 const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = `<dom-module id="d2l-alignment">
-	<template strip-whitespace="">
-		<style>
+class D2lAlignment extends LocalizeMixin(EntityMixinLit(LitElement)) {
+
+	static get is() { return 'd2l-alignment'; }
+
+	static get properties() {
+		return {
+			readOnly: Boolean,
+			_demonstrationsHref: String,
+			_intentHref: String,
+			_isRemovable: Boolean,
+			_hasDemonstrations: Boolean
+		};
+	}
+	
+	static get styles() {
+		return css`
 			div#outer {
 				display: flex;
 				flex-direction: row;
@@ -84,60 +90,42 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-alignment">
 			
 			d2l-resize-aware {
 				width: 100%;
-			}
-		</style>
-		<d2l-resize-aware on-d2l-resize-aware-resized="_stack">
-			<div id="outer">
-				<div class="alignment-container">
-					<d2l-alignment-intent href="[[_getIntent(entity)]]" token="[[token]]"></d2l-alignment-intent>
-					<template is="dom-if" if="[[_isRemovable(entity, readOnly)]]">
-						<d2l-button-icon icon="d2l-tier1:close-default" text="[[localize('removeAlignment')]]" on-click="_remove"></d2l-button-icon>
-					</template>
-				</div>
-				<template is="dom-if" if="[[_hasDemonstrations(entity)]]">
-					<d2l-outcomes-level-of-achievements token="[[token]]" href="[[_getDemonstrations(entity)]]" read-only$="[[readOnly]]"></d2l-outcomes-level-of-achievements>
-				</template>
-			</div>
-		</d2l-resize-aware>
-	</template>
+			}		
+		`;
+	}
 
+	constructor() {
+		super();
+		this.readOnly = false;
+		this._intentHref = null;
+		this._isRemovable = false;
+		this._hasDemonstrations = false;
+		this._demonstrationsHref = null;
 
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-Polymer({
-
-	is: 'd2l-alignment',
-
-	properties: {
-		readOnly: Boolean
-	},
-
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
-	],
-
-	ready: function() {
 		this._stack = this._stack.bind(this);
-	},
 
-	_getIntent: function(entity) {
-		return entity && entity.hasLinkByRel(Rels.Outcomes.intent) && entity.getLinkByRel(Rels.Outcomes.intent).href;
-	},
+		//this._setEntityType(xyz) //Need to make entity object first
+	}
 
-	_hasDemonstrations: function(entity) {
-		// TODO: Add to hmConstants when this gets finalized
-		return entity && entity.hasLinkByRel('https://achievements.api.brightspace.com/rels/demonstration');
-	},
+	render() {
+		return html`
+			<d2l-resize-aware @d2l-resize-aware-resized="${this._stack}"> ${null /*TODO: verify this is the right event */} 
+				<div id="outer">
+					${this._renderAlignmentsContainer()}
+					${this._renderOutcomesLoa()}
+				</div>
+			</d2l-resize-aware>
+		`;
+	}
 
-	_getDemonstrations: function(entity) {
-		// TODO: Add to hmConstants when this gets finalized
-		return this._hasDemonstrations(entity) && entity.getLinkByRel('https://achievements.api.brightspace.com/rels/demonstration').href;
-	},
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
+	}
 
-	_isRemovable: function(entity, readOnly) {
+	_getIsRemovable(entity, readOnly) {
 		if (readOnly) {
 			return false;
 		}
@@ -151,9 +139,27 @@ Polymer({
 		}
 
 		return true;
-	},
+	}
 
-	_remove: function() {
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+		
+		this._isRemovable = this._getIsRemovable(entity, this.readOnly);
+
+		if(entity.hasLinkByRel(Rels.Outcomes.intent)) {
+			this._intentHref = entity.getLinkByRel(Rels.Outcomes.intent).href;
+		}
+
+		// TODO: Add to hmConstants when this gets finalized
+		this._hasDemonstrations = entity.hasLinkByRel('https://achievements.api.brightspace.com/rels/demonstration');
+		if(this._hasDemonstrations) {
+			this._demonstrationsHref = entity.getLinkByRel('https://achievements.api.brightspace.com/rels/demonstration').href;
+		}
+	}
+
+	_remove() {
 		var action = this.entity && this.entity.getActionByName(Actions.alignments.removeAlignment);
 		if (action) {
 			this.dispatchEvent(new CustomEvent('d2l-alignment-remove', {
@@ -166,9 +172,39 @@ Polymer({
 			}));
 			this.performSirenAction(action);
 		}
-	},
+	}
 
-	_stack: function(e) {
+	_renderAlignmentsContainer() {
+		const closeButton = this._isRemovable ? html`
+			<d2l-button-icon
+				icon="d2l-tier1:close-default"
+				text="${this.localize('removeAlignment')}"
+				@click="${this._remove}"
+			></d2l-button-icon>
+		` : html``;
+
+		return html`
+			<div class="alignment-container">
+				<d2l-alignment-intent href=${this._intentHref}" token${this.token}"></d2l-alignment-intent>
+				${closeButton}
+			</div>
+		`;
+	}
+	_renderOutcomesLoa() {
+		if(!this._hasDemonstrations) {
+			return html``;
+		}
+
+		return html`
+			<d2l-outcomes-level-of-achievements
+				token="${this.token}"
+				href="${this._demonstrationsHref}"
+				read-only="${this.readOnly}"
+			></d2l-outcomes-level-of-achievements>
+		`;
+	}
+
+	_stack(e) {
 		var width = e.detail.current.width;
 		if (width > 630) {
 			this.$.outer.classList.add('side-by-side');
@@ -179,4 +215,6 @@ Polymer({
 		}
 	}
 
-});
+}
+
+customElements.define(D2lAlignment.is, D2lAlignment);

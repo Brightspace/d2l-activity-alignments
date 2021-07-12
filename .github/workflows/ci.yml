@@ -29,10 +29,15 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Test
-        run: npm test
+        run: |
+          polymer test --skip-plugin sauce
+          if ${{env.SAUCE_ACCESS_KEY != ''}}; then
+            Running full test suite
+            npm run testcafe:chrome
+          fi
         env:
-          SAUCE_ACCESS_KEY: ${{secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN}}
           SAUCE_USERNAME: Desire2Learn
+          SAUCE_ACCESS_KEY: ${{secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN}}
   lint:
     name: Lint
     timeout-minutes: 5

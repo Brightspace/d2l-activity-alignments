@@ -10,7 +10,7 @@
     "format": "npm run format:lang && npm run format:eslint",
     "format:eslint": "npm run lint:eslint -- --fix",
     "format:lang": "mfv remove-extraneous && mfv add-missing",
-    "test": "polymer test --skip-plugin sauce && npm run testcafe:chrome",
+    "test": "polymer test --skip-plugin sauce && npm run testcafe:local:chrome",
     "start": "wds --app-index demo/index.html --node-resolve --dedupe --watch --open --preserve-symlinks",
     "testcafe:chrome": "testcafe \"saucelabs:Chrome@73.0:Windows 10\" TestCafe/LOA_on_Outcomes.js --app \"polymer serve\"",
     "testcafe:local:chrome": "testcafe chrome TestCafe/LOA_on_Outcomes.js --app \"polymer serve\""

@@ -1,33 +1,54 @@
 /**
-`d2l-select-outcomes`
+`d2l-alignment-list`
 
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import { Actions } from 'd2l-hypermedia-constants';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-alert/d2l-alert.js';
 import 'd2l-loading-spinner/d2l-loading-spinner.js';
-import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import './d2l-alignment.js';
 import './localize-behavior.js';
 import './d2l-siren-map-helper.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
+import { LocalizeMixin } from './LocalizeMixin';
 import 'd2l-typography/d2l-typography.js';
-const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-alignment-list">
-	<template strip-whitespace="">
-		<style>
+class D2lAlignmentList extends LocalizeMixin(EntityMixinLit(LitElement)) {
+
+	static get is() { return 'd2l-alignment-list'; }
+
+	static get properties() {
+		return {
+			readOnly: {
+				type: Boolean
+			},
+			_isEditable: {
+				type: Boolean
+			},
+			_directAlignmentHrefs: {
+				type: Array
+			},
+			_indirectAlignmentHrefs: {
+				type: Array
+			},
+			_alignmentHrefs: {
+				type: Array
+			},
+			_alignmentMap: {
+				type: Object
+			},
+			headerTitle: {
+				type: String
+			}
+		}
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: flex;
 				width: 100%;
@@ -110,149 +131,99 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-alignment-list">
 				display: flex;
 				flex-direction: column;
 			}
-		</style>
-		<siren-entity-loading href="[[href]]" token="[[token]]">
-			<div class="direction-correction">
-				<div class="d2l-alignment-list-content">
-					<template is="dom-if" if="[[_hasAlignmentsOrEditable(entity, _directAlignmentHrefs, _indirectAlignmentHrefs, readOnly)]]">
-						<div>
-							<slot name="outcomes-title"></slot>
-						</div>
-					</template>
-					<template is="dom-if" if="[[_hasAlignmentsAndNotEditable(entity, _directAlignmentHrefs, _indirectAlignmentHrefs, readOnly)]]">
-						<div>
-							<slot name="describe-aligned-outcomes"></slot>
-						</div>
-					</template>
-					<template is="dom-if" if="[[_hasAlignments(_indirectAlignmentHrefs)]]">
-						<div class="alignment-list-header">[[localize('indirectAlignments', 'headerTitle', headerTitle)]]</div>
-						<ul aria-busy="[[_loading]]" class$="[[_getClass(entity, true)]]">
-							<template is="dom-repeat" items="[[_indirectAlignmentHrefs]]">
-								<li>
-									<d2l-alignment
-										id$="[[id]]-indirect-alignment-intent-[[index]]"
-										href="[[item]]"
-										token="[[token]]"
-										read-only
-									></d2l-alignment>
-								</li>
-							</template>
-						</ul>
-					</template>
-					<template is="dom-if" if="[[_hasAlignments(_directAlignmentHrefs)]]">
-						<div class="alignment-list-header">[[localize('directAlignments', 'headerTitle', headerTitle)]]</div>
-						<ul aria-busy="[[_loading]]" class$="[[_getClass(entity, readOnly)]]">
-							<template is="dom-repeat" items="[[_directAlignmentHrefs]]">
-								<li>
-									<d2l-alignment
-										id$="[[id]]-direct-alignment-intent-[[index]]"
-										href="[[item]]"
-										token="[[token]]"
-										on-d2l-alignment-remove="_onAlignmentRemove"
-										data-index$="[[index]]"
-										read-only$="[[readOnly]]"
-									></d2l-alignment>
-								</li>
-							</template>
-						</ul>
-					</template>
-					<template is="dom-repeat" items="[[_alignmentHrefs]]">
-						<d2l-siren-map-helper href="[[item]]" token="[[token]]" map="{{_alignmentMap}}"></d2l-siren-map-helper>
-					</template>
-					<template is="dom-if" if="[[_promiseError]]">
-						<d2l-alert type="error">[[localize('error')]]</d2l-alert>
-					</template>
-				</div>
-				<template is="dom-if" if="[[_isEditable(entity, readOnly)]]">
-					<div>
-						<slot name="show-select-outcomes"></slot>
+		`;
+	}
+
+	constructor() {
+		super();
+		this.headerTitle = null;
+		this.readOnly = false;
+
+		this._isEditable = false;
+		this._alignmentHrefs = [];
+		this._directAlignmentHrefs = [];
+		this._indirectAlignmentHrefs = [];
+
+		//this._setEntityType(xyz) //Need to make entity object first
+	}
+
+	render() {
+		return html`
+			<siren-entity-loading href="${this.href}" token="${this.token}">
+				<div class="direction-correction">
+					<div class="d2l-alignment-list-content">
+						${this._renderListContentHeader()}
+						${this._renderAlignmentsList(true)}
+						${this._renderAlignmentsList(false)}
+						${this._alignmentHrefs.map(href => html`
+							<!-- TODO: map was using 2-way binding -- add event system for Lit version -->
+							<d2l-siren-map-helper href="${href}" token="${this.token}" map="${this._alignmentMap}"></d2l-siren-map-helper>
+						`)}
+						${this._promiseError ? html`
+							<d2l-alert type="error">${this.localize('error')}</d2l-alert>
+						` : html``}
 					</div>
-				</template>
-			</div>
-			<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
-		</siren-entity-loading>
-	</template>
+					${this._isEditable ? html`
+						<div>
+							<slot name="show-select-outcomes"></slot>
+						</div>
+					` : html``}
+				</div>
+				<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
+			</siren-entity-loading>			
+		`;
+	}
 
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-Polymer({
-
-	is: 'd2l-alignment-list',
-
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
-	],
-
-	properties: {
-		readOnly: {
-			type: Boolean,
-			value: false
-		},
-		_directAlignmentHrefs: {
-			type: Array,
-			computed: '_getDirectAlignments(_alignmentMap)'
-		},
-		_indirectAlignmentHrefs: {
-			type: Array,
-			computed: '_getIndirectAlignments(_alignmentMap)'
-		},
-		_alignmentHrefs: {
-			type: Array,
-			computed: '_getAlignmentHrefs(entity)'
-		},
-		_alignmentMap: Object,
-		headerTitle: {
-			type: String,
-			value: null
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
 		}
-	},
+	}
 
-	_getClass: function(entity, readOnly) {
-		if (this._isEditable(entity, readOnly)) {
+	_getClass(isEditable) {
+		if (isEditable) {
 			return 'd2l-alignment-list-editable';
 		}
 
 		return '';
-	},
+	}
 
-	_getAlignmentHrefs: function(entity) {
+	_getAlignmentHrefs(entity) {
 		if (!entity || !entity.entities || !entity.entities.length) {
 			return [];
 		}
 
 		return entity.entities.map(subentity => subentity.href);
-	},
+	}
 
-	_getDirectAlignments: function(alignmentMap) {
+	_getDirectAlignmentHrefs(alignmentMap) {
 		if (!alignmentMap) {
 			return [];
 		}
 		return Object.keys(alignmentMap).filter(
 			href => alignmentMap[href].properties.relationshipType !== 'referenced'
 		);
-	},
+	}
 
-	_getIndirectAlignments: function(alignmentMap) {
+	_getIndirectAlignmentHrefs(alignmentMap) {
 		if (!alignmentMap) {
 			return [];
 		}
 		return Object.keys(alignmentMap).filter(
 			href => alignmentMap[href].properties.relationshipType !== 'owned'
 		);
-	},
+	}
 
-	_isEmpty: function(object) {
+	_isEmpty(object) {
 		for (var x in object) {
 			return false;
 		}
 		return true;
-	},
+	}
 
-	_onAlignmentRemove: function(e) {
+	//TODO (Lit conversion): verify if we need to add a handler to delete the removed alignment's entires in the href lists
+	_onAlignmentRemove(e) {
 		const newMap = this._alignmentMap;
 		delete newMap[e.detail.entity.getLinkByRel('self').href];
 		if (this._isEmpty(newMap)) {
@@ -268,24 +239,90 @@ Polymer({
 		this.async(function() {
 			this.shadowRoot.removeChild(screenReaderAlert);
 		}.bind(this), 3000);
-	},
+	}
 
-	_isEditable: function(entity, readOnly) {
-		return !readOnly && entity && entity.hasActionByName(Actions.alignments.startUpdateAlignments);
-	},
+	_onEntityChanged(entity) {
+		if(!entity) {
+			return;
+		}
+		
+		this._isEditable = !this.readOnly && entity.hasActionByName(Actions.alignments.startUpdateAlignments);
 
-	_hasAlignments: function(alignmentList1, alignmentList2) {
+		this._alignmentHrefs = this._getAlignmentHrefs(entity);
+		this._directAlignmentHrefs = this._getDirectAlignmentHrefs(this._alignmentMap);
+		this._indirectAlignmentHrefs = this._getIndirectAlignmentHrefs(this._alignmentMap);
+
+	}
+
+	_hasAlignments(alignmentList1, alignmentList2) {
 		return (
 			(alignmentList1 && alignmentList1.length) ||
 			(alignmentList2 && alignmentList2.length)
 		);
-	},
-
-	_hasAlignmentsAndNotEditable: function(entity, directAlignments, indirectAlignments, readOnly) {
-		return !this._isEditable(entity, readOnly) && this._hasAlignments(directAlignments, indirectAlignments);
-	},
-
-	_hasAlignmentsOrEditable: function(entity, directAlignments, indirectAlignments, readOnly) {
-		return this._hasAlignments(directAlignments, indirectAlignments) || this._isEditable(entity, readOnly);
 	}
-});
+
+	_hasAlignmentsAndNotEditable() {
+		return !this._isEditable && this._hasAlignments(this._directAlignmentHrefs, this._indirectAlignmentHrefs);
+	}
+
+	_hasAlignmentsOrEditable() {
+		return this._hasAlignments(this._directAlignmentHrefs, this._indirectAlignmentHrefs) || this._isEditable;
+	}
+
+	_renderAlignment(href, index, isIndirect) {
+
+		let id = this.is();
+		id += '-';
+		id += isIndirect ? 'indirect' : 'direct';
+		id += '-alignment-intent-';
+		id += index.toString();
+
+		return html`
+			<li>
+				<d2l-alignment
+					id$="${id}"
+					href="${href}"
+					token="${this.token}"
+					read-only
+				></d2l-alignment>
+			</li>
+		`;
+	}
+
+	_renderAlignmentsList(isIndirectAlignments) {
+		const alignmentHrefs = isIndirectAlignments ? this._indirectAlignmentHrefs : this._directAlignmentHrefs;
+		if(!this._hasAlignments(alignmentHrefs)) {
+			return html``;
+		}
+		
+		const headerLangterm = isIndirectAlignments ? 'indirectAlignments' : 'directAlignments';
+
+		return html`
+			<div class="alignment-list-header">${this.localize(headerLangterm, 'headerTitle', headerTitle)}</div>
+			<ul aria-busy="${this._loading}" class="${this._getClass(this._isEditable)}">
+				${alignmentHrefs.map((item, index) => this._renderAlignment(item, index, isIndirectAlignments))}
+			</ul>
+		`
+	}
+
+	_renderListContentHeader() {
+		let markup = html``;
+		if (this._hasAlignmentsOrEditable()) {
+			markup += html`
+				<div>
+					<slot name="outcomes-title"></slot>
+				</div>
+			`;
+		}
+		if(this._hasAlignmentsAndNotEditable()) {
+			markup += html`
+				<div>
+					<slot name="describe-aligned-outcomes"></slot>
+				</div>						
+			`;
+		}
+		return markup;
+	}
+}
+
+customElements.define(D2lAlignmentList.is, D2lAlignmentList);

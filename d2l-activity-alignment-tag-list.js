@@ -1,5 +1,6 @@
 import { LocalizeMixin } from './LocalizeMixin';
 import { OutcomeParserMixin } from './OutcomeParserMixin.js';
+import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
 import { css, html } from 'lit-element';
 import { Rels, Actions } from 'd2l-hypermedia-constants';
@@ -267,7 +268,7 @@ class ActivityAlignmentTagList extends LocalizeMixin(OutcomeParserMixin(EntityMi
 		const actionName = this.deferredSave ? Actions.alignments.deferredRemoveAlignment : Actions.alignments.removeAlignment;
 		const deleteAlignmentAction = alignment.getActionByName(actionName);
 		if (!deleteAlignmentAction) return;
-		this.performSirenAction(deleteAlignmentAction);
+		performSirenAction(deleteAlignmentAction);
 	}
 
 	_renderAddItemButton() {

@@ -257,6 +257,10 @@ class ActivityAlignmentTagList extends LocalizeMixin(OutcomeParserMixin(EntityMi
 		});
 	}
 
+	_onHelperMapUpdated(e, map) {
+		map = e.detail;
+	}
+
 	_removeOutcome(event) {
 		const alignment = this._alignmentMap[event.model.item.alignmentHref];
 		if (!alignment) return;
@@ -299,8 +303,11 @@ class ActivityAlignmentTagList extends LocalizeMixin(OutcomeParserMixin(EntityMi
 
 	_renderSirenMapHelper(item, map) {
 		//TODO: map attribute had a 2-way data binding - set up events for this
+
+		const mapUpdatedCallback = (e) => this._onHelperMapUpdated(e, map);
+
 		return html`
-			<d2l-siren-map-helper href="${item}" token="${this.token}" map="${map}"></d2l-siren-map-helper>
+			<d2l-siren-map-helper href="${item}" token="${this.token}" map="${map}" @d2l-siren-map-updated=${mapUpdateCallback}></d2l-siren-map-helper>
 		`;
 	}
 

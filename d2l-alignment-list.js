@@ -148,6 +148,9 @@ class D2lAlignmentList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 	}
 
 	render() {
+
+		const mapUpdatedCallback = (e) => this._onHelperMapUpdated(e, map);
+
 		return html`
 			<siren-entity-loading href="${this.href}" token="${this.token}">
 				<div class="direction-correction">
@@ -156,8 +159,7 @@ class D2lAlignmentList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 						${this._renderAlignmentsList(true)}
 						${this._renderAlignmentsList(false)}
 						${this._alignmentHrefs.map(href => html`
-							<!-- TODO: map was using 2-way binding -- add event system for Lit version -->
-							<d2l-siren-map-helper href="${href}" token="${this.token}" map="${this._alignmentMap}"></d2l-siren-map-helper>
+							<d2l-siren-map-helper href="${href}" token="${this.token}" map="${this._alignmentMap} @d2l-siren-map-updated=${mapUpdateCallback}" @></d2l-siren-map-helper>
 						`)}
 						${this._promiseError ? html`
 							<d2l-alert type="error">${this.localize('error')}</d2l-alert>
@@ -252,6 +254,10 @@ class D2lAlignmentList extends LocalizeMixin(EntityMixinLit(LitElement)) {
 		this._directAlignmentHrefs = this._getDirectAlignmentHrefs(this._alignmentMap);
 		this._indirectAlignmentHrefs = this._getIndirectAlignmentHrefs(this._alignmentMap);
 
+	}
+
+	_onHelperMapUpdated(e, map) {
+		map = e.detail;
 	}
 
 	_hasAlignments(alignmentList1, alignmentList2) {

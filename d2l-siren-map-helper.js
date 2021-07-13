@@ -1,33 +1,64 @@
-import { PolymerElement, html } from '@polymer/polymer';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
 
-class SirenMapHelper extends mixinBehaviors([
-	D2L.PolymerBehaviors.Siren.EntityBehavior
-], PolymerElement) {
+class SirenMapHelper extends EntityMixinLit(LitElement) {
 
 	static get properties() {
 		return {
+			entityTypeString: {
+				type: String,
+				attribute: 'entity-type'
+			},
 			map: {
-				type: Object,
-				notify: true
+				type: Object
 			}
 		};
 	}
 
+	static get styles() {
+		return css`
+			:host {
+				display: none;
+			}
+		`;
+	}
+
 	constructor() {
 		super();
+		this.entityTypeString = null;
 		this.map = {};
 	}
 
-	static get template() {
-		return html`
-			<style>
-				:host {
-					display: none;
+	set entityTypeString(typeString) {
+		//Set the entity type of this object
+		switch(typeString) {
+			case 'alignment': this._setEntityType(ActivityAlignmentEntity); break;
+			case 'intent': this._setEntityType(OutcomeIntentEntity); break;
+			case 'outcome': this._setEntityType(OutcomeEntity); break;
+		}
+	}
+
+	set map(map) {
+		this.dispatchEvent(
+			new CustomEvent(
+				'd2l-siren-map-updated', {
+					composed: true,
+					bubbles: true,
+					detail: map
 				}
-			</style>
-		`;
+			)
+		);
+	}
+
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
+	}
+
+	render() {
+		return html``;
 	}
 
 	_onEntityChanged(entity) {

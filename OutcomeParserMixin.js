@@ -2,14 +2,14 @@ const _trim = function(str) {
 	return str ? str.trim() : str;
 };
 
-/** @polymerBehavior OutcomeParserBehavior */
-const OutcomeParserBehavior = {
+/** OutcomeParserMixin - provides outcome-parsing functionality for web components */
+const OutcomeParserMixin = (superClass) => class extends superClass {
 
-	_fromTrustedSource: function(outcomeEntity) {
+	_fromTrustedSource(outcomeEntity) {
 		return outcomeEntity && outcomeEntity.properties.source === 'asn';
-	},
+	}
 
-	_flattenList: function(doc, listElement) {
+	_flattenList(doc, listElement) {
 		var flattenedList = doc.createElement('span');
 		flattenedList.appendChild(doc.createTextNode(' '));
 		for (var i = 0; i < listElement.childNodes.length; i++) {
@@ -27,9 +27,9 @@ const OutcomeParserBehavior = {
 		flattenedList.replaceChild(doc.createTextNode(' '), flattenedList.lastChild);
 		flattenedList.normalize();
 		return flattenedList;
-	},
+	}
 
-	getOutcomeIdentifier: function(outcomeEntity) {
+	getOutcomeIdentifier(outcomeEntity) {
 		if (!outcomeEntity || !outcomeEntity.properties) {
 			return;
 		}
@@ -58,25 +58,25 @@ const OutcomeParserBehavior = {
 		}
 
 		return notation || '';
-	},
+	}
 
-	outcomeHasNotation: function(outcomeEntity) {
+	outcomeHasNotation(outcomeEntity) {
 		return outcomeEntity && !!(
 			_trim(outcomeEntity.properties.notation) ||
 			_trim(outcomeEntity.properties.altNotation)
 		);
-	},
+	}
 
-	outcomeHasNotationOrLabel: function(outcomeEntity) {
+	outcomeHasNotationOrLabel(outcomeEntity) {
 		return outcomeEntity && !!(
 			_trim(outcomeEntity.properties.notation) ||
 			_trim(outcomeEntity.properties.altNotation) ||
 			_trim(outcomeEntity.properties.label) ||
 			_trim(outcomeEntity.properties.listId)
 		);
-	},
+	}
 
-	getOutcomeDescriptionHtml: function(outcomeEntity) {
+	getOutcomeDescriptionHtml(outcomeEntity) {
 		if (!outcomeEntity || !this._fromTrustedSource(outcomeEntity) || !outcomeEntity.properties.description) {
 			return '';
 		}
@@ -90,9 +90,9 @@ const OutcomeParserBehavior = {
 		}
 
 		return parsedHtml.body.innerHTML;
-	},
+	}
 
-	getOutcomeDescriptionPlainText: function(outcomeEntity) {
+	getOutcomeDescriptionPlainText(outcomeEntity) {
 		if (!outcomeEntity) {
 			return '';
 		}
@@ -108,4 +108,4 @@ const OutcomeParserBehavior = {
 
 };
 
-export default [ OutcomeParserBehavior ];
+export default [ OutcomeParserMixin ];

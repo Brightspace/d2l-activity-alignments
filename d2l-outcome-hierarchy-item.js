@@ -14,12 +14,10 @@ import '@polymer/iron-collapse/iron-collapse.js'; //TODO: find Lit equivalent as
 import 's-html/s-html.js';
 import './d2l-bold-text-wrapper.js';
 import { LocalizeMixin } from './LocalizeMixin';
+import { OutcomeParserMixin } from './OutcomeParserMixin.js';
 import { css, html } from 'lit-element';
 
-//TODO: create Lit equivalent of this (probably a mixin)
-//import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
-
-class D2lOutcomeHierarchyItem extends LocalizeMixin(LitElement) {
+class D2lOutcomeHierarchyItem extends LocalizeMixin(OutcomeParserMixin(LitElement)) {
 
 	static get is() { return 'd2l-outcome-hierarchy-item'; }
 

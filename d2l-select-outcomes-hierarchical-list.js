@@ -18,7 +18,7 @@ import './d2l-outcome-hierarchy-item.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
-import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
+import { OutcomeParserMixin } from './OutcomeParserMixin.js';
 
 const $_documentContainer = document.createElement('template');
 

@@ -8,18 +8,10 @@ import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import 's-html/s-html.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { OutcomeParserMixin } from './OutcomeParserMixin.js';
 import { css, html } from 'lit-element';
-//TODO: create Lit equivalent of this behavior (probably a mixin)
-//import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
-const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = `<dom-module id="d2l-outcome">
-
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-class D2lOutcome extends EntityMixinLit(LitElement) {
+class D2lOutcome extends OutcomeParserMixin(EntityMixinLit(LitElement)) {
 
 	static get is() { return 'd2l-outcome'; }
 

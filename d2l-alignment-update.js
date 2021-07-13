@@ -196,13 +196,13 @@ class D2lAlignmentsUpdate extends EntityMixinLit(LocalizeMixin(LitElement)) {
 						</template>
 					</ul>
 					<div class="d2l-alignment-update-buttons">
-						<d2l-button primary="" disabled="[[_buttonsDisabled]]" on-tap="_add" aria-label="[[localize('addLabel')]]">[[localize('add')]]</d2l-button>
-						<d2l-button on-tap="_cancel" aria-label="[[localize('cancelLabel')]]">[[localize('cancel')]]</d2l-button>
-						<d2l-loading-spinner hidden$="[[!_loading]]"></d2l-loading-spinner>
+						<d2l-button primary="" disabled="${this._buttonsDisabled}" on-tap="_add" aria-label="${this.localize('addLabel')}">[[localize('add')]]</d2l-button>
+						<d2l-button on-tap="_cancel" aria-label="${this.localize('cancelLabel')}">${this.localize('cancel')}</d2l-button>
+						<d2l-loading-spinner hidden$="${!this._loading}"></d2l-loading-spinner>
 					</div>
-					<template is="dom-if" if="[[_promiseError]]">
-						<d2l-alert type="error">[[localize('error')]]</d2l-alert>
-					</template>
+					${this._promiseError ? html`
+						<d2l-alert type="error">${this.localize('error')}</d2l-alert>
+					` : html``}
 				</div>
 				<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
 			</siren-entity-loading>

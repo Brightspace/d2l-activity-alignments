@@ -3,24 +3,30 @@
 
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-alert/d2l-alert.js';
 import './d2l-alignment-update.js';
-import './localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-const $_documentContainer = document.createElement('template');
+import { LocalizeMixin } from './LocalizeMixin';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
 
-$_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes">
-	<template strip-whitespace="">
-		<style>
+class D2lSelectOutcomes extends LocalizeMixin(EntityMixinLit(LitElement)) {
+
+	static get is() { return 'd2l-select-outcomes'; }
+
+	static get properties() {
+		return {
+			_showError: Boolean,
+			_alignmentHrefs: Array,
+			//TODO (Lit): use events to replace notify: true for "empty"
+			empty: Boolean,
+			deferredSave: Boolean
+		};
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: flex;
 				overflow: auto;
@@ -30,71 +36,62 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes">
 				display: block;
 				position: relative;
 			}
-		</style>
-		<div class="d2l-select-outcomes-main">
-			<d2l-alignment-update deferred-save="[[deferredSave]]" empty="{{_alignmentsIsEmpty}}" href="[[_getAlignments(entity)]]" token="[[token]]"></d2l-alignment-update>
-			<template is="dom-if" if="[[_showError]]">
-				<d2l-alert type="error">[[localize('error')]]</d2l-alert>
-			</template>
-		</div>
-	</template>
-
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-Polymer({
-
-	is: 'd2l-select-outcomes',
-
-	properties: {
-		_showError: {
-			type: Boolean,
-			value: false
-		},
-		_alignmentsIsEmpty: {
-			type: Boolean
-		},
-		empty: {
-			type: Boolean,
-			notify: true,
-			readOnly: true,
-			computed: '_isAlignmentsEmpty(_alignmentsIsEmpty)'
-		},
-		deferredSave: {
-			type: Boolean,
-			value: false
-		}
-	},
-
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
-	],
-
-	ready: function() {
-		this._boundHandleError = this._handleError.bind(this);
-	},
-
-	attached: function() {
-		this._showError = false;
-		this.addEventListener('d2l-siren-entity-error', this._boundHandleError);
-	},
-
-	detached: function() {
-		this.removeEventListener('d2l-siren-entity-error', this._boundHandleError);
-	},
-
-	_handleError: function() {
-		this._showError = true;
-	},
-
-	_getAlignments: function(entity) {
-		return entity && entity.hasLinkByRel(Rels.Alignments.alignments) && entity.getLinkByRel(Rels.Alignments.alignments).href;
-	},
-
-	_isAlignmentsEmpty: function(_alignmentsIsEmpty) {
-		return _alignmentsIsEmpty;
+		`;
 	}
 
-});
+	constructor() {
+		super();
+
+		this.deferredSave = false;
+		this._showError = false;
+		this._boundHandleError = this._handleError.bind(this);
+
+		//this._setEntityType(xyz) //Need to define entity item first
+	}
+
+	connectedCallback() {
+		this._showError = false;
+		this.addEventListener('d2l-siren-entity-error', this._boundHandleError);
+	}
+
+	disconnectedCallback() {
+		this.removeEventListener('d2l-siren-entity-error', this._boundHandleError);
+	}
+
+	render() {
+		//TODO (Lit): setup event to replace empty attribute's 2-way binding
+		return html`
+			<div class="d2l-select-outcomes-main">
+				<d2l-alignment-update ?deferred-save="${this.deferredSave}" ?empty="${this.empty}" href="${this._alignmentsHrefs}" token="${this.token}"></d2l-alignment-update>
+				${this._showError ? html`
+					<d2l-alert type="error">${this.localize('error')}</d2l-alert>
+				` : html``}
+			</div>
+		`;
+	}
+	
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
+	}
+
+	_handleError() {
+		this._showError = true;
+	}
+
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+
+		if (entity.hasLinkByRel(Rels.Alignments.alignments)) {
+			this._alignmentsHrefs = entity.getLinkByRel(Rels.Alignments.alignments).href;
+		}
+	}
+
+
+}
+
+customElements.define(D2lSelectOutcomes.is, D2lSelectOutcomes);

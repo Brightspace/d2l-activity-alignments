@@ -1,27 +1,37 @@
 /**
-`d2l-select-outcomes`
+`d2l-select-outcomes-hierarchical`
 
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
-
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import './d2l-select-outcomes-hierarchical-list.js';
 import 'd2l-inputs/d2l-input-search.js';
 import 'd2l-alert/d2l-alert.js';
-import './localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-const $_documentContainer = document.createElement('template');
+import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
+import { LocalizeMixin } from './LocalizeMixin';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
 
-$_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hierarchical">
-	<template strip-whitespace="">
-		<style>
+class D2lSelectOutcomesHierarchical extends LocalizeMixin(EntityMixinLit(LitElement)) {
+
+	static get is() {return 'd2l-select-outcomes-hierarchical'; }
+
+	static get properties() {
+		return {
+			alignButtonText: String,
+			_showError: Boolean,
+			_alignments: Map,
+			_hierarchyHref: String,
+			_partialAlignments: Map,
+			_loading: Boolean,
+			_alignmentsSize: Number,
+			_searchText: String,
+			_showSearchResultsNumber: Boolean,
+			_searchResultsNumber: Number
+		}
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: flex;
 				--hierarchical-list-height: 520px;
@@ -85,139 +95,129 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 				margin-top: -12px;
 				@apply --d2l-body-standard;
 			}
-			
-		</style>
-		
-		<siren-entity-loading href="[[href]]" token="[[token]]" style="width:100%;">
-			<div class="d2l-select-outcomes-hierarchical-main">
-				<d2l-input-search
-					label="[[localize('searchOutcomes')]]"
-					placeholder="[[localize('searchPlaceholder')]]"
-					on-d2l-input-search-searched="_onSearch"
-				>
-				</d2l-input-search>
-				<div class="search-result-number" hidden="[[!_showSearchResultsNumber]]">
-					[[localize('searchResultFor', 'numOfResults', _searchResultsNumber, 'searchText', _searchText)]]
-				</div>
-				<d2l-select-outcomes-hierarchical-list
-					aria-busy="[[_loading]]"
-					class="d2l-hierarchical-list"
-					href="[[_getHierarchy(entity)]]"
-					token="[[token]]"
-					alignments="[[_alignments]]"
-					partial-alignments="[[_partialAlignments]]"
-					search-text="[[_searchText]]"
-					on-search-results-changed="_onSearchResultsChanged"
-					
-				>
-				</d2l-select-outcomes-hierarchical-list>
-				<div class="d2l-alignment-update-buttons">
-					<d2l-button primary="" disabled="[[_buttonsDisabled]]" on-tap="_add" aria-label="[[alignButtonText]]">[[alignButtonText]]</d2l-button>
-					<d2l-button on-tap="_cancel" aria-label="[[localize('cancelLabel')]]">[[localize('cancel')]]</d2l-button>
-					<d2l-loading-spinner hidden$="[[!_loading]]"></d2l-loading-spinner>
-					<div class="d2l-selected-outcomes">[[_alignmentsSize]] [[localize('selected')]]</div>
-				</div>
-				<template is="dom-if" if="[[_showError]]">
-					<d2l-alert type="error">[[localize('error')]]</d2l-alert>
-				</template>
-			</div>
-		</siren-entity-loading>
-	</template>
+		`;
+	}
 
+	set maxHeight(maxHeight) {
+		this._updateHierarchicalListHeight(maxHeight);
+	}
 
-</dom-module>`;
+	set _searchResultsNumber(number) {
+		this._showSearchResultsNumber = this._computeShowSearchResultsNumber(this._searchText, number);
+	}
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
+	set _searchText(text) {
+		this._showSearchResultsNumber = this._computeShowSearchResultsNumber(text, this._searchResultsNumber);
+	}
 
-	is: 'd2l-select-outcomes-hierarchical',
+	constructor() {
+		super();
 
-	properties: {
-		alignButtonText: {
-			type: String,
-			value: null
-		},
-		_showError: {
-			type: Boolean,
-			value: false
-		},
-		_alignments: {
-			type: Map,
-			computed: '_getAlignments(entity)'
-		},
-		_partialAlignments: {
-			type: Map,
-			computed: '_getPartialAlignments(entity)'
-		},
-		_loading: {
-			type: Boolean,
-			value: false
-		},
-		_alignmentsSize: {
-			type: Number,
-			value: 0
-		},
-		_searchText: {
-			type: String
-		},
-		_showSearchResultsNumber: {
-			type: Boolean,
-			value: false,
-			computed: '_computeShowSearchResultsNumber(_searchText, _searchResultsNumber)'
-		},
-		_searchResultsNumber: {
-			type: Number,
-			value: 0
-		}
-	},
+		this.alignButtonText = null;
+		this._alignments = {};
+		this._alignmentsSize = 0;
+		this._hierarchyHref = null;
+		this._loading = false;
+		this._partialAlignments = {};
+		this._searchResultsNumber = 0;
+		this._searchText = null;
+		this._showError = false;
+		this._showSearchResultsNumber = false;
 
-	observers: [
-		'_updateHierarchicalListHeight(maxHeight)',
-	],
-
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
-	],
-
-	ready: function() {
 		this._handleSirenEntityLoadingFetched = this._handleSirenEntityLoadingFetched.bind(this);
 		this._boundHandleError = this._handleError.bind(this);
 		this._alignmentsListChanged = this._alignmentsListChanged.bind(this);
-	},
 
-	attached: function() {
+		//this._setEntityType() //Need to define entity item first
+		
+	}
+
+	connectedCallback() {
 		this._showError = false;
 		this.shadowRoot.querySelector('siren-entity-loading').addEventListener('siren-entity-loading-fetched', this._handleSirenEntityLoadingFetched);
 		this.addEventListener('d2l-siren-entity-error', this._boundHandleError);
 		this.addEventListener('d2l-alignment-list-changed', this._alignmentsListChanged);
-	},
+	}
 
-	detached: function() {
+	disconnectedCallback() {
 		this.shadowRoot.querySelector('siren-entity-loading').removeEventListener('siren-entity-loading-fetched', this._handleSirenEntityLoadingFetched);
 		this.removeEventListener('d2l-alignment-list-changed', this._alignmentsListChanged);
 		this.removeEventListener('d2l-siren-entity-error', this._boundHandleError);
-	},
+	}
 
-	_handleSirenEntityLoadingFetched: function(e) {
+	render() {
+		//TODO (Lit): verify events
+		return html`
+			<siren-entity-loading href="${this.href}" token="${this.token}" style="width:100%;">
+				<div class="d2l-select-outcomes-hierarchical-main">
+					<d2l-input-search
+						label="${this.localize('searchOutcomes')}"
+						placeholder="${this.localize('searchPlaceholder')}"
+						@d2l-input-search-searched="${this._onSearch}"
+					>
+					</d2l-input-search>
+					<div class="search-result-number" ?hidden="${!this._showSearchResultsNumber}">
+						${this.localize('searchResultFor', 'numOfResults', _searchResultsNumber, 'searchText', _searchText)}
+					</div>
+					<d2l-select-outcomes-hierarchical-list
+						aria-busy="${this._loading}"
+						class="d2l-hierarchical-list"
+						href="${this._hierarchyHref}"
+						token="${this.token}"
+						alignments="${this._alignments}"
+						partial-alignments="${this._partialAlignments}"
+						search-text="${this._searchText}"
+						@search-results-changed="${this._onSearchResultsChanged}"
+					>
+					</d2l-select-outcomes-hierarchical-list>
+					<div class="d2l-alignment-update-buttons">
+						<d2l-button primary="" ?disabled="${this._buttonsDisabled}" @tap="${this._add}" aria-label="${this.alignButtonText}">${this.alignButtonText}</d2l-button>
+						<d2l-button on-tap="${this._cancel}" aria-label="${this.localize('cancelLabel')}">${this.localize('cancel')}</d2l-button>
+						<d2l-loading-spinner hidden$="${!this._loading}"></d2l-loading-spinner>
+						<div class="d2l-selected-outcomes">${this._alignmentsSize} ${this.localize('selected')}</div>
+					</div>
+					${this._showError ? html`
+						<d2l-alert type="error">${this.localize('error')}</d2l-alert>
+					` : html``}
+				</div>
+			</siren-entity-loading>
+		`;
+	}
+
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
+	}
+	
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+
+		if(entity.hasLinkByRel('https://outcomes.api.brightspace.com/rels/outcomes-hierarchy')) {
+			this._hierarchyHref = entity.getLinkByRel('https://outcomes.api.brightspace.com/rels/outcomes-hierarchy').href;
+		}
+
+		this._alignments = this._getAlignments(entity);
+		this._partialAlignments = this._getPartialAlignments(entity);
+	}
+
+	_handleSirenEntityLoadingFetched(e) {
 		if (e.target === this.shadowRoot.querySelector('siren-entity-loading')) {
 			this.dispatchEvent(new CustomEvent('d2l-alignment-list-loaded', {
 				bubbles: true,
 				composed: true
 			}));
 		}
-	},
+	}
 
-	_handleError: function() {
+	_handleError() {
 		this._showError = true;
-	},
+	}
 
-	_getHierarchy: function(entity) {
-		return entity && entity.hasLinkByRel('https://outcomes.api.brightspace.com/rels/outcomes-hierarchy') && entity.getLinkByRel('https://outcomes.api.brightspace.com/rels/outcomes-hierarchy').href;
-	},
-
-	_getAlignments: function(entity) {
+	_getAlignments(entity) {
 		if (entity && entity.properties.directAlignments) {
 			this._alignmentsSize = entity.properties.directAlignments.length;
 			return new Set(entity.properties.directAlignments);
@@ -225,28 +225,25 @@ Polymer({
 			this._alignmentsSize = 0;
 			return new Set();
 		}
-	},
+	}
 
-	_getPartialAlignments: function(entity) {
+	_getPartialAlignments(entity) {
 		if (entity && entity.properties.partialDirectAlignments) {
 			return new Set(entity.properties.partialDirectAlignments);
 		} else {
 			return new Set();
 		}
-	},
+	}
 
-	_getAlignmentsSize: function(alignments) {
-		this._alignmentsSize = alignments.size;
-	},
-
-	_cancel: function() {
+	_cancel() {
 		this.dispatchEvent(new CustomEvent('d2l-alignment-list-cancelled', {
 			bubbles: true,
 			composed: true
 		}));
-	},
+	}
 
-	_add: function() {
+	//TODO: consider cleaning this up a bit, if possible
+	_add() {
 		this._buttonsDisabled = true;
 		var action = this.entity.getActionByName('save-alignments');
 		var alignmentsAction = action.getFieldByName('alignments');
@@ -254,7 +251,7 @@ Polymer({
 		var partialAlignmentsAction = action.getFieldByName('partialDirectAlignments');
 		partialAlignmentsAction.value = Array.from(this._partialAlignments);
 
-		this.performSirenAction(action)
+		performSirenAction(action)
 			.then(function() {
 				window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
 				this.dispatchEvent(new CustomEvent('d2l-alignment-list-added', {
@@ -263,29 +260,31 @@ Polymer({
 				}));
 				this._buttonsDisabled = false;
 			}.bind(this));
-	},
+	}
 
-	_alignmentsListChanged: function() {
+	_alignmentsListChanged() {
 		this._alignmentsSize = this._alignments.size;
-	},
+	}
 
-	_onSearch: function(e) {
+	_onSearch(e) {
 		this.set('_searchText', e.detail.value);
-	},
+	}
 
-	_computeShowSearchResultsNumber: function(searchText, resultsNumber) {
+	_computeShowSearchResultsNumber(searchText, resultsNumber) {
 		return searchText && searchText.length > 0 && resultsNumber > 0;
-	},
+	}
 
 	_onSearchResultsChanged(e) {
 		this._searchResultsNumber = e.detail.value || 0;
-	},
+	}
 
-	_updateHierarchicalListHeight: function(maxHeight) {
+	_updateHierarchicalListHeight(maxHeight) {
 		if (maxHeight) {
 			this.updateStyles({
 				'--hierarchical-list-height': maxHeight,
 			});
 		}
-	},
-});
+	}
+}
+
+customElements.define(D2lSelectOutcomesHierarchical.is, D2lSelectOutcomesHierarchical);

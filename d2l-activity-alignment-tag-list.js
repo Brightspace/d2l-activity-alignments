@@ -1,9 +1,8 @@
 import { LocalizeMixin } from './LocalizeMixin';
+import { OutcomeParserMixin } from './OutcomeParserMixin.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
 import { css, html } from 'lit-element';
 import { Rels, Actions } from 'd2l-hypermedia-constants';
-//TODO: create Lit equivalent of this behavior (probably a mixin)
-//import OutcomeParserBehavior from './d2l-outcome-parser-behavior.js';
 import '@brightspace-ui-labs/multi-select/multi-select-list-item.js';
 import '@brightspace-ui-labs/multi-select/multi-select-list.js';
 import 'd2l-button/d2l-button-icon.js';
@@ -12,7 +11,7 @@ import './localize-behavior.js';
 import './d2l-siren-map-helper.js';
 
 
-class ActivityAlignmentTagList extends LocalizeMixin(EntityMixinLit(LitElement)) {
+class ActivityAlignmentTagList extends LocalizeMixin(OutcomeParserMixin(EntityMixinLit(LitElement))) {
 
 	static get is() { return 'd2l-activity-alignment-tag-list'; }
 

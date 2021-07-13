@@ -2,10 +2,6 @@
 `d2l-select-outcomes-hierarchical-list`
 */
 
-import '@polymer/polymer/polymer-legacy.js';
-
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-button/d2l-button.js';
 import 'd2l-inputs/d2l-input-checkbox.js';
@@ -15,16 +11,39 @@ import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import './d2l-alignment-intent.js';
 import './d2l-outcome-hierarchy-item.js';
-import './localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js';
+import { IronA11yAnnouncer } from '@polymer/iron-a11y-announcer/iron-a11y-announcer.js'; //TODO: find Lit equivalent
+import { LocalizeMixin } from './LocalizeMixin';
 import { OutcomeParserMixin } from './OutcomeParserMixin.js';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
 
-const $_documentContainer = document.createElement('template');
+class D2lSelectOutcomesHierarchicalList extends LocalizeMixin(OutcomeParserMixin(EntityMixinLit(LitElement))) {
 
-$_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hierarchical-list">
-	<template strip-whitespace="">
-		<style>
+	static get is() { return 'd2l-select-outcomes-hierarchical-list'; }
+
+	static get properties() {
+		return {
+			alignments: Set,
+
+			partialAlignments: Set,
+
+			level: Number,
+
+			searchText: {
+				type: String,
+				attribute: 'search-text'
+			},
+
+			_hierarchyItems: Object,
+
+			_displayedHierarchyItems: Array,
+
+			_isEmptySearchResult: Boolean
+		}
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: block;
 				overflow: hidden;
@@ -54,80 +73,54 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-select-outcomes-hie
 				text-align: center;
 				@apply --d2l-body-standard;
 			}
-		</style>
-		<template is="dom-if" if="[[_isEmptySearchResult]]">
-			<div class="no-result-container">
-				[[localize('noSearchResultFor', 'searchText', searchText)]]
-			</div>
-		</template>
-		<template is="dom-if" if="[[!_isEmptySearchResult]]">
-			<siren-entity-loading href="[[href]]" token="[[token]]">
-				<div class="d2l-alignment-update-content">
-					<d2l-outcome-hierarchy-item
-						tabindex="0"
-						item="[[displayedHierarchyItems]]"
-						alignments="[[alignments]]"
-						partial-alignments="[[partialAlignments]]"
-						current-level="[[level]]"
-						search-text="[[searchText]]"
-					></d2l-outcome-hierarchy-item>
-				</div>
-			</siren-entity-loading>
-		</template>
-	</template>
+		`;
+	}
 
+	constructor() {
+		super();
 
-</dom-module>`;
+		this.alignments = {};
+		this.level = 0;
+		this.partialAlignments = {};
+		this.searchText = null;
+		this._displayedHierarchyItems = {};
+		this._hierarchyItems = {};
+		this._isEmptySearchResult = false;
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
+		//this._setEntityType(xyz) //Need to define entity item first
 
-	is: 'd2l-select-outcomes-hierarchical-list',
-
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
-		OutcomeParserBehavior
-	],
-
-	properties: {
-		alignments: {
-			type: Set
-		},
-
-		partialAlignments: {
-			type: Set
-		},
-
-		level: {
-			type: Number,
-			value: 0,
-		},
-
-		hierarchyItems: {
-			type: Object,
-			computed: '_getHierarchyStart(entity)'
-		},
-
-		displayedHierarchyItems: {
-			type: Array,
-			computed: '_getDisplayedHierarchyItems(hierarchyItems, searchText)'
-		},
-
-		_isEmptySearchResult: {
-			type: Boolean,
-			value: false,
-			computed: '_getIsEmptySearchResult(displayedHierarchyItems)'
-		},
-	},
-
-	attached: function() {
+	}
+	connectedCallback() {
 		IronA11yAnnouncer.requestAvailability();
 		IronA11yAnnouncer.mode = 'assertive';
-	},
+	}
 
-	_getHierarchyStart: function(entity) {
+	render() {
+		return html`
+			${this._isEmptySearchResult ? this._renderNoSearchResult() : this._renderHasSearchResult()}
+		`;
+	}
+
+	set searchText(text) {
+		this._displayedHierarchyItems = this._getDisplayedHierarchyItems(this._hierarchyItems, text);
+	}
+
+	set _displayedHierarchyItems(items) {
+		this._isEmptySearchResult = this._getIsEmptySearchResult(items);
+	}
+
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
+	}
+
+	set _hierarchyItems(items) {
+		this._displayedHierarchyItems = this._getDisplayedHierarchyItems(items, this.searchText);
+	}
+
+	_getHierarchyStart(entity) {
 		if (!entity || !entity.hasSubEntityByClass('hierarchical-outcome')) {
 			return undefined;
 		}
@@ -138,11 +131,11 @@ Polymer({
 		};
 
 		return hierarchyRoot;
-	},
+	}
 
-	_getDisplayedHierarchyItems: function(entity, searchText) {
+	_getDisplayedHierarchyItems(entity, searchText) {
 		if (!entity) return [];
-		if (searchText === undefined) return entity;
+		if (searchText === null) return entity;
 		if (searchText === '') {
 			IronA11yAnnouncer.instance.fire('iron-announce',
 				{ text: this.localize('searchCleared') },
@@ -165,9 +158,19 @@ Polymer({
 		));
 
 		return filtered;
-	},
+	}
 
-	_search: function(entity, searchText = '') {
+	
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+
+		this._hierarchyItems = this._getHierarchyStart(entity);
+
+	}
+
+	_search(entity, searchText = '') {
 		const description = this.getOutcomeDescriptionPlainText(entity).toLowerCase().normalize();
 		const notation = this.getOutcomeIdentifier(entity).toLowerCase().normalize();
 		const searchTextLower = searchText.trim().toLowerCase().normalize();
@@ -175,9 +178,9 @@ Polymer({
 
 		const containsText = (i) => description.indexOf(i) > -1 || notation.indexOf(i) > -1;
 		return searchWords.every(containsText);
-	},
+	}
 
-	_filterHierachy: function(entity, searchText) {
+	_filterHierachy(entity, searchText) {
 		const isLeaf = (entity) => entity && entity.class.includes('leaf-outcome');
 		const isRoot = (entity) => entity.class.includes('hierarchy-start');
 
@@ -191,9 +194,9 @@ Polymer({
 			entity.entities = filteredSublevels;
 			return filteredSublevels.length !== 0 ? entity : null;
 		}
-	},
+	}
 
-	_applyBoldText: function(entity, searchText) {
+	_applyBoldText(entity, searchText) {
 		if (!entity || !searchText) return entity;
 
 		const escapeRegExp = (s) => s.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
@@ -216,14 +219,41 @@ Polymer({
 			entity.properties.description = entity.properties.description.replace(searchRegex, '<b>$&</b>');
 		}
 		return entity;
-	},
+	}
 
-	_getNumOfLeaves: function(tree) {
+	_getNumOfLeaves(tree) {
 		const isLeaf = (entity) => entity && entity.class.includes('leaf-outcome');
 		return isLeaf(tree) ? 1 : tree.entities.reduce((acc, curr) => acc + this._getNumOfLeaves(curr), 0);
-	},
+	}
 
-	_getIsEmptySearchResult: function(items) {
+	_getIsEmptySearchResult(items) {
 		return items && items.entities && items.entities.length === 0;
-	},
-});
+	}
+
+	_renderHasSearchResult() {
+		return html`
+			<siren-entity-loading href="${this.href}" token="${this.token}">
+				<div class="d2l-alignment-update-content">
+					<d2l-outcome-hierarchy-item
+						tabindex="0"
+						item="${this.displayedHierarchyItems}"
+						alignments="${this.alignments}"
+						partial-alignments="${this.partialAlignments}"
+						current-level="${this.level}"
+						search-text="${this.searchText}"
+					></d2l-outcome-hierarchy-item>
+				</div>
+			</siren-entity-loading>
+		`;
+	}
+
+	_renderNoSearchResult() {
+		return html`
+			<div class="no-result-container">
+				${this.localize('noSearchResultFor', 'searchText', searchText)}
+			</div>
+		`;
+	}
+}
+
+customElements.define(D2lSelectOutcomesHierarchicalList.is, D2lSelectOutcomesHierarchicalList);

@@ -1,17 +1,9 @@
 /**
-`d2l-select-outcomes`
+`d2l-user-alignment-list`
 
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
 import { Actions } from 'd2l-hypermedia-constants';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-alert/d2l-alert.js';
@@ -19,15 +11,27 @@ import 'd2l-loading-spinner/d2l-loading-spinner.js';
 import 'd2l-polymer-siren-behaviors/siren-entity-loading.js';
 import 'd2l-offscreen/d2l-offscreen.js';
 import './d2l-alignment.js';
-import './localize-behavior.js';
 import './d2l-siren-map-helper.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { LocalizeMixin } from './LocalizeMixin';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit';
+import { css, html } from 'lit-element';
 import 'd2l-typography/d2l-typography.js';
-const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-user-alignment-list">
-	<template strip-whitespace="">
-		<style>
+class D2lUserAlignmentList extends LocalizeMixin(EntityMixinLit(LitElement)) {
+
+	static get is() {return 'd2l-user-alignment-list'; }
+
+	static get properties() {
+		return{
+			readOnly: Boolean,
+			_alignmentHrefs: Array,
+			_alignmentMap: Object,
+			_hasUpdateAlignmentsAction: Boolean
+		}
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: flex;
 				width: 100%;
@@ -98,89 +102,85 @@ $_documentContainer.innerHTML = /*html*/`<dom-module id="d2l-user-alignment-list
 			d2l-alert {
 				margin-top: 0.5rem;
 			}
-		</style>
-		<siren-entity-loading href="[[href]]" token="[[token]]">
-			<div class="d2l-alignment-list-content">
-				<template is="dom-if" if="[[_hasAlignmentsOrEditable(entity, _alignmentHrefs, readOnly)]]">
-					<div>
-						<slot name="outcomes-title"></slot>
-					</div>
-				</template>
-				<template is="dom-if" if="[[_hasAlignmentsAndNotEditable(entity, _alignmentHrefs, readOnly)]]">
-					<div>
-						<slot name="describe-aligned-outcomes"></slot>
-					</div>
-				</template>
-				<template is="dom-if" if="[[_hasAlignments(_alignmentHrefs)]]">
-					<ul aria-busy="[[_loading]]" class$="[[_getClass(entity, true)]]">
-						<template is="dom-repeat" items="[[_alignmentHrefs]]">
-							<li>
-								<d2l-alignment
-									id$="[[id]]-alignment-intent-[[index]]"
-									href="[[item]]"
-									token="[[token]]"
-									read-only="[[readOnly]]"
-								></d2l-alignment>
-							</li>
-						</template>
-					</ul>
-				</template>
-				<template is="dom-if" if="[[_promiseError]]">
-					<d2l-alert type="error">[[localize('error')]]</d2l-alert>
-				</template>
-				<template is="dom-if" if="[[_isEditable(entity, readOnly)]]">
-					<div>
-						<slot name="show-select-outcomes"></slot>
-					</div>
-				</template>
-			</div>
-			<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
-		</siren-entity-loading>
-	</template>
+		`;
+	}
 
+	constructor() {
+		super();
 
-</dom-module>`;
+		this.readOnly = false;
+		this._hasUpdateAlignmentsAction = false;
+		this._alignmentHrefs = [];
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
+		//this._setEntityType(xyz) //Need to define entity item first
+	}
 
-	is: 'd2l-user-alignment-list',
+	render() {
+		return html`
+			<siren-entity-loading href="${this.href}" token="${this.token}">
+				<div class="d2l-alignment-list-content">
+					${this._hasAlignmentsOrEditable() ? html`
+						<div>
+							<slot name="outcomes-title"></slot>
+						</div>
+					` : html``}
+					${this._hasAlignmentsAndNotEditable() ? html`
+						<div>
+							<slot name="describe-aligned-outcomes"></slot>
+						</div>
+					` : html``}
+					${this._hasAlignments(this._alignmentHrefs) ? html`
+						<ul aria-busy="${this._loading}" class="${this._getClass()}">
+							${this._alignmentHrefs.map((item, index) => html`
+								<li>
+									<d2l-alignment
+										id="${this.is}-alignment-intent-${index}"
+										href="${item}"
+										token="${this.token}"
+										read-only="${this.readOnly}"
+									></d2l-alignment>
+								</li>
+							`)}
+						</ul>
+					` : html``}
+					${this._promiseError ? html`
+						<d2l-alert type="error">${this.localize('error')}</d2l-alert>
+					` : html``}
+					${this._isEditable() ? html`
+						<div>
+							<slot name="show-select-outcomes"></slot>
+						</div>
+					` : html``}
+				</div>
+				<d2l-loading-spinner slot="loading"></d2l-loading-spinner>
+			</siren-entity-loading>
+		`;
+	}
 
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		window.D2L.PolymerBehaviors.SelectOutcomes.LocalizeBehavior,
-	],
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
+		}
+	}
 
-	properties: {
-		readOnly: {
-			type: Boolean,
-			value: false
-		},
-		_alignmentHrefs: {
-			type: Array,
-			computed: '_getAlignmentHrefs(entity)'
-		},
-		_alignmentMap: Object
-	},
-
-	_getClass: function(entity, readOnly) {
-		if (this._isEditable(entity, readOnly)) {
+	_getClass() {
+		if (this._isEditable()) {
 			return 'd2l-alignment-list-editable';
 		}
 
 		return '';
-	},
+	}
 
-	_getAlignmentHrefs: function(entity) {
+	_getAlignmentHrefs(entity) {
 		if (!entity || !entity.entities || !entity.entities.length) {
 			return [];
 		}
 
 		return entity.entities.map(subentity => subentity.href);
-	},
+	}
 
-	_onAlignmentRemove: function(e) {
+	_onAlignmentRemove(e) {
 		var index = +e.target.dataset.index;
 		this.splice('_alignmentHrefs', index, 1);
 
@@ -192,21 +192,32 @@ Polymer({
 		this.async(function() {
 			Polymer.dom(this.root).removeChild(screenReaderAlert);
 		}.bind(this), 3000);
-	},
-
-	_isEditable: function(entity, readOnly) {
-		return !readOnly && entity && entity.hasActionByName(Actions.alignments.startUpdateAlignments);
-	},
-
-	_hasAlignments: function(alignmentHrefs) {
-		return alignmentHrefs && alignmentHrefs.length;
-	},
-
-	_hasAlignmentsAndNotEditable: function(entity, alignmentHrefs, readOnly) {
-		return !this._isEditable(entity, readOnly) && this._hasAlignments(alignmentHrefs);
-	},
-
-	_hasAlignmentsOrEditable: function(entity, alignmentHrefs, readOnly) {
-		return this._hasAlignments(alignmentHrefs) || this._isEditable(entity, readOnly);
 	}
-});
+
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+
+		this._alignmentHrefs = this._getAlignmentHrefs(entity);
+		this._hasUpdateAlignmentsAction = entity.hasActionByName(Actions.alignments.startUpdateAlignments);
+	}
+
+	_isEditable() {
+		return !this.readOnly && this._hasUpdateAlignmentsAction;
+	}
+
+	_hasAlignments() {
+		return this._alignmentHrefs && this._alignmentHrefs.length;
+	}
+
+	_hasAlignmentsAndNotEditable() {
+		return !this._isEditable() && this._hasAlignments();
+	}
+
+	_hasAlignmentsOrEditable() {
+		return this._hasAlignments() || this._isEditable();
+	}
+}
+
+customElements.define(D2lUserAlignmentList.is, D2lUserAlignmentList);

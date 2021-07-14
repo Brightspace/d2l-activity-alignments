@@ -1,10 +1,7 @@
 name: CI
-on:
-  pull_request:
-  push:
-    branches:
-      - master
-      - release/*
+on: pull_request
+permissions:
+  contents: read
 env:
   NODE_VERSION: 14 # Latest LTS
 jobs:
@@ -32,7 +29,7 @@ jobs:
         run: |
           npx polymer test --skip-plugin sauce
           if ${{env.SAUCE_ACCESS_KEY != ''}}; then
-            echo "Running full test suite"
+            echo 'Running full test suite'
             npm run testcafe:chrome
           fi
         env:
